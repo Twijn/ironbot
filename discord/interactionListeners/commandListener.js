@@ -1,6 +1,10 @@
 const listener = {
     name: "commandListener",
     verify: interaction => interaction.isChatInputCommand(),
+    /**
+     * Executor for this listener
+     * @param {ChatInputCommandInteraction} interaction 
+     */
     execute: async interaction => {
         const command = interaction.client.commands.get(interaction.commandName);
 
