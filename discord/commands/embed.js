@@ -55,9 +55,10 @@ const command = {
                 .addComponents(platforms, creator, games, misc);
 
             interaction.channel.send({embeds: [embed], components: [row]})
-                .catch(console.error);
-                
-            interaction.success("Sent the message!")
+                .then(message => {
+                    interaction.success("Sent the message!")
+                        .catch(console.error);
+                })
                 .catch(console.error);
         } else {
             interaction.error("Unknown embed!")
