@@ -4,11 +4,12 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 
 // create collections
 client.commands = new Collection();
 client.interactionListeners = new Collection();
+client.memberJoinListeners = new Collection();
 
 // populate collections
 const commandsPath = path.join(__dirname, 'commands');
@@ -39,6 +40,20 @@ for (const file of interactionFiles) {
 	}
 }
 
+const memberJoinPath = path.join(__dirname, 'memberJoinListeners');
+const memberJoinFiles = fs.readdirSync(memberJoinPath).filter(file => file.endsWith('.js'));
+
+for (const file of memberJoinFiles) {
+	const filePath = path.join(memberJoinPath, file);
+	const listener = require(filePath);
+	// Set a new item in the Collection with the key as the listener name and the value as the exported module
+	if ('name' in listener && 'execute' in listener) {
+		client.memberJoinListeners.set(listener.name, listener);
+	} else {
+		console.log(`[WARNING] The interaction listener at ${filePath} is missing a required "name" or "execute" property.`);
+	}
+}
+
 // ready message
 client.once(Events.ClientReady, c => {
 	console.log(`Discord ready! Logged in as ${c.user.tag}`);
@@ -62,6 +77,17 @@ client.on(Events.InteractionCreate, interaction => {
     client.interactionListeners.forEach(listener => {
 		try {
 			if (listener.verify(interaction)) listener.execute(interaction);
+		} catch (err) {
+			console.error(err);
+		}
+	});
+});
+
+// join listener
+client.on(Events.GuildMemberAdd, member => {
+    client.memberJoinListeners.forEach(listener => {
+		try {
+			listener.execute(member);
 		} catch (err) {
 			console.error(err);
 		}
