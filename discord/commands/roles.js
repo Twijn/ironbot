@@ -70,7 +70,8 @@ const command = {
             .setDescription("**Use the select menu below to set your " + category + " roles**\nUse `/roles <category>` to choose another category.")
             .setColor(0xf28227);
 
-        interaction.reply({embeds: [embed], components: [row], ephemeral: true});
+        interaction.reply({embeds: [embed], components: [row], ephemeral: true})
+            .catch(console.error);
     }
 }
 

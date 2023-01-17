@@ -61,7 +61,8 @@ const listener = {
             });
         }
 
-        interaction.reply({embeds: [embed], ephemeral: true});
+        interaction.reply({embeds: [embed], ephemeral: true})
+            .catch(console.error);
     }
 }
 
