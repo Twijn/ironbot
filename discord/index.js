@@ -57,6 +57,7 @@ for (const file of memberJoinFiles) {
 // ready message
 client.once(Events.ClientReady, c => {
 	console.log(`Discord ready! Logged in as ${c.user.tag}`);
+	console.log(`Startup completed!`);
 });
 
 // interaction listener
