@@ -10,6 +10,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 client.commands = new Collection();
 client.interactionListeners = new Collection();
 client.memberJoinListeners = new Collection();
+client.memberReadyListeners = new Collection();
 
 // populate collections
 const commandsPath = path.join(__dirname, 'commands');
@@ -54,6 +55,20 @@ for (const file of memberJoinFiles) {
 	}
 }
 
+const memberReadyPath = path.join(__dirname, 'memberReadyListeners');
+const memberReadyFiles = fs.readdirSync(memberReadyPath).filter(file => file.endsWith('.js'));
+
+for (const file of memberReadyFiles) {
+	const filePath = path.join(memberReadyPath, file);
+	const listener = require(filePath);
+	// Set a new item in the Collection with the key as the listener name and the value as the exported module
+	if ('name' in listener && 'execute' in listener) {
+		client.memberReadyListeners.set(listener.name, listener);
+	} else {
+		console.log(`[WARNING] The interaction listener at ${filePath} is missing a required "name" or "execute" property.`);
+	}
+}
+
 // ready message
 client.once(Events.ClientReady, c => {
 	console.log(`Discord ready! Logged in as ${c.user.tag}`);
@@ -93,6 +108,21 @@ client.on(Events.GuildMemberAdd, member => {
 			console.error(err);
 		}
 	});
+});
+
+// update listener
+client.on(Events.GuildMemberUpdate, (old, member) => {
+	if (old.pending === null || member.pending === null) return;
+	
+	if (old.pending && !member.pending) {
+		client.memberReadyListeners.forEach(listener => {
+			try {
+				listener.execute(member);
+			} catch (err) {
+				console.error(err);
+			}
+		});
+	}
 });
 
 global.discord = client;
