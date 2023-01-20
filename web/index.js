@@ -4,7 +4,7 @@ const app = express();
 const config = require("../config.json");
 
 app.get("/", (req, res) => {
-    res.send("We're working!");
+    res.redirect("https://discord.gg/adventures-guild");
 });
 
 const server = app.listen(config.web.port, () => {
