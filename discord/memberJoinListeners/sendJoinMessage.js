@@ -2,7 +2,7 @@ const { GuildMember, EmbedBuilder } = require("discord.js");
 const config = require("../../config.json");
 
 const listener = {
-    name: "sendJoinDM",
+    name: "sendJoinMessage",
     /**
      * Executor for this listener
      * @param {GuildMember} member 
