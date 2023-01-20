@@ -21,7 +21,8 @@ const listener = {
             .setColor(0xf28227);
         
         member.guild.channels.cache.get(config.join.channel)
-            .send({embeds: [embed]});
+            .send({embeds: [embed]})
+            .catch(console.error);
     }
 }
 
