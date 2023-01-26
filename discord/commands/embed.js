@@ -23,20 +23,20 @@ const command = {
 
         if (subcommand === "roles") {
             const embed = new EmbedBuilder()
-                .setTitle("Modify your game, platform, and creator roles!")
+                .setTitle("Modify your game, gaming system, and creator roles!")
                 .setDescription("**Use the buttons below to open up menus to add and remove your custom roles.**\nYou can also use `/roles` to change each category in any channel!")
                 .setColor(0xf28227);
 
-            const platforms = new ButtonBuilder()
-                .setCustomId("roles-platform")
-                .setLabel("Platforms")
-                .setEmoji("💻")
+            const news = new ButtonBuilder()
+                .setCustomId("roles-news")
+                .setLabel("News Roles")
+                .setEmoji("📰")
                 .setStyle(ButtonStyle.Secondary);
 
-            const creator = new ButtonBuilder()
-                .setCustomId("roles-creator")
-                .setLabel("Content Creator")
-                .setEmoji("📽️")
+            const platforms = new ButtonBuilder()
+                .setCustomId("roles-platform")
+                .setLabel("Gaming Systems")
+                .setEmoji("💻")
                 .setStyle(ButtonStyle.Secondary);
 
             const games = new ButtonBuilder()
@@ -46,8 +46,8 @@ const command = {
                 .setStyle(ButtonStyle.Secondary);
 
             const misc = new ButtonBuilder()
-                .setCustomId("roles-miscellaneous")
-                .setLabel("Miscellaneous")
+                .setCustomId("roles-unique")
+                .setLabel("Unique")
                 .setEmoji("🎲")
                 .setStyle(ButtonStyle.Secondary);
 

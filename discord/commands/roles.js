@@ -4,11 +4,16 @@ const config = require("../../config.json");
 const command = {
     data: new SlashCommandBuilder()
         .setName("roles")
-        .setDescription("Add, remove, and set your game, platform, and miscellaneous roles!")
+        .setDescription("Add, remove, and set your gaming system, game, and news roles!")
+        .addSubcommand(subcommand => 
+            subcommand
+                .setName("news")
+                .setDescription("Modify your news roles to be mentioned in what you're interested in!")
+        )
         .addSubcommand(subcommand => 
             subcommand
                 .setName("platform")
-                .setDescription("Modify game platform roles such as PC, Xbox, or Playstation")
+                .setDescription("Modify roles to show gaming systems you play on!")
         )
         .addSubcommand(subcommand => 
             subcommand
@@ -17,12 +22,7 @@ const command = {
         )
         .addSubcommand(subcommand => 
             subcommand
-                .setName("creator")
-                .setDescription("Modify creator/viewer roles such as YouTube, Twitch, and Viewer")
-        )
-        .addSubcommand(subcommand => 
-            subcommand
-                .setName("miscellaneous")
+                .setName("unique")
                 .setDescription("Modify miscellaneous roles such as the Shopper role")
         ),
     /**
