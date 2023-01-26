@@ -52,7 +52,7 @@ const command = {
                 .setStyle(ButtonStyle.Secondary);
 
             const row = new ActionRowBuilder()
-                .addComponents(platforms, creator, games, misc);
+                .addComponents(news, platforms, games, misc);
 
             interaction.channel.send({embeds: [embed], components: [row]})
                 .then(message => {
