@@ -35,9 +35,9 @@ const listener = {
             })
             .setColor(0xf28227);
         
-        member.send({embeds: [embed]}).catch(err => {
-            // we don't really need to do anything here, yet...
-        });
+        // member.send({embeds: [embed]}).catch(err => {
+        //     // we don't really need to do anything here, yet...
+        // });
     }
 }
 
