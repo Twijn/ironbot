@@ -18,7 +18,7 @@ const command = {
                         .setName("username")
                         .setDescription("Requested username for PZ")
                         .setMinLength(3)
-                        .setMaxLength(16)
+                        .setMaxLength(32)
                         .setRequired(true)
                 )
         ),
