@@ -88,7 +88,7 @@ const command = {
                     },
                     {
                         name: "User Credentials",
-                        value: "User credentials must be requested by a moderator.\nPlease do so using the following command:" + codeBlock("/zomboid request"),
+                        value: "User credentials must be requested by a moderator.\nPlease do so using the following command:" + codeBlock("/zomboid request") + "Note: Commands are not allowed in this channel. Please run the command [here](https://discord.com/channels/859283517451010088/1083050189822107649).",
                         inline: false,
                     },
                 ]);
