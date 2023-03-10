@@ -64,7 +64,7 @@ const command = {
                                                             },
                                                             {
                                                                 name: "Command",
-                                                                value: codeBlock(`/useradd "${username}" "${password}"`),
+                                                                value: codeBlock(`/adduser "${username}" "${password}"`),
                                                                 inline: false,
                                                             }
                                                         ]);
