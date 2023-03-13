@@ -13,7 +13,8 @@ const command = {
             new SlashCommandSubcommandBuilder()
                 .setName("zomboid")
                 .setDescription("Sends Project Zomboid server details")
-        ),
+        )
+        .setDMPermission(false),
     /**
      * Executor for this chat command
      * @param {ChatInputCommandInteraction} interaction 

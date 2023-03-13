@@ -21,7 +21,8 @@ const command = {
                         .setMaxLength(20)
                         .setRequired(true)
                 )
-        ),
+        )
+        .setDMPermission(false),
     /**
      * Executor for this chat command
      * @param {ChatInputCommandInteraction} interaction 

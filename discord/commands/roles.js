@@ -24,7 +24,8 @@ const command = {
             subcommand
                 .setName("unique")
                 .setDescription("Modify miscellaneous roles such as the Shopper role")
-        ),
+        )
+        .setDMPermission(false),
     /**
      * Executor for this chat command
      * @param {ChatInputCommandInteraction} interaction 
