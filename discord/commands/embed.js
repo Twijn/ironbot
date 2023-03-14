@@ -33,6 +33,12 @@ const command = {
                 .setDescription("**Use the buttons below to open up menus to add and remove your custom roles.**\nYou can also use `/roles` to change each category in any channel!")
                 .setColor(0xf28227);
 
+            const envoys = new ButtonBuilder()
+                .setCustomId("roles-envoys")
+                .setLabel("Envoys")
+                .setEmoji("🔔")
+                .setStyle(ButtonStyle.Primary);
+
             const news = new ButtonBuilder()
                 .setCustomId("roles-news")
                 .setLabel("News Roles")
@@ -58,7 +64,7 @@ const command = {
                 .setStyle(ButtonStyle.Secondary);
 
             const row = new ActionRowBuilder()
-                .addComponents(news, platforms, games, misc);
+                .addComponents(envoys, news, platforms, games, misc);
 
             interaction.channel.send({embeds: [embed], components: [row]})
                 .then(message => {
