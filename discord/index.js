@@ -1,73 +1,48 @@
 const fs = require('node:fs');
-const path = require('node:path');
+const fspath = require('node:path');
 
 const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
 
 // create collections
 client.commands = new Collection();
 client.interactionListeners = new Collection();
 client.memberJoinListeners = new Collection();
 client.memberReadyListeners = new Collection();
+client.voiceStateListeners = new Collection();
 
 // populate collections
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	// Set a new item in the Collection with the key as the command name and the value as the exported module
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
-	} else {
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+/**
+ * 
+ * @param {string} folderName 
+ * @param {Collection} collection 
+ * @param {function} requiredProps 
+ * @param {function} getName 
+ */
+const populate = (folderName, collection, requiredProps, getName) => {
+	const path = fspath.join(__dirname, folderName);
+	const files = fs.readdirSync(path).filter(file => file.endsWith('.js'));
+	
+	for (const file of files) {
+		const filePath = fspath.join(path, file);
+		const listener = require(filePath);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if (requiredProps(listener)) {
+			collection.set(getName(listener), listener);
+		} else {
+			console.error(`[WARNING] The command at ${filePath} is missing a required property.`);
+		}
 	}
 }
 
-const interactionsPath = path.join(__dirname, 'interactionListeners');
-const interactionFiles = fs.readdirSync(interactionsPath).filter(file => file.endsWith('.js'));
-
-for (const file of interactionFiles) {
-	const filePath = path.join(interactionsPath, file);
-	const listener = require(filePath);
-	// Set a new item in the Collection with the key as the listener name and the value as the exported module
-	if ('name' in listener && 'verify' in listener && 'execute' in listener) {
-		client.interactionListeners.set(listener.name, listener);
-	} else {
-		console.log(`[WARNING] The interaction listener at ${filePath} is missing a required "name", "verify", or "execute" property.`);
-	}
-}
-
-const memberJoinPath = path.join(__dirname, 'memberJoinListeners');
-const memberJoinFiles = fs.readdirSync(memberJoinPath).filter(file => file.endsWith('.js'));
-
-for (const file of memberJoinFiles) {
-	const filePath = path.join(memberJoinPath, file);
-	const listener = require(filePath);
-	// Set a new item in the Collection with the key as the listener name and the value as the exported module
-	if ('name' in listener && 'execute' in listener) {
-		client.memberJoinListeners.set(listener.name, listener);
-	} else {
-		console.log(`[WARNING] The interaction listener at ${filePath} is missing a required "name" or "execute" property.`);
-	}
-}
-
-const memberReadyPath = path.join(__dirname, 'memberReadyListeners');
-const memberReadyFiles = fs.readdirSync(memberReadyPath).filter(file => file.endsWith('.js'));
-
-for (const file of memberReadyFiles) {
-	const filePath = path.join(memberReadyPath, file);
-	const listener = require(filePath);
-	// Set a new item in the Collection with the key as the listener name and the value as the exported module
-	if ('name' in listener && 'execute' in listener) {
-		client.memberReadyListeners.set(listener.name, listener);
-	} else {
-		console.log(`[WARNING] The interaction listener at ${filePath} is missing a required "name" or "execute" property.`);
-	}
-}
+populate("commands", client.commands, x => 'data' in x && 'execute' in x, x => x.data.name);
+populate("interactionListeners", client.interactionListeners, x => 'name' in x && 'verify' in x && 'execute' in x, x => x.name);
+populate("memberJoinListeners", client.memberJoinListeners, x => 'name' in x && 'execute' in x, x => x.name);
+populate("memberReadyListeners", client.memberReadyListeners, x => 'name' in x && 'execute' in x, x => x.name);
+populate("voiceStateListeners", client.voiceStateListeners, x => 'name' in x && 'execute' in x, x => x.name);
 
 // ready message
 client.once(Events.ClientReady, c => {
