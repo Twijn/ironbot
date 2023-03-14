@@ -105,3 +105,6 @@ dist
 
 # Config File
 config.json
+
+# Local Files
+files/

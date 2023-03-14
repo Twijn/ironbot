@@ -77,14 +77,14 @@ client.once(Events.ClientReady, c => {
 
 // interaction listener
 client.on(Events.InteractionCreate, interaction => {
-	interaction.success = message => {
-		interaction.reply({
+	interaction.success = (message, deferred = false) => {
+		interaction[deferred ? "editReply" : "reply"]({
 			embeds: [new EmbedBuilder().setTitle("Successful!").setColor(0x2dce3d).setDescription(message)],
 			ephemeral: true,
 		});
 	}
-	interaction.error = message => {
-		interaction.reply({
+	interaction.error = (message, deferred = false) => {
+		interaction[deferred ? "editReply" : "reply"]({
 			embeds: [new EmbedBuilder().setTitle("An error occurred!").setColor(0xd63939).setDescription(message)],
 			ephemeral: true,
 		});
