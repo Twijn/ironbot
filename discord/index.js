@@ -100,6 +100,16 @@ client.on(Events.GuildMemberUpdate, (old, member) => {
 	}
 });
 
+client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+    client.voiceStateListeners.forEach(listener => {
+		try {
+			listener.execute(oldState, newState);
+		} catch (err) {
+			console.error(err);
+		}
+	});
+});
+
 global.discord = client;
 
 client.login(config.discord.token);
