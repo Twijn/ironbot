@@ -10,6 +10,7 @@ const listener = {
      * @param {VoiceState} newState 
      */
     execute: async (oldState, newState) => {
+        return;
         try {
             if (oldState.channelId !== newState.channelId) {
                 const oldReg = NUM_REGEX.exec(oldState.channel?.name);
