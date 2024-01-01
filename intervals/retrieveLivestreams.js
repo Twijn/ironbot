@@ -28,7 +28,7 @@ const formatEmbed = function(hStream, stream, listener) {
         .setAuthor({iconURL: listener.twitchUser.profile_image_url, name: listener.twitchUser.display_name})
         .setTitle(`${hStream.userDisplayName} is now live!`)
         .setDescription(`<@${listener.discordUser._id}> is now live on Twitch at [twitch.tv/${listener.twitchUser.login}](https://twitch.tv/${listener.twitchUser.login})!\n**Come stop by!**`)
-        .setImage(hStream.getThumbnailUrl(384,216) + "?nocache=" + Date.now())
+        .setImage(hStream.getThumbnailUrl(384,216) + "?nocache=" + Math.floor(Date.now() / (5 * 60 * 1000)))
         .addFields({
             name: "Game",
             value: codeBlock(hStream.gameName),
