@@ -48,24 +48,6 @@ const formatEmbed = function(hStream, stream, listener) {
 }
 
 /**
- * Formats an offline embed given a TwitchStream and listener
- * @param {any} stream 
- * @param {any} listener
- * @param {any} stats
- */
-const formatOfflineEmbed = function(stream, listener, stats) {
-    return new EmbedBuilder()
-        .setAuthor({name: listener.twitchUser.display_name,iconURL: listener.twitchUser.profile_image_url})
-        .setTimestamp(Date.now())
-        .setTitle(`${listener.twitchUser.display_name} is now offline!`)
-        .addFields({
-            name: "Stats",
-            value: codeBlock(`Minimum Viewers: ${stats.viewers.min}\nMaximum Viewers: ${stats.viewers.max}\nAverage Viewers: ${stats.viewers.avg.toFixed(1)}`),
-            inline: false,
-        });
-}
-
-/**
  * Fires when a new stream is detected
  * @param {HelixStream} hStream 
  * @param {any} stream
@@ -112,7 +94,7 @@ const streamUpdate = async function(hStream, stream, listeners) {
 const streamOffline = async function(stream, listener) {
     const messages = await stream.getMessages();
     messages.forEach(message => {
-        message.edit({embeds: [formatOfflineEmbed(stream, listener)]}).catch(console.error);
+        message.delete({reason: "User went offline"}).catch(console.error);
     });
     console.log(listener.twitchUser.display_name + " is now offline");
 }
