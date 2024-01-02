@@ -3,6 +3,7 @@
     --secondary-background-color: #222222;
 
     --primary-text-color: #f0f0f0;
+    --primary-text-color: #dadada;
 
     --primary-theme-color: #bd5e11;
     --dark-theme-color: #211e1b;
@@ -111,9 +112,9 @@ a[aria-label]:not(.notooltip)::before {
     background-color: var(--primary-theme-color);
     border: rgba(0,0,0,0.2);
     color: var(--primary-text-color);
-    padding: .3em .5em;
+    padding: .3rem .5rem;
     position: absolute;
-    top: -1em;
+    top: -1rem;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: var(--shadow);
@@ -130,7 +131,7 @@ span[aria-label]:focus::before,
 a[aria-label]:not(.notooltip):focus::before {
     visibility: visible;
     opacity: 1;
-    top: -1.5em;
+    top: -1.5rem;
 }
 
 @media only screen and (max-width: 600px) {
