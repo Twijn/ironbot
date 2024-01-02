@@ -3,7 +3,7 @@
     --secondary-background-color: #222222;
 
     --primary-text-color: #f0f0f0;
-    --primary-text-color: #dadada;
+    --secondary-text-color: #dadada;
 
     --primary-theme-color: #bd5e11;
     --dark-theme-color: #211e1b;
@@ -68,6 +68,11 @@ header img {
     margin-right: .6em;
     width: 4em;
     height: 4em;
+}
+
+footer {
+    color: var(--secondary-text-color);
+    font-size: .8rem;
 }
 
 nav.socials ul {
