@@ -10,14 +10,7 @@
     <div class="wrapper">
         <%- include("../partials/header") %>
         <main>
-            <nav class="socials">
-                <ul>
-                    <li><a href="/twitch" aria-label="Twitch" target="_blank"><i class="fa-brands fa-twitch"></i></a></li>
-                    <li><a href="/x" aria-label="X" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
-                    <li><a href="/discord" aria-label="Discord" target="_blank"><i class="fa-brands fa-discord"></i></a></li>
-                    <li><a href="/guilded" aria-label="Guilded" target="_blank"><i class="fa-brands fa-guilded"></i></a></li>
-                </ul>
-            </nav>
+            <%- include("../partials/socials") %>
             <p class="welcome">Welcome, adventurer!</p>
             <h2>Envoys</h2>
             <p>Envoys are content creators that call The Adventurers Guild home!<br>Check them out below!</p>
@@ -35,6 +28,7 @@
                 </a>
                 <% }) %>
             </div>
+            <%- include("../partials/socials") %>
         </main>
     </div>
 </body>
