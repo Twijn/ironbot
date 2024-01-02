@@ -7,7 +7,7 @@ const config = require("../config.json");
 let gameCache = [];
 let livestreamCache = [];
 
-const UPDATE_ENVOY_USER_TIME = 30 * 60 * 1000;
+const UPDATE_ENVOY_USER_TIME = 4 * 60 * 60 * 1000; // 4 hours
 
 (async function() {
     gameCache = await utils.Schemas.TwitchGame.find({});
