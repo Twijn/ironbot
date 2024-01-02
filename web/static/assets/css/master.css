@@ -1,1 +1,19 @@
+:root {
+    --primary-background-color: #252525;
+    --secondary-background-color: #222222;
 
+    --primary-text-color: #f0f0f0;
+
+    --primary-theme-color: #f28227;
+}
+
+body {
+    background-color: var(--primary-background-color);
+    background: url("/assets/images/banners/01.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: var(--primary-text-color);
+    min-height: 100%;
+}
