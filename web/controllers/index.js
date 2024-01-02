@@ -16,4 +16,8 @@ router.get("/", (req, res) => {
     res.render("pages/index", {envoys, comma: utils.comma});
 });
 
+router.get("/map", (req, res) => {
+    res.render("pages/map");
+});
+
 module.exports = router;

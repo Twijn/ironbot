@@ -99,12 +99,12 @@ p.welcome {
 }
 
 span[aria-label],
-a[aria-label] {
+a[aria-label]:not(.notooltip) {
     position: relative;
 }
 
 span[aria-label]::before,
-a[aria-label]::before {
+a[aria-label]:not(.notooltip)::before {
     font-size: .9rem;
     content: attr(aria-label);
     text-decoration: none;
@@ -125,9 +125,9 @@ a[aria-label]::before {
 }
 
 span[aria-label]:hover::before,
-a[aria-label]:hover::before,
+a[aria-label]:not(.notooltip):hover::before,
 span[aria-label]:focus::before,
-a[aria-label]:focus::before {
+a[aria-label]:not(.notooltip):focus::before {
     visibility: visible;
     opacity: 1;
     top: -1.5em;
