@@ -1,4 +1,4 @@
-.user {
+.object {
     display: flex;
     
     color: var(--primary-text-color);
@@ -12,30 +12,38 @@
     border-radius: 1px;
 }
 
-.user img {
-    width: 5em;
-    height: 5em;
-    border-radius: 2.5em;
-    margin-right: 1em;
-}
-
-.user .info {
+.object .info {
     flex-grow: 1;
     text-align: left;
 }
 
-.user .info .data {
-    color: var(--secondary-text-color);
-}
-
-.user .info .data span.b {
-    opacity: .7;
-}
-
-.user h3 {
+.object h3 {
     font-size: 1.5em;
     margin: 0;
     padding: 0;
+}
+
+.object .info .data {
+    color: var(--secondary-text-color);
+}
+
+.object .info .data span.b {
+    opacity: .7;
+}
+
+.object img {
+    margin-right: 1em;
+}
+
+.user img {
+    width: 5em;
+    height: 5em;
+    border-radius: 2.5em;
+}
+
+.server img {
+    width: 108px;
+    height: 144px;
 }
 
 .discord-mention {
@@ -43,4 +51,8 @@
     color: #d6daff;
     padding: .1em .2em;
     border-radius: 3px;
+}
+
+.discord-mention::before {
+    content: "@";
 }

@@ -104,8 +104,8 @@ a[aria-label]:not(.notooltip) {
     position: relative;
 }
 
-span[aria-label]::before,
-a[aria-label]:not(.notooltip)::before {
+span[aria-label]::after,
+a[aria-label]:not(.notooltip)::after {
     font-size: .9rem;
     content: attr(aria-label);
     text-decoration: none;
@@ -114,7 +114,7 @@ a[aria-label]:not(.notooltip)::before {
     color: var(--primary-text-color);
     padding: .3rem .5rem;
     position: absolute;
-    top: -1rem;
+    top: -1.25rem;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: var(--shadow);
@@ -125,13 +125,13 @@ a[aria-label]:not(.notooltip)::before {
     transition: 0.25s;
 }
 
-span[aria-label]:hover::before,
-a[aria-label]:not(.notooltip):hover::before,
-span[aria-label]:focus::before,
-a[aria-label]:not(.notooltip):focus::before {
+span[aria-label]:hover::after,
+a[aria-label]:not(.notooltip):hover::after,
+span[aria-label]:focus::after,
+a[aria-label]:not(.notooltip):focus::after {
     visibility: visible;
     opacity: 1;
-    top: -1.5rem;
+    top: -1.75rem;
 }
 
 @media only screen and (max-width: 600px) {

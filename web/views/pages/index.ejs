@@ -16,17 +16,74 @@
             <p>Envoys are content creators that call The Adventurers Guild home!<br>Check them out below!</p>
             <div class="users">
                 <% envoys.forEach(envoy => { %>
-                <a class="user user-envoy" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
+                <a class="object user user-envoy" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
                     <img src="<%= envoy.twitchUser.profile_image_url %>" alt="Profile picture for <%= envoy.twitchUser.display_name %>">
                     <div class="info">
                         <h3><%= envoy.twitchUser.display_name %></h3>
                         <div class="data">
                             <% if (envoy.twitchUser.follower_count) { %><%= comma(envoy.twitchUser.follower_count) %> follower<%= envoy.twitchUser.follower_count === 1 ? "" : "s" %> <span class="b">&bullet;</span><% } %>
-                            Discord <span class="discord-mention" aria-label="Discord User">@<%= envoy.discordUser.username %></span>
+                            Discord <span class="discord-mention" aria-label="Discord User"><%= envoy.discordUser.username %></span>
                         </div>
                     </div>
                 </a>
                 <% }) %>
+            </div>
+            <h2>Community Servers</h2>
+            <p>Official Adventurers Guild Game Servers! Find your favorite and come join!</p>
+            <div class="servers">
+                <a class="object server" href="/discord" target="_blank">
+                    <img src="/assets/images/games/arksurvivalevolved.png" alt="Ark: Survival Evolved Game Art">
+                    <div class="info">
+                        <h3>Ark: Survival Evolved</h3>
+                        <div class="data">
+                            <p>
+                                Come join our Ark: Survival Evolved server! Connection details on Discord.
+                            </p>
+                            <p>
+                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">mystic1220</span>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <a class="object server" href="https://eco.autumnsdawn.net" target="_blank">
+                    <img src="/assets/images/games/eco.jpg" alt="Eco Game Art">
+                    <div class="info">
+                        <h3>Eco</h3>
+                        <div class="data">
+                            <p>
+                                Our upcoming Eco server! Check back soon!
+                            </p>
+                            <p>
+                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">tricky2953</span>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <a class="object server" href="/discord" target="_blank">
+                    <img src="/assets/images/games/projectzomboid.jpg" alt="Project Zomboid Game Art">
+                    <div class="info">
+                        <h3>Project Zomboid</h3>
+                        <div class="data">
+                            <p>
+                                Come join our Project Zomboid server! Connection details on Discord.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <a class="object server" href="/discord" target="_blank">
+                    <img src="/assets/images/games/satisfactory.jpg" alt="Satisfactory Game Art">
+                    <div class="info">
+                        <h3>Satisfactory</h3>
+                        <div class="data">
+                            <p>
+                                Come join our Satisfactory server! Connection details on Discord.
+                            </p>
+                            <p>
+                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">mystic1220</span>
+                            </p>
+                        </div>
+                    </div>
+                </a>
             </div>
             <%- include("../partials/socials") %>
         </main>
