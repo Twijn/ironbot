@@ -4,16 +4,110 @@
 
     --primary-text-color: #f0f0f0;
 
-    --primary-theme-color: #f28227;
+    --primary-theme-color: #bd5e11;
+    --dark-theme-color: #211e1b;
+    --sdark-theme-color: #312b26;
+
+    --shadow: 2px 2px 8px rgba(0,0,0,0.2);
 }
 
 body {
+    font-family: 'Roboto Slab', serif;
     background-color: var(--primary-background-color);
+    color: var(--primary-text-color);
+    text-align: center;
+
+    margin: 0;
+    padding: 0;
+
     background: url("/assets/images/banners/01.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
-    color: var(--primary-text-color);
+
     min-height: 100%;
+}
+
+.wrapper {
+    width: calc(100% - 2em);
+    max-width: 40em;
+    background-color: var(--secondary-background-color);
+    padding: 1rem;
+    margin: 18em auto 1em auto;
+    box-shadow: var(--shadow);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inknut Antiqua', serif;
+    line-height: 175%;
+    margin: -.4rem 0;
+    padding: 0;
+}
+
+h2 {
+    background-color: rgba(0,0,0,0.1);
+    border-bottom: 2px solid var(--primary-theme-color);
+    padding: .3em;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -1rem -1rem 0 -1rem;
+    padding: 1rem 1rem;
+    background-color: var(--dark-theme-color);
+    border-bottom: 1px solid var(--primary-theme-color);
+}
+
+header img {
+    margin-right: .6em;
+    width: 4em;
+    height: 4em;
+}
+
+nav.socials ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav.socials ul li a {
+    display: block;
+    padding: .4em .6em;
+    font-size: 1.4em;
+    color: var(--primary-text-color);
+    transition: 0.25s;
+    text-shadow: var(--shadow);
+}
+
+nav.socials ul li a:focus,
+nav.socials ul li a:hover {
+    color: var(--primary-theme-color);
+}
+
+p.welcome {
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: .8;
+}
+
+@media only screen and (max-width: 600px) {
+    header img {
+        width: 240px;
+        height: 240px;
+        position: absolute;
+        top: 2em;
+        left: 50%;
+        transform: translateX(-50%)
+    }
+    header h1 {
+        font-size: 1.5em;
+    }
 }

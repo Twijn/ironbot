@@ -17,6 +17,18 @@ app.get("/discord", (req, res) => {
     res.redirect("https://discord.gg/UnuZeRj9An");
 });
 
+app.get("/guilded", (req, res) => {
+    res.redirect("https://www.guilded.gg/i/kX11Wolp");
+});
+
+app.get("/twitch", (req, res) => {
+    res.redirect("https://twitch.tv/ivironenochxii");
+});
+
+app.get("/x", (req, res) => {
+    res.redirect("https://twitter.com/IVIronEnochXII");
+});
+
 
 app.listen(config.web.port, () => {
     console.log("Express has been opened on " + config.web.port);

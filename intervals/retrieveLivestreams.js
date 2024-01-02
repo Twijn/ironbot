@@ -7,6 +7,8 @@ const config = require("../config.json");
 let gameCache = [];
 let livestreamCache = [];
 
+const UPDATE_ENVOY_USER_TIME = 30 * 60 * 1000;
+
 (async function() {
     gameCache = await utils.Schemas.TwitchGame.find({});
     livestreamCache = await utils.Schemas.TwitchStream.find({endDate: null})
@@ -169,6 +171,16 @@ module.exports = async () => {
 
     for (let i = 0; i < envoyListeners.length; i++) {
         const listener = envoyListeners[i];
+
+        if (Date.now() - listener.twitchUser.updated_at >= UPDATE_ENVOY_USER_TIME) {
+            try {
+                await listener.twitchUser.updateData();
+                console.log(`Updated data for envoy ${listener.twitchUser.display_name}`)
+            } catch(err) {
+                console.error(err);
+            }
+        }
+
         const stream = livestreamCache.find(x => x.channel._id === listener.twitchUser._id);
         if (stream && streams.filter(x => x.userId === listener.twitchUser._id).length === 0) {
             stream.endDate = Date.now();
