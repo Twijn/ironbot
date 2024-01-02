@@ -34,7 +34,7 @@ body {
     max-width: 40em;
     background-color: var(--secondary-background-color);
     padding: 1rem;
-    margin: 18em auto 1em auto;
+    margin: 1em auto;
     box-shadow: var(--shadow);
     border-radius: 2px;
     overflow: hidden;
@@ -98,7 +98,45 @@ p.welcome {
     opacity: .8;
 }
 
+span[aria-label],
+a[aria-label] {
+    position: relative;
+}
+
+span[aria-label]::before,
+a[aria-label]::before {
+    font-size: .9rem;
+    content: attr(aria-label);
+    text-decoration: none;
+    background-color: var(--primary-theme-color);
+    border: rgba(0,0,0,0.2);
+    color: var(--primary-text-color);
+    padding: .3em .5em;
+    position: absolute;
+    top: -1em;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: var(--shadow);
+    border-radius: 4px;
+    text-wrap: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+span[aria-label]:hover::before,
+a[aria-label]:hover::before,
+span[aria-label]:focus::before,
+a[aria-label]:focus::before {
+    visibility: visible;
+    opacity: 1;
+    top: -1.5em;
+}
+
 @media only screen and (max-width: 600px) {
+    .wrapper {
+        margin-top: 18em;
+    }
     header img {
         width: 240px;
         height: 240px;
