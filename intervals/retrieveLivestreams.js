@@ -1,6 +1,8 @@
 const { HelixStream } = require("@twurple/api");
-const utils = require("../utils/");
 const { EmbedBuilder, codeBlock } = require("discord.js");
+
+const utils = require("../utils/");
+const config = require("../config.json");
 
 let gameCache = [];
 let livestreamCache = [];
@@ -68,6 +70,11 @@ const newStream = function(hStream, stream, listeners) {
         } catch(err) {
             console.error(err);
         }
+
+        const discordId = listener.discordUser?._id ? listener.discordUser._id : listener.discordUser;
+        utils.guild.members.fetch(discordId).then(member => {
+            member.roles.add(config.discord.roles.live).catch(console.error);
+        }, console.error);
     });
     console.log(hStream.userDisplayName + " is now live");
 }
@@ -97,6 +104,11 @@ const streamOffline = async function(stream, listener) {
         message.delete({reason: "User went offline"}).catch(console.error);
     });
     console.log(listener.twitchUser.display_name + " is now offline");
+
+    const discordId = listener.discordUser?._id ? listener.discordUser._id : listener.discordUser;
+    utils.guild.members.fetch(discordId).then(member => {
+        member.roles.remove(config.discord.roles.live).catch(console.error);
+    }, console.error);
 }
 
 module.exports = async () => {

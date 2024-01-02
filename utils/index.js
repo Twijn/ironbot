@@ -1,3 +1,7 @@
+const {Guild} = require("discord.js");
+
+const config = require("../config.json");
+
 const Schemas = require("./schemas/");
 
 const Discord = require("./discord/");
@@ -30,6 +34,21 @@ class Utils {
      * @type {EnvoyListenerManager}
      */
     EnvoyListenerManager = EnvoyListenerManager;
+
+    /**
+     * The Adventurers Guild
+     * @type {Guild}
+     */
+    guild;
+
+    constructor() {
+        setTimeout(() => {
+            global.discord.guilds.fetch(config.discord.guild).then(guild => {
+                this.guild = guild;
+                console.log(`Using guild "${guild.name}" (${guild.id}) as The Adventurers Guild`)
+            }, console.error);
+        }, 250);
+    }
     
 }
 
