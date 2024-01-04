@@ -8,7 +8,7 @@ const listener = {
      */
     execute: async member => {
         const embed = new EmbedBuilder()
-            .setTitle("Hello 👋 I'm Autumn, the Adventurers Guild custom bot!")
+            .setTitle("Hello 👋 I'm Autumn, the Illumindal Guild custom bot!")
             .setDescription("This is a helpful message I send to all new Adventurers to help you get started! Don't worry you can delete this DM whenever you wish 😉")
             .addFields({
                 name: "Getting Started",

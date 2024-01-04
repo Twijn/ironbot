@@ -13,7 +13,7 @@ class Discord {
     userCache = new Cache(1 * 60 * 60 * 1000);
 
     /**
-     * The Adventurers Guild guild
+     * The Illumindal Guild guild
      */
     guild = null;
 

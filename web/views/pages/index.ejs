@@ -4,7 +4,7 @@
 
 <%- include("../partials/head") %>
 
-    <title>Home - The Adventurers Guild</title>
+    <title>Home - The Illumindal Guild</title>
 </head>
 <body>
     <div class="wrapper">
@@ -13,7 +13,7 @@
             <%- include("../partials/socials") %>
             <p class="welcome">Welcome, adventurer!</p>
             <h2>Envoys</h2>
-            <p>Envoys are content creators that call The Adventurers Guild home!<br>Check them out below!</p>
+            <p>Envoys are content creators that call The Illumindal Guild home!<br>Check them out below!</p>
             <div class="users">
                 <% envoys.forEach(envoy => { %>
                 <a class="object user user-envoy" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
@@ -29,7 +29,7 @@
                 <% }) %>
             </div>
             <h2>Community Servers</h2>
-            <p>Official Adventurers Guild Game Servers! Find your favorite and come join!</p>
+            <p>Official Illumindal Guild Game Servers! Find your favorite and come join!</p>
             <div class="servers">
                 <a class="object server" href="/discord" target="_blank">
                     <img src="/assets/images/games/7d2d.jpg" alt="7 Days To Die Game Art">

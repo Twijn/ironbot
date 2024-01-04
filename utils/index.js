@@ -36,7 +36,7 @@ class Utils {
     EnvoyListenerManager = EnvoyListenerManager;
 
     /**
-     * The Adventurers Guild
+     * The Illumindal Guild
      * @type {Guild}
      */
     guild;
@@ -53,7 +53,7 @@ class Utils {
         setTimeout(() => {
             global.discord.guilds.fetch(config.discord.guild).then(async guild => {
                 this.guild = guild;
-                console.log(`Using guild "${guild.name}" (${guild.id}) as The Adventurers Guild`)
+                console.log(`Using guild "${guild.name}" (${guild.id}) as The Illumindal Guild`)
 
                 for (const channelName in config.discord.channels) {
                     try {

@@ -1,7 +1,7 @@
 {
   "name": "ironbot",
   "version": "1.0.0",
-  "description": "Custom bot for The Adventurers Guild",
+  "description": "Custom bot for The Illumindal Guild",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
