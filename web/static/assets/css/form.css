@@ -1,0 +1,43 @@
+form {
+    text-align: left;
+    padding: 1rem;
+}
+
+form h2 {
+    padding: 1rem;
+    margin: -1rem -1rem 1rem -1rem;
+}
+
+.form-group {
+    display: block;
+    margin: 1em 0;
+}
+
+.form-group small {
+    color: var(--secondary-text-color);
+}
+
+input[type=text] {
+    background-color: rgba(0,0,0,0.1);
+    color: var(--primary-text-color);
+    border: 1px solid rgba(0,0,0,0.2);
+    border-bottom-color: var(--primary-theme-color);
+    border-radius: 3px;
+    display: block;
+    width: calc(100% - 1.6em - 2px);
+    padding: .6em .8em;
+    margin: .4em 0;
+}
+
+input, select, textarea, .button {
+    font-family: 'Roboto Slab', serif;
+}
+
+.button {
+    background-color: var(--primary-theme-color);
+    color: var(--primary-text-color);
+    padding: .6em .8em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}

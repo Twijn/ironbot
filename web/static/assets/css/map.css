@@ -14,20 +14,61 @@ iframe {
     height: 100%;
 }
 
-a.back {
-    background-color: var(--primary-theme-color);
-    color: var(--primary-text-color);
+nav.map {
     position: absolute;
-    font-size: 1.3rem;
-    top: 4.5rem;
-    left: 1rem;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 1.5rem;
+    bottom: 1em;
+    right: 1em;
     z-index: 20;
 }
 
-a.back i {
+nav.map ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav.map ul li a {
+    color: var(--primary-text-color);
+    display: block;
+    position: relative;
+    font-size: 1.4rem;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 .25em;
+    border-radius: 2rem;
+    box-shadow: var(--shadow);
+}
+
+nav.map ul li a i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+a.back {
+    background-color: var(--primary-theme-color);
+}
+
+a.add {
+    background-color: var(--green);
+}
+
+#add-map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+#add-map form {
+    background-color: var(--primary-background-color);
+    width: 100%;
+    max-width: 30em;
     position: absolute;
     top: 50%;
     left: 50%;

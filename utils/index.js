@@ -1,4 +1,4 @@
-const {Guild} = require("discord.js");
+const {Guild, TextChannel} = require("discord.js");
 
 const config = require("../config.json");
 
@@ -41,11 +41,30 @@ class Utils {
      */
     guild;
 
+    /**
+     * Storage for frequently used channels
+     * @type {{locationRequest:TextChannel}}
+     */
+    channels = {
+        locationRequest: null,
+    };
+
     constructor() {
         setTimeout(() => {
-            global.discord.guilds.fetch(config.discord.guild).then(guild => {
+            global.discord.guilds.fetch(config.discord.guild).then(async guild => {
                 this.guild = guild;
                 console.log(`Using guild "${guild.name}" (${guild.id}) as The Adventurers Guild`)
+
+                for (const channelName in config.discord.channels) {
+                    try {
+                        const channel = await guild.channels.fetch(config.discord.channels[channelName]);
+                        this.channels[channelName] = channel;
+                        console.log(`Using "${channel.name}" for ${channelName}`)
+                    } catch(err) {
+                        console.error(`Failed to get ${channelName}`);
+                        console.error(err);
+                    }
+                }
             }, console.error);
         }, 250);
     }
