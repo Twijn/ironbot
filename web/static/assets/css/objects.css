@@ -1,3 +1,7 @@
+.users, .servers {
+    margin: .6em 0;
+}
+
 .object {
     display: flex;
     
@@ -6,7 +10,7 @@
     text-decoration: none;
 
     padding: .6em;
-    margin: .6em 0;
+    margin: .5em;
 
     border-left: 3px solid var(--primary-theme-color);
     border-radius: 1px;

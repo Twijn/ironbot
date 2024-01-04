@@ -14,9 +14,9 @@
             <p class="welcome">Welcome, adventurer!</p>
             <h2>Envoys</h2>
             <p>Envoys are content creators that call The Illumindal Guild home!<br>Check them out below!</p>
-            <div class="users">
+            <div class="users container container-md">
                 <% envoys.forEach(envoy => { %>
-                <a class="object user user-envoy" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
+                <a class="object user user-envoy col-6" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
                     <img src="<%= envoy.twitchUser.profile_image_url %>" alt="Profile picture for <%= envoy.twitchUser.display_name %>">
                     <div class="info">
                         <h3><%= envoy.twitchUser.display_name %></h3>
@@ -30,8 +30,8 @@
             </div>
             <h2>Community Servers</h2>
             <p>Official Illumindal Guild Game Servers! Find your favorite and come join!</p>
-            <div class="servers">
-                <a class="object server" href="/discord" target="_blank">
+            <div class="servers container container-md">
+                <a class="object server col-6" href="/discord" target="_blank">
                     <img src="/assets/images/games/7d2d.jpg" alt="7 Days To Die Game Art">
                     <div class="info">
                         <h3>7 Days to Die</h3>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="object server" href="/discord" target="_blank">
+                <a class="object server col-6" href="/discord" target="_blank">
                     <img src="/assets/images/games/arksurvivalevolved.png" alt="Ark: Survival Evolved Game Art">
                     <div class="info">
                         <h3>Ark: Survival Evolved</h3>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="object server" href="https://eco.autumnsdawn.net" target="_blank">
+                <a class="object server col-6" href="https://eco.autumnsdawn.net" target="_blank">
                     <img src="/assets/images/games/eco.jpg" alt="Eco Game Art">
                     <div class="info">
                         <h3>Eco</h3>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="object server" href="/discord" target="_blank">
+                <a class="object server col-6" href="/discord" target="_blank">
                     <img src="/assets/images/games/projectzomboid.jpg" alt="Project Zomboid Game Art">
                     <div class="info">
                         <h3>Project Zomboid</h3>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="object server" href="/discord" target="_blank">
+                <a class="object server col-6" href="/discord" target="_blank">
                     <img src="/assets/images/games/satisfactory.jpg" alt="Satisfactory Game Art">
                     <div class="info">
                         <h3>Satisfactory</h3>
