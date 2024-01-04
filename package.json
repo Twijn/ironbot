@@ -25,7 +25,7 @@
     "@twurple/auth": "^7.0.6",
     "@twurple/chat": "^7.0.6",
     "@twurple/eventsub-ws": "^7.0.6",
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.14.1",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "mongoose": "^8.0.3",
