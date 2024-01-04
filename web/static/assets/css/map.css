@@ -67,7 +67,7 @@ a.add {
 
 #add-map form {
     background-color: var(--primary-background-color);
-    width: 100%;
+    width: calc(100% - 4em);
     max-width: 30em;
     position: absolute;
     top: 50%;
