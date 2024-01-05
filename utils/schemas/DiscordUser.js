@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
     displayName: String,
     identity: {
         type: mongoose.Schema.Types.ObjectId,
+        index: true,
         default: null,
     },
     discriminator: String,

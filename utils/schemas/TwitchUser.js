@@ -19,6 +19,7 @@ const schema = new mongoose.Schema({
     },
     identity: {
         type: mongoose.Schema.Types.ObjectId,
+        index: true,
         default: null,
     },
     type: {
