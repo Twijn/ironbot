@@ -6,6 +6,10 @@ const schema = new mongoose.Schema({
     },
     username: String,
     displayName: String,
+    identity: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null,
+    },
     discriminator: String,
     accentColor: String,
     avatar: String,
