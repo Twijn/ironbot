@@ -37,7 +37,7 @@ body {
     max-width: 75em;
     background-color: var(--secondary-background-color);
     padding: 1rem;
-    margin: 1em auto;
+    margin: 18em auto 1em auto;
     box-shadow: var(--shadow);
     border-radius: 2px;
     overflow: hidden;
@@ -68,8 +68,12 @@ header {
 
 header img {
     margin-right: .6em;
-    width: 4em;
-    height: 4em;
+    width: 240px;
+    height: 240px;
+    position: absolute;
+    top: 2em;
+    left: 50%;
+    transform: translateX(-50%)
 }
 
 footer {
@@ -142,17 +146,6 @@ a[aria-label]:not(.notooltip):focus::after {
 }
 
 @media only screen and (max-width: 600px) {
-    .wrapper {
-        margin-top: 18em;
-    }
-    header img {
-        width: 240px;
-        height: 240px;
-        position: absolute;
-        top: 2em;
-        left: 50%;
-        transform: translateX(-50%)
-    }
     header h1 {
         font-size: 1.5em;
     }
