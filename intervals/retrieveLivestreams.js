@@ -42,7 +42,7 @@ const formatEmbed = function(hStream, stream, listener) {
             value: codeBlock(`${hStream.viewers} viewer${hStream.viewers === 1 ? "" : "s"}`),
             inline: true,
         })
-        .setFooter({iconURL: "https://autumnsdawn.net/assets/images/icons/adventurers_500px.png", text: "The Adventurers Guild"});
+        .setFooter({iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_500px.png", text: "The Adventurers Guild"});
 
     if (hStream.gameId) {
         builder.setThumbnail(gameCache.find(x => x._id === hStream.gameId)?.boxArtUrl);
