@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 
 const EnvoyListener = require("./EnvoyListener");
 
-const DiscordUser = require("./DiscordUser");
 const DiscordMessage = require("./DiscordMessage");
+const DiscordToken = require("./DiscordToken");
+const DiscordUser = require("./DiscordUser");
+
+const Identity = require("./Identity");
+const Session = require("./Session");
 
 const Server = require("./Server");
 
@@ -20,8 +24,12 @@ class Schemas {
 
     EnvoyListener = EnvoyListener;
 
-    DiscordUser = DiscordUser;
     DiscordMessage = DiscordMessage;
+    DiscordToken = DiscordToken;
+    DiscordUser = DiscordUser;
+
+    Identity = Identity;
+    Session = Session;
 
     Server = Server;
 

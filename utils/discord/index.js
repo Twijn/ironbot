@@ -1,10 +1,17 @@
 const Cache = require("../cache/Cache");
 
+const Authentication = require("./Authentication");
 const DiscordUser = require("../schemas/DiscordUser");
 
 const config = require("../../config.json");
 
 class Discord {
+
+    /**
+     * Authentication methods for Discord
+     * @type {Authentication}
+     */
+    Authentication = new Authentication();
 
     /**
      * Discord user cache
@@ -54,7 +61,8 @@ class Discord {
      */
     getUserById(id, bypassCache = false, requestIfUnavailable = false) {
         return this.userCache.get(id, async (resolve, reject) => {
-            const user = await DiscordUser.findById(id);
+            const user = await DiscordUser.findById(id)
+                .populate("identity");
 
             if (user) {
                 resolve(user);
@@ -66,6 +74,14 @@ class Discord {
                 }
             }
         }, bypassCache);
+    }
+
+    /**
+     * Generates an OAuth2 link for Discord
+     * @returns {string}
+     */
+    generateOAuthLink(state) {
+        return `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(config.discord.clientId)}&response_type=code&redirect_uri=${encodeURIComponent(config.web.host + "auth/discord")}&scope=identify+guilds.join+guilds${state ? `&state=${encodeURIComponent(state)}` : ""}`;
     }
 
     constructor() {

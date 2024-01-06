@@ -7,6 +7,10 @@ const { cleanCodeBlockContent, ButtonStyle } = require("discord.js");
 
 const MINIMUM_REQUEST_TIME = 10 * 60 * 1000;
 
+const auth = require("./authentication/");
+
+router.use("/auth", auth);
+
 router.get("/", (req, res) => {
     let envoys = [];
 
@@ -21,6 +25,8 @@ router.get("/", (req, res) => {
         envoys,
         servers: utils.servers,
         comma: utils.comma,
+        twitchUsers: req.twitchUsers,
+        discordUsers: req.discordUsers,
     });
 });
 
@@ -28,6 +34,8 @@ router.get("/map", (req, res) => {
     res.render("pages/map", {
         success: Boolean(req.query?.success),
         error: req.query?.error ? req.query.error : null,
+        twitchUsers: req.twitchUsers,
+        discordUsers: req.discordUsers,
     });
 });
 

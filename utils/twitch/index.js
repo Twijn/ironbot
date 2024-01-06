@@ -12,7 +12,7 @@ const TwitchToken = require("../schemas/TwitchToken");
 const authProvider = new RefreshingAuthProvider({
     clientId: config.twitch.identity.client_id,
     clientSecret: config.twitch.identity.client_secret,
-    redirectUri: config.web.host + "auth/login",
+    redirectUri: config.web.host + "auth/twitch",
 });
 
 authProvider.onRefresh(async (userId, tokenData) => {
@@ -74,6 +74,15 @@ class Twitch {
     nameCache = {};
 
     /**
+     * Generates an OAuth2 link for Twitch with the provided scope
+     * @param {string[]} scope
+     * @returns {string}
+     */
+    generateOAuthLink(scope) {
+        return `https://id.twitch.tv/oauth2/authorize?client_id=${encodeURIComponent(config.twitch.identity.client_id)}&redirect_uri=${encodeURIComponent(config.web.host + "auth/twitch")}&response_type=code&scope=${encodeURIComponent(scope.join(" "))}`;
+    }
+
+    /**
      * Requests a user directly from the Twitch Helix API
      * This method should NEVER be used externally as it can take a substantial amount of time to request and WILL overwrite other data.
      * @param {string} id 
@@ -125,7 +134,8 @@ class Twitch {
      */
     getUserById(id, bypassCache = false, requestIfUnavailable = false) {
         return this.userCache.get(id, async (resolve, reject) => {
-            const user = await TwitchUser.findById(id);
+            const user = await TwitchUser.findById(id)
+                .populate("identity");
             if (user) {
                 resolve(user);
             } else {
@@ -198,7 +208,8 @@ class Twitch {
                         return;
                     } catch(e) {}
                 }
-                const user = await TwitchUser.findOne({login: login});
+                const user = await TwitchUser.findOne({login: login})
+                    .populate("identity");
                 if (user) {
                     this.nameCache[user.login] = user._id;
                     resolve(user);
