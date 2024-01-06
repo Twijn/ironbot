@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
         utils.Discord.Authentication.getUser(token.access_token, token.token_type).then(async userData => {
             const user = await utils.Discord.getUserById(userData.id, false, true);
 
-            if (user.identity?._id && req.session.identity?._id && user.identity._id !== req.session.identity._id) {
+            if (user.identity?._id && req.session.identity?._id && String(user.identity._id) !== String(req.session.identity._id)) {
                 return res.send("Error! The Discord user you logged in with and the session you are using has differing identities. Try logging out and retrying your request, or ask Twijn for support.");
             }
 
@@ -35,11 +35,14 @@ router.get("/", async (req, res) => {
 
             res.redirect("/");
 
-            utils.Schemas.DiscordToken.findByIdAndUpdate({
-                user: user._id,
+            utils.Schemas.DiscordToken.findOneAndUpdate({
+                user: user._id
             }, {
                 user: user._id,
                 tokenData: token,
+            }, {
+                upsert: true,
+                new: true,
             }).catch(console.error);
         }, err => {
             console.error(err);

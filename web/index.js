@@ -20,7 +20,9 @@ app.use(async (req, res, next) => {
     req.discordUsers = [];
     if (req?.cookies?.isession) {
         if (authCache.hasOwnProperty(req.cookies.isession)) {
-            req.session = authCache[req.cookies.isession];
+            req.session = authCache[req.cookies.isession].session;
+            req.twitchUsers = authCache[req.cookies.isession].twitchUsers;
+            req.discordUsers = authCache[req.cookies.isession].discordUsers;
             if (req.session.expires_at < Date.now()) {
                 req.session = null;
                 delete authCache[req.cookies.isession];
@@ -34,7 +36,11 @@ app.use(async (req, res, next) => {
                     req.twitchUsers = await req.session.identity.getTwitchUsers();
                     req.discordUsers = await req.session.identity.getDiscordUsers();
                     
-                    authCache[req.session._id] = req.session;
+                    authCache[req.session._id] = {
+                        session: req.session,
+                        twitchUsers: req.twitchUsers,
+                        discordUsers: req.discordUsers,
+                    };
                 }
             } catch(err) {
                 console.error(err);

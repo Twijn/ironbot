@@ -21,13 +21,20 @@ router.get("/", (req, res) => {
         }
     });
 
-    res.render("pages/index", {envoys, comma: utils.comma});
+    res.render("pages/index", {
+        envoys,
+        comma: utils.comma,
+        twitchUsers: req.twitchUsers,
+        discordUsers: req.discordUsers,
+    });
 });
 
 router.get("/map", (req, res) => {
     res.render("pages/map", {
         success: Boolean(req.query?.success),
         error: req.query?.error ? req.query.error : null,
+        twitchUsers: req.twitchUsers,
+        discordUsers: req.discordUsers,
     });
 });
 

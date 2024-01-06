@@ -1,6 +1,19 @@
 <header>
-    <img src="/assets/images/icons/illumindal_500px.png" alt="Adventurers Guild Icon">
+    <img class="icon" src="/assets/images/icons/illumindal_500px.png" alt="Adventurers Guild Icon">
     <h1>
         The Illumindal Guild
     </h1>
+    <% if (twitchUsers.length === 0) { %>
+    <a class="account login" href="/auth/twitch">
+        <div>
+            <i class="fa-brands fa-twitch"></i>
+        </div>
+        Log In with Twitch
+    </a>
+    <% } else { %>
+    <div class="account logged-in-user">
+        <img src="<%= twitchUsers[0].profile_image_url %>">
+        <%= twitchUsers[0].display_name %>
+    </div>
+    <% } %>
 </header>

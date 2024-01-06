@@ -6,8 +6,13 @@
     --secondary-text-color: #dadada;
 
     --primary-theme-color: #bd5e11;
+    --secondary-theme-color: #9c4b09;
     --dark-theme-color: #211e1b;
     --sdark-theme-color: #312b26;
+
+    --primary-twitch-color: #9147ff;
+    --secondary-twitch-color: #7329e2;
+    --dark-twitch-color: #552996;
 
     --shadow: 2px 2px 8px rgba(0,0,0,0.2);
 
@@ -18,7 +23,6 @@ body {
     font-family: 'Roboto Slab', serif;
     background-color: var(--primary-background-color);
     color: var(--primary-text-color);
-    text-align: center;
 
     margin: 0;
     padding: 0;
@@ -53,7 +57,7 @@ h1, h2, h3, h4, h5, h6 {
 h2 {
     background-color: rgba(0,0,0,0.1);
     border-bottom: 2px solid var(--primary-theme-color);
-    padding: .3em;
+    padding: .3em .6em;
 }
 
 header {
@@ -66,7 +70,11 @@ header {
     border-bottom: 1px solid var(--primary-theme-color);
 }
 
-header img {
+header h1 {
+    flex-grow: 1;
+}
+
+header img.icon {
     margin-right: .6em;
     width: 240px;
     height: 240px;
@@ -76,7 +84,48 @@ header img {
     transform: translateX(-50%)
 }
 
+.account {
+    height: 2.5em;
+    padding: .25em .75em .25em .25em;
+    border-radius: 1.5em;
+    background-color: var(--primary-theme-color);
+    color: var(--primary-text-color);
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    text-shadow: var(--shadow);
+}
+
+.account img,
+.account div {
+    display: inline-block;
+    background-color: var(--secondary-theme-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 1.25rem;
+    vertical-align: middle;
+    margin-right: .5rem;
+    box-shadow: var(--shadow);
+}
+
+.account.login {
+    background-color: var(--primary-twitch-color);
+}
+
+.account.login div {
+    font-size: 1.2rem;
+    position: relative;
+    background-color: var(--secondary-twitch-color);
+}
+
+.account.login div i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 footer {
+    text-align: center;
     color: var(--secondary-text-color);
     font-size: .8rem;
 }
@@ -105,6 +154,7 @@ nav.socials ul li a:hover {
 }
 
 p.welcome {
+    text-align: center;
     text-transform: uppercase;
     font-weight: 500;
     opacity: .8;
