@@ -17,6 +17,12 @@ const schema = new mongoose.Schema({
         maxLength: 25,
         required: true,
     },
+    identity: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Identity",
+        index: true,
+        default: null,
+    },
     type: {
         type: String,
         enum: ["", "admin", "global_mod", "staff"],
@@ -76,6 +82,17 @@ schema.methods.updateData = async function(updateFollowers = true) {
     await this.save();
 
     return this;
+}
+
+schema.methods.createIdentity = async function() {
+    if (this.identity) {
+        return this.identity;
+    }
+
+    this.identity = await global.utils.Schemas.Identity.create({});
+    await this.save();
+
+    return this.identity;
 }
 
 module.exports = mongoose.model("TwitchUser", schema);
