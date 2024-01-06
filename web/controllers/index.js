@@ -7,6 +7,10 @@ const { cleanCodeBlockContent, ButtonStyle } = require("discord.js");
 
 const MINIMUM_REQUEST_TIME = 10 * 60 * 1000;
 
+const auth = require("./authentication/");
+
+router.use("/auth", auth);
+
 router.get("/", (req, res) => {
     let envoys = [];
 
@@ -33,8 +37,6 @@ let previousRequests = [];
 
 router.post("/map", (req, res) => {
     const ip = req.headers.hasOwnProperty("cf-connecting-ip") ? req.headers["cf-connecting-ip"] : req.ip;
-
-    console.log(ip);
 
     if (!ip) {
         return res.redirect(`/map?error=${encodeURIComponent("Unable to request location addition: Invalid IP")}`);
