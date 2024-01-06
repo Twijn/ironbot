@@ -56,7 +56,6 @@ const listener = {
                                     }
                                 }
                             }
-                            console.log(lastPosition)
     
                             if (nextChannel.members.size > 0) {
                                 if (hasEmpty) {

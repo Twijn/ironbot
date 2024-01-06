@@ -24,7 +24,6 @@ class Discord {
     #getUserByIdByForce(id) {
         return new Promise((resolve, reject) => {
             global.discord.users.fetch(id).then(user => {
-                console.log(user)
                 DiscordUser.findByIdAndUpdate(user.id, {
                     _id: user.id,
                     username: user.username,

@@ -17,7 +17,11 @@ router.get("/", (req, res) => {
         }
     });
 
-    res.render("pages/index", {envoys, comma: utils.comma});
+    res.render("pages/index", {
+        envoys,
+        servers: utils.servers,
+        comma: utils.comma,
+    });
 });
 
 router.get("/map", (req, res) => {
@@ -33,8 +37,6 @@ let previousRequests = [];
 
 router.post("/map", (req, res) => {
     const ip = req.headers.hasOwnProperty("cf-connecting-ip") ? req.headers["cf-connecting-ip"] : req.ip;
-
-    console.log(ip);
 
     if (!ip) {
         return res.redirect(`/map?error=${encodeURIComponent("Unable to request location addition: Invalid IP")}`);

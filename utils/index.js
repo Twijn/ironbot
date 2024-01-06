@@ -42,6 +42,12 @@ class Utils {
     guild;
 
     /**
+     * Caches active Community Servers
+     * @type {any[]}
+     */
+    servers;
+
+    /**
      * Storage for frequently used channels
      * @type {{locationRequest:TextChannel}}
      */
@@ -65,6 +71,10 @@ class Utils {
                         console.error(err);
                     }
                 }
+
+                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator"]);
+
+                console.log(`Loaded ${this.servers.length} community server(s): ${this.servers.map(x => x.name).join(", ")}`);
             }, console.error);
         }, 250);
     }

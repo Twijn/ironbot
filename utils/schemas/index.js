@@ -5,6 +5,8 @@ const EnvoyListener = require("./EnvoyListener");
 const DiscordUser = require("./DiscordUser");
 const DiscordMessage = require("./DiscordMessage");
 
+const Server = require("./Server");
+
 const TwitchToken = require("./TwitchToken");
 const TwitchUser = require("./TwitchUser");
 
@@ -20,6 +22,8 @@ class Schemas {
 
     DiscordUser = DiscordUser;
     DiscordMessage = DiscordMessage;
+
+    Server = Server;
 
     TwitchToken = TwitchToken;
     TwitchUser = TwitchUser;

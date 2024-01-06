@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction } = require("discord.js");
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 
 const utils = require("../../utils/");
 
@@ -59,6 +59,68 @@ const command = {
                                 .setDescription("The listener to be deleted")
                                 .setRequired(true)
                                 .setAutocomplete(true)
+                        )
+                )
+        )
+        .addSubcommandGroup(group => 
+            group
+                .setName("server")
+                .setDescription("Server administration options")
+                .addSubcommand(subcommand => 
+                    subcommand
+                        .setName("create")
+                        .setDescription("Creates a community server")
+                        .addStringOption(opt => 
+                            opt
+                                .setName("game")
+                                .setDescription("The name of the game.")
+                                .setRequired(true)
+                                .setMinLength(3)
+                                .setMaxLength(25)
+                        )
+                        .addStringOption(opt => 
+                            opt
+                                .setName("imageurl")
+                                .setDescription("The image URL for the server game.")
+                                .setRequired(true)
+                                .setMinLength(1)
+                                .setMaxLength(99)
+                        )
+                        .addUserOption(opt => 
+                            opt
+                                .setName("host")
+                                .setDescription("The host of the server")
+                                .setRequired(true)
+                        )
+                        .addUserOption(opt => 
+                            opt
+                                .setName("operator")
+                                .setDescription("The operator of the server")
+                                .setRequired(true)
+                        )
+                        .addStringOption(opt => 
+                            opt
+                                .setName("name")
+                                .setDescription("The name of the server. Defaults to the game's name")
+                                .setRequired(false)
+                                .setMinLength(3)
+                                .setMaxLength(25)
+                        )
+                        .addStringOption(opt => 
+                            opt
+                                .setName("description")
+                                .setDescription("The description of the server.")
+                                .setRequired(false)
+                                .setMinLength(3)
+                                .setMaxLength(150)
+                        )
+                        .addStringOption(opt => 
+                            opt
+                                .setName("pterodactylid")
+                                .setDescription("The Pterodactyl ID for the server, if hosted by Twijn.")
+                                .setRequired(false)
+                                .setMinLength(36)
+                                .setMaxLength(36)
                         )
                 )
         )
@@ -136,6 +198,42 @@ const command = {
                 });
             } else {
                 interaction.error("Could not recognize subcommand!");
+            }
+        } else if (group === "server") {
+            if (subcommand === "create") {
+                let name = interaction.options.getString("name", false);
+                const game = interaction.options.getString("game", true);
+                let description = interaction.options.getString("description", false);
+                const imageUrl = interaction.options.getString("imageurl", true);
+                const host = interaction.options.getUser("host", true);
+                const operator = interaction.options.getUser("operator", true);
+                const pterodactylId = interaction.options.getString("pterodactylid", false);
+
+                if (!name) name = game;
+                if (!description) description = `Come join our ${game} server! Connection details on Discord.`;
+
+                await utils.Discord.getUserById(host.id, false, true);
+
+                if (host.id !== operator.id) {
+                    await utils.Discord.getUserById(operator.id, false, true);
+                }
+
+                const server = await utils.Schemas.Server.create({
+                    name,
+                    game,
+                    description,
+                    imageUrl,
+                    host: host.id,
+                    operator: operator.id,
+                    pterodactylId,
+                });
+
+                await server.populate(["host","operator"])
+
+                utils.servers.push(server);
+                utils.servers.sort((a, b) => a.name - b.name);
+
+                interaction.reply({embeds: [server.createEmbed(true)], ephemeral: true});
             }
         } else {
             interaction.error("Could not recognize subcommand group!");

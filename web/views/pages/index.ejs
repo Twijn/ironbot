@@ -22,7 +22,7 @@
                         <h3><%= envoy.twitchUser.display_name %></h3>
                         <div class="data">
                             <% if (envoy.twitchUser.follower_count) { %><%= comma(envoy.twitchUser.follower_count) %> follower<%= envoy.twitchUser.follower_count === 1 ? "" : "s" %> <span class="b">&bullet;</span><% } %>
-                            Discord <span class="discord-mention" aria-label="Discord User"><%= envoy.discordUser.username %></span>
+                            <%- include("../partials/discordMention", {user: envoy.discordUser}) %>
                         </div>
                     </div>
                 </a>
@@ -31,76 +31,22 @@
             <h2>Community Servers</h2>
             <p>Official Illumindal Guild Game Servers! Find your favorite and come join!</p>
             <div class="servers container container-md">
+            <% servers.forEach(server => { %>
                 <a class="object server col-6" href="/discord" target="_blank">
-                    <img src="/assets/images/games/7d2d.jpg" alt="7 Days To Die Game Art">
+                    <img src="<%= server.imageUrl %>" alt="<%= server.game %> Game Art">
                     <div class="info">
-                        <h3>7 Days to Die</h3>
+                        <h3><%= server.name %></h3>
                         <div class="data">
                             <p>
-                                Come join our 7D2D server! Connection details on Discord.
+                                <%= server.description %>
                             </p>
                             <p>
-                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">tricky2953</span>
+                                Hosted by <%- include("../partials/discordMention", {user: server.host}) %>. Operated by <%- include("../partials/discordMention", {user: server.operator}) %>
                             </p>
                         </div>
                     </div>
                 </a>
-                <a class="object server col-6" href="/discord" target="_blank">
-                    <img src="/assets/images/games/arksurvivalevolved.png" alt="Ark: Survival Evolved Game Art">
-                    <div class="info">
-                        <h3>Ark: Survival Evolved</h3>
-                        <div class="data">
-                            <p>
-                                Come join our Ark: Survival Evolved server! Connection details on Discord.
-                            </p>
-                            <p>
-                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">mystic1220</span>
-                            </p>
-                        </div>
-                    </div>
-                </a>
-                <a class="object server col-6" href="https://eco.autumnsdawn.net" target="_blank">
-                    <img src="/assets/images/games/eco.jpg" alt="Eco Game Art">
-                    <div class="info">
-                        <h3>Eco</h3>
-                        <div class="data">
-                            <p>
-                                Our upcoming Eco server! Check back soon!
-                            </p>
-                            <p>
-                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">tricky2953</span>
-                            </p>
-                        </div>
-                    </div>
-                </a>
-                <a class="object server col-6" href="/discord" target="_blank">
-                    <img src="/assets/images/games/projectzomboid.jpg" alt="Project Zomboid Game Art">
-                    <div class="info">
-                        <h3>Project Zomboid</h3>
-                        <div class="data">
-                            <p>
-                                Come join our Project Zomboid server! Connection details on Discord.
-                            </p>
-                            <p>
-                                Hosted by <span class="discord-mention" aria-label="Discord User">mazfate</span>. Operated by  <span class="discord-mention" aria-label="Discord User">mazfate</span>
-                            </p>
-                        </div>
-                    </div>
-                </a>
-                <a class="object server col-6" href="/discord" target="_blank">
-                    <img src="/assets/images/games/satisfactory.jpg" alt="Satisfactory Game Art">
-                    <div class="info">
-                        <h3>Satisfactory</h3>
-                        <div class="data">
-                            <p>
-                                Come join our Satisfactory server! Connection details on Discord.
-                            </p>
-                            <p>
-                                Hosted by <span class="discord-mention" aria-label="Discord User">twijn</span>. Operated by  <span class="discord-mention" aria-label="Discord User">mystic1220</span>
-                            </p>
-                        </div>
-                    </div>
-                </a>
+            <% }) %>
             </div>
             <%- include("../partials/socials") %>
         </main>
