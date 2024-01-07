@@ -1,1 +1,9 @@
-<span class="discord-mention" aria-label="Discord User"><%= user.username %></span>
+<div class="discord-mention"><%= user.username %><div>
+    <img src="<%= user.avatarUrl() %>" alt="Avatar for <%= user.username %>">
+    <div class="info">
+        <div class="username"><%= user.displayName ? user.displayName : user.username %></div>
+        <div class="data">
+            <%= user._id %>
+        </div>
+    </div>
+</div></div>

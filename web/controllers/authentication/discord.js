@@ -31,6 +31,8 @@ router.get("/", async (req, res) => {
             }
 
             user.identity = req.session.identity;
+            if (userData.global_name)
+                user.globalName = userData.global_name;
             await user.save();
 
             res.redirect("/");

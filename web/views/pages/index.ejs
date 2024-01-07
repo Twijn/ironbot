@@ -40,9 +40,7 @@
                             <p>
                                 <%= server.description %>
                             </p>
-                            <p>
-                                Hosted by <%- include("../partials/discordMention", {user: server.host}) %>. Operated by <%- include("../partials/discordMention", {user: server.operator}) %>
-                            </p>
+                            Hosted by <%- include("../partials/discordMention", {user: server.host}) %>. Operated by <%- include("../partials/discordMention", {user: server.operator}) %>
                         </div>
                     </div>
                 </a>
