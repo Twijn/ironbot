@@ -65,8 +65,12 @@ app.get("/twitch", (req, res) => {
     res.redirect("https://twitch.tv/ivironenochxii");
 });
 
+app.get("/youtube", (req, res) => {
+    res.redirect("https://www.youtube.com/channel/UCm5e-c7pNc2rf5DRANKBe1Q");
+});
+
 app.get("/x", (req, res) => {
-    res.redirect("https://twitter.com/IVIronEnochXII");
+    res.redirect("https://twitter.com/IllumindalGuild");
 });
 
 
