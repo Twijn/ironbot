@@ -11,7 +11,7 @@
         <%- include("../partials/header") %>
         <main>
             <%- include("../partials/socials") %>
-            <p class="welcome">Welcome, adventurer!</p>
+            <p class="welcome">Welcome, <%= twitchUsers.length > 0 ? twitchUsers[0].display_name : "adventurer" %>!</p>
             <h2>Envoys</h2>
             <p>Envoys are content creators that call The Illumindal Guild home!<br>Check them out below!</p>
             <div class="users container container-md">
