@@ -5,12 +5,14 @@ const utils = require("../../../utils/");
 
 router.get("/", async (req, res) => {
     if (!req.session?.identity?._id) {
+        res.cookie("return_uri","/auth/discord");
         return res.redirect("/auth/twitch");
     }
 
     const twitchUsers = await req.session.identity.getTwitchUsers();
 
     if (twitchUsers.length === 0) {
+        res.cookie("return_uri","/auth/discord");
         return res.redirect("/auth/twitch");
     }
 
@@ -35,7 +37,9 @@ router.get("/", async (req, res) => {
                 user.globalName = userData.global_name;
             await user.save();
 
-            res.redirect("/");
+            if (req.cookies?.return_uri) {
+                res.redirect(req.cookies.return_uri)
+            } else res.redirect("/");
 
             utils.Schemas.DiscordToken.findOneAndUpdate({
                 user: user._id

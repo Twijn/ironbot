@@ -40,7 +40,9 @@ router.get("/", async (req, res) => {
             if ((await identity.getDiscordUsers()).length === 0) {
                 res.redirect("/auth/discord");
             } else {
-                res.redirect("/");
+                if (req.cookies?.return_uri) {
+                    res.redirect(req.cookies.return_uri)
+                } else res.redirect("/");
             }
             return;
         } catch(err) {
