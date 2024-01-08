@@ -15,14 +15,11 @@
 <body>
     <h1>The map is loading. Please wait!</h1>
     <iframe src="https://www.google.com/maps/d/embed?mid=1r8Q-om37Y9xGsiC47xWCNup8fPF13ws&ehbc=2E312F" width="100%" height="100%"></iframe>
-    <div id="add-map" style="display: none;">
+    <% if (discordUsers.length > 0) { %><div id="add-map" style="display: none;">
         <form method="POST" action="/map">
             <h2>Add Location</h2>
 
-            <label class="form-group">
-                Username
-                <input type="text" name="username" id="username" required="required" minlength="2" maxlength="30" placeholder="Twijn">
-            </label>
+            Submitting request as <%- include("../partials/discordMention", {user: discordUsers[0]}) %>
 
             <label class="form-group">
                 Location
@@ -32,11 +29,17 @@
 
             <input type="submit" class="button" value="Request Addition">
         </form>
+    </div><% } else { %>
+    <div class="alert alert-info alert-fixed alert-clickable">
+        <strong>Log in to add your point on the map!</strong>
+        <br>
+        To add your location, <a href="/auth/discord">log in</a>
     </div>
+    <% } %>
     <nav class="map">
         <ul>
             <li><a href="/" class="back notooltip" aria-label="Return Home"><i class="fa-solid fa-house"></i></a></li>
-            <li><a href="#" class="add notooltip" aria-label="Add Location"><i class="fa-solid fa-plus"></i></a></li>
+            <% if (discordUsers.length > 0) { %><li><a href="#" class="add notooltip" aria-label="Add Location"><i class="fa-solid fa-plus"></i></a></li><% } %>
         </ul>
     </nav>
     <% if (success) { %>

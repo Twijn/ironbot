@@ -80,6 +80,7 @@
 .discord-mention img {
     width: 5em;
     height: 5em;
+    margin-right: 1em;
     border-radius: 2.5em;
 }
 

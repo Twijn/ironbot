@@ -23,6 +23,10 @@
     color: #d0e4c6;
 }
 
+.alert-success a {
+    color: #d0e4c6;
+}
+
 .alert-success strong {
     color: #a4cc90;
 }
@@ -33,6 +37,24 @@
     color: #e3c4c4;
 }
 
+.alert-error a {
+    color: #e3c4c4;
+}
+
 .alert-error strong {
     color: #d39292;
+}
+
+.alert-info {
+    background-color: #121e29;
+    border-color: #4c6b85;
+    color: #c4d5e3;
+}
+
+.alert-info a {
+    color: #c4d5e3;
+}
+
+.alert-info strong {
+    color: #92b3d3;
 }

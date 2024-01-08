@@ -54,8 +54,8 @@ router.post("/map", (req, res) => {
         return res.redirect(`/map?error=${encodeURIComponent("You must wait to request another location!")}`);
     }
 
-    if (!req.body?.username) {
-        return res.redirect(`/map?error=${encodeURIComponent("Invalid username!")}`);
+    if (req.discordUsers.length === 0) {
+        return res.redirect(`/map?error=${encodeURIComponent("You must be logged in and have one Discord user linked!")}`);
     }
 
     if (!req.body?.location) {
@@ -67,8 +67,8 @@ router.post("/map", (req, res) => {
         .setTitle("Location Request")
         .setDescription(`A new location request was received from \`${ip}\``)
         .addFields({
-            name: "Username",
-            value: codeBlock(cleanCodeBlockContent(req.body.username)),
+            name: "User",
+            value: `<@${req.discordUsers[0]._id}>${req.twitchUsers.length > 0 ? codeBlock(req.twitchUsers[0].display_name) : ""}`,
             inline: true,
         }, {
             name: "Location",
