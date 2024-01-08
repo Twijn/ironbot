@@ -36,6 +36,8 @@ router.get("/", async (req, res) => {
                 });
                 res.redirect(req.cookies.return_uri)
             } else res.redirect("/");
+
+            req.clearSessionCache();
             return;
         } catch(err) {
             console.error(err);

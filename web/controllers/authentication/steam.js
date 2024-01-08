@@ -49,6 +49,8 @@ router.get("/authenticate", async (req, res) => {
             });
             res.redirect(req.cookies.return_uri);
         } else res.redirect("/");
+
+        req.clearSessionCache();
     } catch(err) {
         console.error(err);
         res.send(`An error occurred! <a href="/auth/steam">Try again</a>`);

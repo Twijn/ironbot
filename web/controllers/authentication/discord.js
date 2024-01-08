@@ -27,8 +27,6 @@ router.get("/", async (req, res) => {
                 httpOnly: true,
                 secure: true,
             });
-
-            console.log(userData);
             
             if (userData.global_name)
                 user.globalName = userData.global_name;
@@ -44,6 +42,8 @@ router.get("/", async (req, res) => {
                 });
                 res.redirect(req.cookies.return_uri)
             } else res.redirect("/");
+
+            req.clearSessionCache();
 
             utils.Schemas.DiscordToken.findOneAndUpdate({
                 user: user._id
