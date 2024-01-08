@@ -63,7 +63,7 @@
 
     background-color: var(--primary-background-color);
     box-shadow: var(--shadow);
-    border-left: 2px solid var(--primary-theme-color);
+    border-left: 5px solid var(--primary-theme-color);
     opacity: 0;
     z-index: 100;
 

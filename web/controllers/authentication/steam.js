@@ -21,8 +21,7 @@ router.get("/", async (req, res) => {
 
 router.get("/authenticate", async (req, res) => {
     if (!req.session?.identity?._id) {
-        res.cookie("return_uri","/auth/steam");
-        return res.redirect("/auth/twitch");
+        return res.redirect("/auth/discord");
     }
 
     try {
@@ -40,7 +39,16 @@ router.get("/authenticate", async (req, res) => {
             new: true,
         });
 
-        res.redirect("/");
+        if (req.cookies?.return_uri) {
+            res.cookie("return_uri", null, {
+                maxAge:-1000,
+                path: "/",
+                domain: config.web.cookie_domain,
+                httpOnly: true,
+                secure: true,
+            });
+            res.redirect(req.cookies.return_uri);
+        } else res.redirect("/");
     } catch(err) {
         console.error(err);
         res.send(`An error occurred! <a href="/auth/steam">Try again</a>`);

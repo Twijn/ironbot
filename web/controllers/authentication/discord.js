@@ -1,43 +1,47 @@
 const express = require("express");
 const router = express.Router();
 
+const config = require("../../../config.json");
 const utils = require("../../../utils/");
 
 router.get("/", async (req, res) => {
-    if (!req.session?.identity?._id) {
-        res.cookie("return_uri","/auth/discord");
-        return res.redirect("/auth/twitch");
-    }
-
-    const twitchUsers = await req.session.identity.getTwitchUsers();
-
-    if (twitchUsers.length === 0) {
-        res.cookie("return_uri","/auth/discord");
-        return res.redirect("/auth/twitch");
-    }
-
     if (!req.query?.code) {
-        return res.redirect(utils.Discord.generateOAuthLink(twitchUsers[0]._id));
-    }
-
-    if (!req.query?.state || req.query.state !== twitchUsers[0]._id) {
-        return res.send(`You may have been session jacked! <a href="/auth/discord">Click here to try again.</a>`);
+        return res.redirect(utils.Discord.generateOAuthLink());
     }
 
     utils.Discord.Authentication.getToken(req.query.code).then(token => {
         utils.Discord.Authentication.getUser(token.access_token, token.token_type).then(async userData => {
             const user = await utils.Discord.getUserById(userData.id, false, true);
+            
+            const identity = await user.createIdentity();
 
-            if (user.identity?._id && req.session.identity?._id && String(user.identity._id) !== String(req.session.identity._id)) {
-                return res.send("Error! The Discord user you logged in with and the session you are using has differing identities. Try logging out and retrying your request, or ask Twijn for support.");
-            }
+            const session = await utils.Schemas.Session.create({
+                _id: utils.stringGenerator(64),
+                identity,
+            });
 
-            user.identity = req.session.identity;
+            res.cookie("isession", session._id, {
+                expires: session.expires_at,
+                path: "/",
+                domain: config.web.cookie_domain,
+                httpOnly: true,
+                secure: true,
+            });
+
+            console.log(userData);
+            
             if (userData.global_name)
                 user.globalName = userData.global_name;
             await user.save();
 
             if (req.cookies?.return_uri) {
+                res.cookie("return_uri", null, {
+                    maxAge:-1000,
+                    path: "/",
+                    domain: config.web.cookie_domain,
+                    httpOnly: true,
+                    secure: true,
+                });
                 res.redirect(req.cookies.return_uri)
             } else res.redirect("/");
 
@@ -52,11 +56,11 @@ router.get("/", async (req, res) => {
             }).catch(console.error);
         }, err => {
             console.error(err);
-            res.redirect(utils.Discord.generateOAuthLink(twitchUsers[0]._id));
+            res.redirect(utils.Discord.generateOAuthLink());
         })
     }, err => {
         console.error(err);
-        res.redirect(utils.Discord.generateOAuthLink(twitchUsers[0]._id));
+        res.redirect(utils.Discord.generateOAuthLink());
     });
 });
 

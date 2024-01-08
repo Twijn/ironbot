@@ -3,17 +3,17 @@
     <h1>
         The Illumindal Guild
     </h1>
-    <% if (twitchUsers.length === 0) { %>
-    <a class="account login" href="/auth/twitch">
+    <% if (discordUsers.length === 0) { %>
+    <a class="account login" href="/auth/discord">
         <div>
-            <i class="fa-brands fa-twitch"></i>
+            <i class="fa-brands fa-discord"></i>
         </div>
-        Log In with Twitch
+        Log In with Discord
     </a>
     <% } else { %>
     <div class="account logged-in-user">
-        <img src="<%= twitchUsers[0].profile_image_url %>">
-        <%= twitchUsers[0].display_name %>
+        <img src="<%= discordUsers[0].avatarUrl() %>">
+        <%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %>
     </div>
     <% } %>
 </header>

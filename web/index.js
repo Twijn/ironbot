@@ -18,11 +18,13 @@ app.use(async (req, res, next) => {
     req.session = null;
     req.twitchUsers = [];
     req.discordUsers = [];
+    req.steamUsers = [];
     if (req?.cookies?.isession) {
         if (authCache.hasOwnProperty(req.cookies.isession)) {
             req.session = authCache[req.cookies.isession].session;
             req.twitchUsers = authCache[req.cookies.isession].twitchUsers;
             req.discordUsers = authCache[req.cookies.isession].discordUsers;
+            req.steamUsers = authCache[req.cookies.isession].steamUsers;
             if (req.session.expires_at < Date.now()) {
                 req.session = null;
                 delete authCache[req.cookies.isession];
@@ -35,11 +37,13 @@ app.use(async (req, res, next) => {
                 if (req.session) {
                     req.twitchUsers = await req.session.identity.getTwitchUsers();
                     req.discordUsers = await req.session.identity.getDiscordUsers();
+                    req.steamUsers = await req.session.identity.getSteamUsers();
                     
                     authCache[req.session._id] = {
                         session: req.session,
                         twitchUsers: req.twitchUsers,
                         discordUsers: req.discordUsers,
+                        steamUsers: req.steamUsers,
                     };
                 }
             } catch(err) {
@@ -47,6 +51,11 @@ app.use(async (req, res, next) => {
             }
         }
     }
+
+    req.clearSessionCache = function() {
+        delete authCache[req.cookies.isession];
+    }
+
     next();
 });
 

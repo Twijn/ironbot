@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
         type: String,
     },
     username: String,
-    displayName: String,
+    globalName: String,
     identity: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Identity",
@@ -28,6 +28,17 @@ schema.methods.avatarUrl = function() {
             return `https://cdn.discordapp.com/embed/avatars/${Number(this.discriminator) % 5}.png`;
         }
     }
+}
+
+schema.methods.createIdentity = async function() {
+    if (this.identity) {
+        return this.identity;
+    }
+
+    this.identity = await global.utils.Schemas.Identity.create({});
+    await this.save();
+
+    return this.identity;
 }
 
 module.exports = mongoose.model("DiscordUser", schema);
