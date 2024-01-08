@@ -34,7 +34,7 @@ app.use(async (req, res, next) => {
                 req.session = await utils.Schemas.Session.findById(req.cookies.isession)
                     .populate("identity");
     
-                if (req.session) {
+                if (req.session?.identity?._id) {
                     req.twitchUsers = await req.session.identity.getTwitchUsers();
                     req.discordUsers = await req.session.identity.getDiscordUsers();
                     req.steamUsers = await req.session.identity.getSteamUsers();
@@ -45,6 +45,8 @@ app.use(async (req, res, next) => {
                         discordUsers: req.discordUsers,
                         steamUsers: req.steamUsers,
                     };
+                } else {
+                    req.session = null;
                 }
             } catch(err) {
                 console.error(err);
