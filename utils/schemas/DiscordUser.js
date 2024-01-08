@@ -41,4 +41,13 @@ schema.methods.createIdentity = async function() {
     return this.identity;
 }
 
+schema.methods.hasJoined = async function() {
+    try {
+        await global.utils.guild.members.fetch(this._id);
+        return true;
+    } catch(err) {
+        return false;
+    }
+}
+
 module.exports = mongoose.model("DiscordUser", schema);

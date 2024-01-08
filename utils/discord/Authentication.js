@@ -57,6 +57,37 @@ class Authentication {
             }
         });
     }
+
+    /**
+     * Utilizes a refresh token to obtain an access token for a user.
+     * @param {string} refresh_token 
+     * @returns {Promise<{access_token:string,refresh_token:string}>}
+     */
+    getAccessToken(refresh_token) {
+        return new Promise(async (resolve, reject) => {
+            const oauthResult = await request("https://discord.com/api/oauth2/token", {
+                method: 'POST',
+                body: new URLSearchParams({
+                    client_id: config.discord.clientId,
+                    client_secret: config.discord.clientSecret,
+                    refresh_token: refresh_token,
+                    grant_type: "refresh_token",
+                }).toString(),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            const oauthData = await oauthResult.body.json();
+            if (oauthData?.access_token) {
+                resolve(oauthData);
+            } else {
+                console.error(oauthData);
+
+                reject("Unable to request access token, reason: " + oauthData?.message);
+            }
+        });
+    }
     
 }
 

@@ -4,6 +4,8 @@
 
 <%- include("../partials/head") %>
 
+    <link rel="stylesheet" href="/assets/css/alert.css">
+
     <title>Home - The Illumindal Guild</title>
 </head>
 <body>
@@ -11,6 +13,13 @@
         <%- include("../partials/header") %>
         <main>
             <%- include("../partials/socials") %>
+            <% if (!hasJoined) { %>
+            <div class="alert alert-info">
+                <strong>Join The Illumindal Guild!</strong>
+                <br>
+                You haven't joined The Illumindal Guild Discord yet! <a href="#" class="join-discord">Click here to join!</a>
+            </div>
+            <% } %>
             <p class="welcome">Welcome, <%= discordUsers.length > 0 ? discordUsers[0].username : "adventurer" %>!</p>
             <h2>Envoys</h2>
             <p>Envoys are content creators that call The Illumindal Guild home!<br>Check them out below!</p>

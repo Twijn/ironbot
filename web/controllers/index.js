@@ -11,7 +11,7 @@ const auth = require("./authentication/");
 
 router.use("/auth", auth);
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     let envoys = [];
 
     const listeners = utils.EnvoyListenerManager.getAllListeners();
@@ -21,12 +21,21 @@ router.get("/", (req, res) => {
         }
     });
 
+    let hasJoined = true;
+    for (let i = 0; i < req.discordUsers.length; i++) {
+        if (!(await req.discordUsers[i].hasJoined())) {
+            hasJoined = false;
+        }
+    }
+
     res.render("pages/index", {
         envoys,
         servers: utils.servers,
+        hasJoined,
         comma: utils.comma,
-        twitchUsers: req.twitchUsers,
         discordUsers: req.discordUsers,
+        steamUsers: req.steamUsers,
+        twitchUsers: req.twitchUsers,
     });
 });
 

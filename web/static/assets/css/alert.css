@@ -10,7 +10,7 @@
 }
 
 .alert-fixed {
-    position: absolute;
+    position: fixed;
     top: 1em;
     left: 50%;
     transform: translateX(-50%);
