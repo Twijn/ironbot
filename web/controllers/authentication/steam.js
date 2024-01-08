@@ -13,7 +13,7 @@ const steam = new SteamAuth({
 
 router.get("/", async (req, res) => {
     if (!req.session?.identity?._id) {
-        return res.redirect("/auth/twitch");
+        return res.redirect("/auth/discord");
     }
     
     res.redirect(await steam.getRedirectUrl());

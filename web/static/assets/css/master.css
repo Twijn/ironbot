@@ -18,6 +18,10 @@
     --secondary-discord-color: #404ccf;
     --dark-discord-color: #2e379c;
 
+    --primary-steam-color: #1b2838;
+    --secondary-steam-color: #0f1824;
+    --dark-steam-color: #030508;
+
     --shadow: 2px 2px 8px rgba(0,0,0,0.2);
 
     --green: #58b858;
@@ -51,17 +55,28 @@ body {
     overflow: hidden;
 }
 
+.wrapper.wrapper-small {
+    max-width: 35em;
+}
+
+a {
+    color: var(--secondary-text-color);
+}
+
+p {
+    margin: .5em 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Inknut Antiqua', serif;
-    line-height: 175%;
-    margin: -.4rem 0;
-    padding: 0;
+    line-height: 100%;
+    margin: .2em 0;
 }
 
 h2 {
     background-color: rgba(0,0,0,0.1);
     border-bottom: 2px solid var(--primary-theme-color);
-    padding: .3em .6em;
+    padding: .6em .8em;
 }
 
 header {
@@ -88,7 +103,9 @@ header img.icon {
     transform: translateX(-50%)
 }
 
-.account {
+.account,
+.login {
+    display: block;
     height: 2.5em;
     padding: .25em .75em .25em .25em;
     border-radius: 1.5em;
@@ -100,7 +117,9 @@ header img.icon {
 }
 
 .account img,
-.account div {
+.account div,
+.login img,
+.login div {
     display: inline-block;
     background-color: var(--secondary-theme-color);
     width: 2.5rem;
@@ -111,17 +130,36 @@ header img.icon {
     box-shadow: var(--shadow);
 }
 
-.account.login {
+.login-discord {
     background-color: var(--primary-discord-color);
 }
 
-.account.login div {
+.login-twitch {
+    background-color: var(--primary-twitch-color);
+}
+
+.login-steam {
+    background-color: var(--primary-steam-color);
+}
+
+.login div {
     font-size: 1.2rem;
     position: relative;
+}
+
+.login-discord div {
     background-color: var(--secondary-discord-color);
 }
 
-.account.login div i {
+.login-twitch div {
+    background-color: var(--secondary-twitch-color);
+}
+
+.login-steam div {
+    background-color: var(--secondary-steam-color);
+}
+
+.login div i {
     position: absolute;
     top: 50%;
     left: 50%;

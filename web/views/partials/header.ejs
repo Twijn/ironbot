@@ -4,16 +4,16 @@
         The Illumindal Guild
     </h1>
     <% if (discordUsers.length === 0) { %>
-    <a class="account login" href="/auth/discord">
+    <a class="login" href="/auth/discord">
         <div>
             <i class="fa-brands fa-discord"></i>
         </div>
         Log In with Discord
     </a>
     <% } else { %>
-    <div class="account logged-in-user">
+    <a class="account logged-in-user" href="/account">
         <img src="<%= discordUsers[0].avatarUrl() %>">
         <%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %>
-    </div>
+    </a>
     <% } %>
 </header>

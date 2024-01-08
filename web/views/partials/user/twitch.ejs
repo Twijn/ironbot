@@ -1,0 +1,11 @@
+<div class="object user user-twitch">
+    <img src="<%= user.profile_image_url %>" alt="Avatar for <%= user.display_name %>">
+    <div class="info">
+        <h3><%= user.display_name %></h3>
+        <div class="data">
+            <%= user._id %>
+            <%- user.follower_count ? `<span class="b">&bullet;</span> ${user.follower_count} follower${user.follower_count === 1 ? "" : "s"}` : "" %>
+            <%- user.broadcaster_type !== "" ? `<span class="b">&bullet;</span> ${user.broadcaster_type === "partner" ? "Partner" : "Affiliate"}` : "" %>
+        </div>
+    </div>
+</div>

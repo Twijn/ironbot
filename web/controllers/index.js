@@ -39,6 +39,17 @@ router.get("/map", (req, res) => {
     });
 });
 
+router.use((req, res, next) => {
+    if (!req?.session?.identity?._id) {
+        res.cookie("return_uri", "/account");
+        res.redirect("/auth/discord");
+    } else
+        next();
+});
+
+const account = require("./account/");
+router.use("/account", account);
+
 router.use(express.urlencoded({extended: false}));
 
 let previousRequests = [];
