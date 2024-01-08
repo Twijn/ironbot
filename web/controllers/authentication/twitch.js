@@ -26,6 +26,9 @@ router.get("/", async (req, res) => {
                 new: true,
             });
 
+            user.identity = req.session.identity;
+            await user.save();
+
             if (req.cookies?.return_uri) {
                 res.cookie("return_uri", null, {
                     maxAge:-1000,
