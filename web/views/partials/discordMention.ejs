@@ -1,7 +1,7 @@
 <div class="discord-mention"><%= user.username %><div>
     <img src="<%= user.avatarUrl() %>" alt="Avatar for <%= user.username %>">
     <div class="info">
-        <div class="username"><%= user.displayName ? user.displayName : user.username %></div>
+        <div class="username"><%= user.globalName ? user.globalName : user.username %></div>
         <div class="data">
             <%= user._id %>
         </div>
