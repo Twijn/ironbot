@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, cleanCodeBlockContent, codeBlock } = require("discord.js");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
@@ -45,16 +45,16 @@ schema.methods.createEmbed = function(created = false) {
         .setThumbnail(this.imageUrl)
         .addFields({
             name: "Name",
-            value: this.name,
+            value: codeBlock(cleanCodeBlockContent(this.name)),
             inline: true,
         }, {
             name: "Game",
-            value: this.game,
+            value: codeBlock(cleanCodeBlockContent(this.game)),
             inline: true,
         }, {
             name: "Description",
-            value: this.description,
-            inline: true,
+            value: codeBlock(cleanCodeBlockContent(this.description)),
+            inline: false,
         }, {
             name: "Host",
             value: `<@${this.host._id}>`,
