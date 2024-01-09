@@ -28,6 +28,14 @@ const schema = new mongoose.Schema({
         ref: "DiscordUser",
         required: true,
     },
+    form: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ApplicationForm",
+    },
+    rules: {
+        type: [String],
+        default: [],
+    },
     pterodactylId: {
         type: String,
         default: null,

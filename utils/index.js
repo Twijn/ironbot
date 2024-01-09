@@ -45,7 +45,7 @@ class Utils {
      * Caches active Community Servers
      * @type {any[]}
      */
-    servers;
+    servers = [];
 
     /**
      * Storage for frequently used channels
@@ -72,7 +72,7 @@ class Utils {
                     }
                 }
 
-                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator"]);
+                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator","form"]);
 
                 console.log(`Loaded ${this.servers.length} community server(s): ${this.servers.map(x => x.name).join(", ")}`);
             }, console.error);

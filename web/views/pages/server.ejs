@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<%- include("../partials/head") %>
+
+    <link rel="stylesheet" href="/assets/css/form.css">
+
+    <script src="/assets/js/server.js"> </script>
+
+    <title>Server: <%= server.name %> - The Illumindal Guild</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include("../partials/header") %>
+        <main>
+            <div class="container container-md">
+                <div class="col-6 col-margin">
+                    <h2>Server Info</h2>
+                    <%- include("../partials/objects/server", {server}) %>
+                </div>
+                <div class="col-6 col-margin">
+                    <h2>Server Rules</h2>
+                </div>
+            </div>
+            <div>
+                <h2>Apply</h2>
+                <% if (server.form?._id) { %>
+                <form action="/apply" method="get">
+                    <p>Select the servers you'd like to apply to, then click Next Page.</p>
+                    <% applicableServers.forEach(s => { %>
+                    <label class="form-group">
+                        <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>"<%- String(server._id) === String(s._id) ? ' checked="checked"' : "" %>>
+                        <%= s.name %><%= s.name !== s.game ? ` (${s.game})` : "" %>
+                    </label>
+                    <% }) %>
+                    <input class="button" type="submit" value="Next Page">
+                </form>
+                <% } else { %>
+                <p>This server does not yet support applications! Please try again later!</p>
+                <% } %>
+            </div>
+            <%- include("../partials/socials") %>
+        </main>
+        <%- include("../partials/footer") %>
+    </div>
+</body>
+</html>

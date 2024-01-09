@@ -41,18 +41,7 @@
             <p>Official Illumindal Guild Game Servers! Find your favorite and come join!</p>
             <div class="servers container container-md">
             <% servers.forEach(server => { %>
-                <a class="object server col-6" href="/discord" target="_blank">
-                    <img src="<%= server.imageUrl %>" alt="<%= server.game %> Game Art">
-                    <div class="info">
-                        <h3><%= server.name %></h3>
-                        <div class="data">
-                            <p>
-                                <%= server.description %>
-                            </p>
-                            Hosted by <%- include("../partials/discordMention", {user: server.host}) %>. Operated by <%- include("../partials/discordMention", {user: server.operator}) %>
-                        </div>
-                    </div>
-                </a>
+                <%- include("../partials/objects/server", {server}) %>
             <% }) %>
             </div>
             <%- include("../partials/socials") %>

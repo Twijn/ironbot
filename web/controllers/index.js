@@ -8,8 +8,12 @@ const { cleanCodeBlockContent, ButtonStyle } = require("discord.js");
 const MINIMUM_REQUEST_TIME = 10 * 60 * 1000;
 
 const auth = require("./authentication/");
+const apply = require("./apply");
+const server = require("./server");
 
 router.use("/auth", auth);
+router.use("/apply", apply);
+router.use("/server", server);
 
 router.get("/", async (req, res) => {
     let envoys = [];
