@@ -7,6 +7,10 @@ const schema = new mongoose.Schema({
         type: String,
         ref: "TwitchStream",
     },
+    event: {
+        type: String,
+        ref: "Event",
+    },
 });
 
 schema.methods.getMessage = function() {

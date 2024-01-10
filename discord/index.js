@@ -4,7 +4,12 @@ const fspath = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({ intents: [
+	GatewayIntentBits.Guilds,
+	GatewayIntentBits.GuildMembers,
+	GatewayIntentBits.GuildScheduledEvents,
+	GatewayIntentBits.GuildVoiceStates
+] });
 
 // create collections
 client.commands = new Collection();
@@ -12,6 +17,8 @@ client.interactionListeners = new Collection();
 client.memberJoinListeners = new Collection();
 client.memberReadyListeners = new Collection();
 client.voiceStateListeners = new Collection();
+
+client.listeners = new Collection();
 
 // populate collections
 
@@ -43,6 +50,8 @@ populate("interactionListeners", client.interactionListeners, x => 'name' in x &
 populate("memberJoinListeners", client.memberJoinListeners, x => 'name' in x && 'execute' in x, x => x.name);
 populate("memberReadyListeners", client.memberReadyListeners, x => 'name' in x && 'execute' in x, x => x.name);
 populate("voiceStateListeners", client.voiceStateListeners, x => 'name' in x && 'execute' in x, x => x.name);
+
+populate("listeners", client.listeners, x => 'name' in x && 'event' in x && 'execute' in x, x => x.name);
 
 // ready message
 client.once(Events.ClientReady, c => {
@@ -108,6 +117,10 @@ client.on(Events.VoiceStateUpdate, (oldState, newState) => {
 			console.error(err);
 		}
 	});
+});
+
+client.listeners.forEach(listener => {
+	client.on(listener.event, listener.execute);
 });
 
 global.discord = client;
