@@ -51,6 +51,20 @@ router.get("/", async (req, res) => {
         requireTwitch = requireTwitch || server.form.requireTwitch;
     }
 
+    if ((requireDiscord && req.discordUsers.length === 0) ||
+        (requireTwitch && req.twitchUsers.length === 0) ||
+        (requireSteam && req.steamUsers.length === 0)) {
+        return res.render("pages/apply/missingAccounts", {
+            servers,
+            missingDiscord: (requireDiscord && req.discordUsers.length === 0),
+            missingTwitch: (requireTwitch && req.twitchUsers.length === 0),
+            missingSteam: (requireSteam && req.steamUsers.length === 0),
+            discordUsers: req.discordUsers,
+            steamUsers: req.steamUsers,
+            twitchUsers: req.twitchUsers,
+        });
+    }
+
     if (step === 2) {
         return res.render("pages/apply/step2", {
             servers,
