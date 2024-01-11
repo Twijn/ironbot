@@ -57,6 +57,7 @@ schema.methods.createEmbed = async function() {
         .setFooter({text: `Application ${String(this._id)} | The Illumindal Guild`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
 
     if (this.discordUser) {
+        embed.setAuthor({name: this.discordUser?.globalName ? this.discordUser.globalName : this.discordUser.username, iconURL: this.discordUser.avatarUrl()});
         embed.addFields({
             name: "Discord User",
             value: `${this.discordUser?.globalName ? this.discordUser.globalName : this.discordUser.username}${codeBlock(this.discordUser._id)}<@${this.discordUser._id}>`,
@@ -70,7 +71,7 @@ schema.methods.createEmbed = async function() {
             inline: true,
         })
     }
-    if (this.discordUser) {
+    if (this.steamUser) {
         embed.addFields({
             name: "Steam User",
             value: `${this.steamUser.username}${codeBlock(this.steamUser._id)}[Profile](${this.steamUser.profile})`,
