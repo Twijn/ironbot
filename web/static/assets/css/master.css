@@ -79,14 +79,16 @@ h2 {
 }
 
 header {
+    margin: -1rem -1rem 0 -1rem;
+    background-color: var(--dark-theme-color);
+    border-radius: 2px 2px 0 0;
+}
+
+header .heading {
     display: flex;
+    padding: 1rem 1rem;
     justify-content: center;
     align-items: center;
-    margin: -1rem -1rem 0 -1rem;
-    padding: 1rem 1rem;
-    background-color: var(--dark-theme-color);
-    border-bottom: 1px solid var(--primary-theme-color);
-    border-radius: 2px 2px 0 0;
 }
 
 header h1 {
@@ -164,6 +166,46 @@ header img.icon {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+header nav {
+    background-color: var(--primary-theme-color);
+}
+
+header nav ul {
+    list-style-type: none;
+    margin: 0 .5em;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin: 0;
+}
+
+header nav a {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    color: var(--primary-text-color);
+    padding: .4rem .5rem;
+}
+
+header nav a::after {
+    background-color: var(--secondary-background-color);
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 0 0;
+    transition: .35s;
+}
+
+header nav a:hover::after {
+    width: 100%;
 }
 
 footer {
