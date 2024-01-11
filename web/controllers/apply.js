@@ -206,17 +206,17 @@ router.post("/", async (req, res) => {
         const server = servers[i];
         try {
             const application = await server.apply(req.session.identity, req.body);
-            const message = await utils.channels.applications.send({embeds: [await application.createEmbed()]});
+            const message = await utils.channels.applications.send({content: server.mention ? server.mention : "", embeds: [await application.createEmbed()]});
             utils.Schemas.DiscordMessage.create({
                 _id: message.id,
                 channel: message.channelId,
                 application,
             });
+            successes++
         } catch(err) {
             console.error(err);
             errors.push(String(err));
-        }
-        successes++;
+        };
     }
 
     res.redirect(`/apply?success=${successes > 0 ? encodeURIComponent(`Successfully applied to ${successes} server${successes === 1 ? "" : "s"}`) : ""}&error=${encodeURIComponent(errors.join("\n"))}`);
