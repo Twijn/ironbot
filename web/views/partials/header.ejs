@@ -20,9 +20,9 @@
     </div>
     <nav class="main-nav">
         <ul>
-            <li><a href="/">Home</a></li>
+            <li><a href="/"<%- locals.active === "home" ? ` class="active"` : "" %>>Home</a></li>
+            <% if (discordUsers.length > 0) { %><li><a href="/apply"<%- locals.active === "apply" ? ` class="active"` : "" %>>Server Application</a></li><% } %>
             <li><a href="/map">Adventurers Map</a></li>
-            <% if (discordUsers.length > 0) { %><li><a href="/apply">Server Application</a></li><% } %>
         </ul>
     </nav>
 </header>

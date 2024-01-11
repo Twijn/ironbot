@@ -170,6 +170,8 @@ header img.icon {
 
 header nav {
     background-color: var(--primary-theme-color);
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 header nav ul {
@@ -189,6 +191,7 @@ header nav a {
     text-decoration: none;
     color: var(--primary-text-color);
     padding: .4rem .5rem;
+    text-wrap: nowrap;
 }
 
 header nav a::after {
@@ -202,6 +205,10 @@ header nav a::after {
     transform: translateX(-50%);
     border-radius: 2px 2px 0 0;
     transition: .35s;
+}
+
+header nav a.active::after {
+    width: 80%;
 }
 
 header nav a:hover::after {
