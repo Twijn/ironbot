@@ -48,6 +48,11 @@ class Utils {
     servers = [];
 
     /**
+     * Cache for the servers a member is in
+     */
+    memberServers = {};
+
+    /**
      * Storage for frequently used channels
      * @type {{locationRequest:TextChannel,applications:TextChannel}}
      */
@@ -104,6 +109,32 @@ class Utils {
         }
 
         return str;
+    }
+
+    /**
+     * Retrieves a member's servers that they've applied to
+     * @param {any} identity
+     * @returns {Promise<any>}
+     */
+    async getMemberServers(identity) {
+        if (this.memberServers.hasOwnProperty(String(identity._id))) {
+            return this.memberServers[String(identity._id)];
+        }
+
+        const servers = await this.Schemas.Application.find({identity})
+            .populate(["server","identity","twitchUser","discordUser","steamUser"]);
+
+        this.memberServers[String(identity._id)] = servers;
+
+        return servers;
+    }
+
+    /**
+     * Dumps the cache for a member's servers
+     * @param {any} identity 
+     */
+    dumpMemberServers(identity) {
+        delete this.memberServers[String(identity._id)];
     }
     
 }

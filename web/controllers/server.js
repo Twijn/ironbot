@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
     res.redirect("/");
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
     const server = utils.servers.find(x => String(x._id) === req.params.id);
 
     const applicableServers = utils.servers.filter(x => x.form?._id);
@@ -18,6 +18,7 @@ router.get("/:id", (req, res) => {
 
     res.render("pages/server", {
         server,
+        memberServers: await utils.getMemberServers(req.session.identity),
         applicableServers,
         discordUsers: req.discordUsers,
         steamUsers: req.steamUsers,

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+const Application = require("./Application");
 const ApplicationForm = require("./ApplicationForm");
 const ApplicationFormInput = require("./ApplicationFormInput");
 const ApplicationInput = require("./ApplicationInput");
@@ -27,6 +28,7 @@ const config = require("../../config.json");
 
 class Schemas {
 
+    Application = Application;
     ApplicationForm = ApplicationForm;
     ApplicationFormInput = ApplicationFormInput;
     ApplicationInput = ApplicationInput;

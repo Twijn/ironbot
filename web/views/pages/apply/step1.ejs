@@ -35,7 +35,7 @@
                 <p>Select the servers you'd like to apply to, then click Next Page.</p>
                 <% applicableServers.forEach(s => { %>
                 <label class="form-group">
-                    <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>">
+                    <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>"<% if (memberServers.find(x => String(x.server._id) === String(s._id))) { %> disabled="disabled" title="You have already applied to this server!"<% } %>>
                     <%= s.name %><%= s.name !== s.game ? ` (${s.game})` : "" %>
                 </label>
                 <% }) %>

@@ -32,18 +32,21 @@
             <div>
                 <h2>Apply</h2>
                 <% if (server.form?._id) { %>
+                <% if (memberServers.find(x => String(x.server._id) === String(server._id))) { %>
+                <p>You have already applied to this server!</p>
+                <% } else { %>
                 <form action="/apply" method="get">
                     <input type="hidden" name="step" value="2">
                     <p>Select the servers you'd like to apply to, then click Next Page.</p>
                     <% applicableServers.forEach(s => { %>
                     <label class="form-group">
-                        <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>"<%- String(server._id) === String(s._id) ? ' checked="checked"' : "" %>>
+                        <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>"<% if (memberServers.find(x => String(x.server._id) === String(s._id))) { %> disabled="disabled" title="You have already applied to this server!"<% } else { %><%- String(server._id) === String(s._id) ? ' checked="checked"' : "" %><% } %>>
                         <%= s.name %><%= s.name !== s.game ? ` (${s.game})` : "" %>
                     </label>
                     <% }) %>
                     <input class="button" type="submit" value="Next Page">
                 </form>
-                <% } else { %>
+                <% }} else { %>
                 <p>This server does not yet support applications! Please try again later!</p>
                 <% } %>
             </div>

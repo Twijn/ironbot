@@ -186,6 +186,7 @@ schema.methods.apply = async function(identity, data) {
     }
 
     delete memberCache[String(this._id)];
+    global.utils.dumpMemberServers(identity);
 
     return application;
 }

@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
         }
         return res.render("pages/apply/step1", {
             applicableServers: utils.servers.filter(x => x.form?._id),
+            memberServers: await utils.getMemberServers(req.session.identity),
             discordUsers: req.discordUsers,
             steamUsers: req.steamUsers,
             twitchUsers: req.twitchUsers,
