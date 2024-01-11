@@ -205,7 +205,7 @@ router.post("/", async (req, res) => {
         successes++;
     }
 
-    res.redirect(`/apply?success=${successes > 0 ? encodeURIComponent(`Successfully applied to ${successes} server${successes === 1 ? "" : "s"}`) : ""}&errors=${encodeURIComponent(errors.join("\n"))}`);
+    res.redirect(`/apply?success=${successes > 0 ? encodeURIComponent(`Successfully applied to ${successes} server${successes === 1 ? "" : "s"}`) : ""}&error=${encodeURIComponent(errors.join("\n"))}`);
 });
 
 module.exports = router;
