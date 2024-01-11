@@ -268,7 +268,7 @@ a[aria-label]:not(.notooltip)::after {
     position: absolute;
     top: -1.25rem;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(.8);
     box-shadow: var(--shadow);
     border-radius: 4px;
     text-wrap: nowrap;
@@ -284,6 +284,7 @@ a[aria-label]:not(.notooltip):focus::after {
     visibility: visible;
     opacity: 1;
     top: -1.75rem;
+    transform: translateX(-50%) scale(1);
 }
 
 ol.rules {

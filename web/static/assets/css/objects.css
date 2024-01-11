@@ -67,7 +67,7 @@
     position: absolute;
     bottom: 1.5em;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(.95);
 
     background-color: var(--primary-background-color);
     box-shadow: var(--shadow);
@@ -83,6 +83,7 @@
     visibility: visible;
     bottom: 2em;
     opacity: 1;
+    transform: translateX(-50%) scale(1);
 }
 
 .discord-mention img {
