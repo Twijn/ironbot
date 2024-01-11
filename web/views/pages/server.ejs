@@ -28,6 +28,7 @@
                     <% } %>
                 </div>
             </div>
+            <% if (discordUsers.length > 0) { %>
             <div>
                 <h2>Apply</h2>
                 <% if (server.form?._id) { %>
@@ -46,6 +47,7 @@
                 <p>This server does not yet support applications! Please try again later!</p>
                 <% } %>
             </div>
+            <% } %>
             <%- include("../partials/socials") %>
         </main>
         <%- include("../partials/footer") %>
