@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 
 const utils = require("../../utils/");
 
@@ -123,6 +123,26 @@ const command = {
                                 .setMaxLength(36)
                         )
                 )
+                .addSubcommand(subcommand => 
+                    subcommand
+                        .setName("edit")
+                        .setDescription("Edits a community server")
+                        .addStringOption(opt => 
+                            opt
+                                .setName("server")
+                                .setDescription("The server to edit.")
+                                .setRequired(true)
+                                .setAutocomplete(true)
+                        )
+                        .addNumberOption(opt => 
+                            opt
+                                .setName("page")
+                                .setDescription("The page number (1-2: Main, 3: Reserved, 4+ Rules)")
+                                .setRequired(true)
+                                .setMinValue(1)
+                                .setMaxValue(10)
+                        )
+                )
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(0),
@@ -234,6 +254,156 @@ const command = {
                 utils.servers.sort((a, b) => a.name - b.name);
 
                 interaction.reply({embeds: [server.createEmbed(true)], ephemeral: true});
+            } else if (subcommand === "edit") {
+                const server = utils.servers.find(x => String(x._id) === interaction.options.getString("server", true));
+
+                if (!server) {
+                    return interaction.error("Could not find server!");
+                }
+
+                const page = interaction.options.getNumber("page", true);
+                let modal = new ModalBuilder()
+                    .setCustomId(`editserver-${String(server._id)}-${page}`)
+                    .setTitle(`Edit ${server.name}`);
+
+                if (page === 1) {
+                    modal.setComponents(
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("name")
+                                    .setLabel("Name")
+                                    .setValue(server.name)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("game")
+                                    .setLabel("Game")
+                                    .setValue(server.game)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("description")
+                                    .setLabel("Description")
+                                    .setValue(server.description)
+                                    .setStyle(TextInputStyle.Paragraph)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("imageUrl")
+                                    .setLabel("Image URL")
+                                    .setValue(server.imageUrl)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            )
+                        );      
+                } else if (page === 2) {
+                    modal.setComponents(
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("host")
+                                    .setLabel("Host")
+                                    .setValue(server.host._id)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("operator")
+                                    .setLabel("Operator")
+                                    .setValue(server.operator._id)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("mention")
+                                    .setLabel("Mention")
+                                    .setValue(server.mention ? server.mention : "")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("pterodactylId")
+                                    .setLabel("Pterodactyl ID")
+                                    .setValue(server.pterodactylId ? server.pterodactylId : "")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            )
+                        );
+                } else if (page === 3) {
+                    return interaction.error("Page 3 does not exist!");
+                } else {
+                    const ruleOffset = page - 4;
+                    let rules = ["","","","",""];
+                    for (let i = ruleOffset * 5; i < (ruleOffset + 1) * 5; i++) {
+                        if (server.rules[i]) {
+                            rules[i - (ruleOffset * 5)] = server.rules[i];
+                        }
+                    }
+                    rules.forEach((rule,i) => {
+                        modal.addComponents(
+                            new ActionRowBuilder()
+                                .setComponents(
+                                    new TextInputBuilder()
+                                        .setCustomId(`rule-${(ruleOffset * 5) + i}`)
+                                        .setLabel(`Rule ${(ruleOffset * 5) + i + 1}`)
+                                        .setValue(rule)
+                                        .setStyle(TextInputStyle.Paragraph)
+                                        .setRequired(false)
+                                )
+                        )
+                    });
+                }
+
+                interaction.showModal(modal).catch(console.error);
+
+                interaction.awaitModalSubmit({
+                    time: 15 * 60 * 1000,
+                    filter: interaction => interaction.customId === `editserver-${String(server._id)}-${page}`,
+                }).then(async modalInteraction => {
+                    if (page < 4) {
+                        const opts = ["name","game","description","imageUrl","host","operator","mention","pterodactylId"];
+                        let updatedProps = [];
+                        for (let i = 0; i < opts.length; i++) {
+                            try {
+                                const opt = opts[i];
+                                let value = modalInteraction.fields.getTextInputValue(opt);
+                                if (value) {
+                                    if (opt === "host" || opt === "operator") {
+                                        value = await utils.Discord.getUserById(value, false, true);
+                                    }
+                                    server[opt] = value;
+                                }
+                                updatedProps.push(opt);
+                            } catch(err) {
+                            }
+                        }
+
+                        await server.save();
+
+                        modalInteraction.reply({
+                            content: `Updated props: ${updatedProps.join(", ")}`,
+                            embeds: [server.createEmbed()],
+                            ephemeral: true,
+                        });
+                    } else {
+                        modalInteraction.reply("process rules...");
+                    }
+                }).catch(console.error);
             }
         } else {
             interaction.error("Could not recognize subcommand group!");
