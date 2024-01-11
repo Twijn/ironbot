@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const ApplicationForm = require("./ApplicationForm");
+const ApplicationFormInput = require("./ApplicationFormInput");
 const ApplicationInput = require("./ApplicationInput");
 
 const EnvoyListener = require("./EnvoyListener");
@@ -27,6 +28,7 @@ const config = require("../../config.json");
 class Schemas {
 
     ApplicationForm = ApplicationForm;
+    ApplicationFormInput = ApplicationFormInput;
     ApplicationInput = ApplicationInput;
 
     EnvoyListener = EnvoyListener;

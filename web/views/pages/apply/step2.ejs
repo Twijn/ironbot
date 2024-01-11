@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<%- include("../../partials/head") %>
+
+    <link rel="stylesheet" href="/assets/css/form.css">
+
+    <script src="/assets/js/apply.js"> </script>
+
+    <title>Apply - The Illumindal Guild</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include("../../partials/header") %>
+        <main>
+            <h2>
+                Servers
+            </h2>
+            <p>These are the servers you are applying to!</p>
+            <div class="container container-md">
+                <% servers.forEach(server => { %>
+                    <%- include("../../partials/objects/server", {server}) %>
+                <% }) %>
+            </div>
+            <p><a href="/apply">I want to apply for more or less servers.</a></p>
+            <form action="/apply" method="GET">
+                <div class="container container-md">
+                    <% servers.forEach(server => { %>
+                        <input type="hidden" name="server" value="<%= server._id %>">
+                        <% if (server.rules && server.rules.length > 0) { %>
+                            <div class="col-6 col-margin">
+                                <h2><%= server.name %> Rules</h2>
+                                <%- include("../../partials/rules", {obj: server}) %>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+                <input type="hidden" name="step" value="3">
+                <label class="form-group">
+                    <input type="checkbox" name="rules-accept" id="rules-accept">
+                    <strong>I have read and understand all of the rules listed above</strong>, and recognize that breaking the rules outlined above, or any rule listed in The Illumindal Guild, might result in removal from the server and/or the guild.
+                </label>
+                <input type="submit" class="button" value="Next Page" disabled="disabled">
+            </form>
+            <%- include("../../partials/socials") %>
+        </main>
+        <%- include("../../partials/footer") %>
+    </div>
+</body>
+</html>

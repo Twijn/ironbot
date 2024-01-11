@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const ApplicationFormInput = require("./ApplicationFormInput");
+
 const schema = new mongoose.Schema({
     requireDiscord: {
         type: Boolean,
@@ -14,5 +16,9 @@ const schema = new mongoose.Schema({
         default: false,
     },
 });
+
+schema.methods.getInputs = async function() {
+    return (await ApplicationFormInput.find({form: this}).populate(["form","input"])).map(x => x.input);
+}
 
 module.exports = mongoose.model("ApplicationForm", schema);

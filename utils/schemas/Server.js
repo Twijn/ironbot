@@ -1,6 +1,9 @@
 const { EmbedBuilder, cleanCodeBlockContent, codeBlock } = require("discord.js");
 const mongoose = require("mongoose");
 
+const Application = require("./Application");
+const ApplicationValue = require("./ApplicationValue");
+
 const schema = new mongoose.Schema({
     name: {
         type: String,
@@ -35,6 +38,10 @@ const schema = new mongoose.Schema({
     rules: {
         type: [String],
         default: [],
+    },
+    mention: {
+        type: String,
+        default: "",
     },
     pterodactylId: {
         type: String,
@@ -73,6 +80,80 @@ schema.methods.createEmbed = function(created = false) {
             inline: true,
         })
         .setFooter({text: `Server ID ${String(this._id)}`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+}
+
+schema.methods.apply = async function(identity, data) {
+    if (!this.form?._id) {
+        throw "This server does not have a form attach, and therefore you may not apply to it!";
+    }
+
+    const form = this.form;
+
+    // User validation
+    if (form.requireDiscord && !data.discordUser) {
+        throw "Missing Discord user!";
+    }
+    if (form.requireSteam && !data.steamUser) {
+        throw "Missing Steam user!";
+    }
+    if (form.requireTwitch && !data.twitchUser) {
+        throw "Missing Twitch user!";
+    }
+
+    // Input validation
+    const inputs = await form.getInputs();
+
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i];
+        let value = data[input.name];
+        if (!value && input.required) {
+            throw `Required input ${input.label} is missing!`;
+        }
+        if (input.type === "text") {
+            if (input?.text?.minlength && value.length < input.text.minlength) {
+                throw `Input ${input.label} does not match minimum length requirement of ${input.text.minlength}!`;
+            }
+            if (input?.text?.maxlength && value.length < input.text.maxlength) {
+                throw `Input ${input.label} does not match maximum length requirement of ${input.text.maxlength}!`;
+            }
+        } else if (input.type === "number") {
+            value = Number(value);
+            if (isNaN(value)) {
+                throw `Input ${input.label} is not a number!`;
+            }
+            if (input?.number?.min && value < input.number.min) {
+                throw `Input ${input.label} does not match minimum number requirement of ${input.number.min}!`;
+            }
+            if (input?.number?.max && value > input.number.max) {
+                throw `Input ${input.label} does not match minimum number requirement of ${input.number.max}!`;
+            }
+        }
+    }
+
+    const application = await Application.create({
+        server: this,
+        identity,
+        discordUser: data.discordUser,
+        steamUser: data.steamUser,
+        twitchUser: data.twitchUser,
+    });
+
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i];
+        const d = {
+            application,
+            input,
+        };
+        d[input.type] = data[input.name];
+        try {
+            await ApplicationValue.create(d);
+        } catch(err) {
+            console.error("An unknown error occurred!");
+            throw String(err);
+        }
+    }
+
+    return application;
 }
 
 module.exports = mongoose.model("Server", schema);

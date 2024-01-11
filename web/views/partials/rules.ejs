@@ -1,0 +1,5 @@
+<ol class="rules">
+    <% obj.rules.forEach((rule, i) => { %>
+    <li><div class="num" aria-hidden="true"><span><%= i + 1 %>.</span></div><div class="rule"><%- rule.replace("{{operator}}", include("./discordMention", {user: obj.operator})).replace("{{host}}", include("./discordMention", {user: obj.host})) %></div></li>
+    <% }) %>
+</ol>

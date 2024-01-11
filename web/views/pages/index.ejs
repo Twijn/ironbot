@@ -25,7 +25,7 @@
             <p>Envoys are content creators that call The Illumindal Guild home!<br>Check them out below!</p>
             <div class="users container container-md">
                 <% envoys.forEach(envoy => { %>
-                <a class="object user user-envoy col-6" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="__blank">
+                <a class="object user user-envoy col-6" href="https://twitch.tv/<%= envoy.twitchUser.login %>" target="_blank">
                     <img src="<%= envoy.twitchUser.profile_image_url %>" alt="Profile picture for <%= envoy.twitchUser.display_name %>">
                     <div class="info">
                         <h3><%= envoy.twitchUser.display_name %></h3>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<%- include("../../partials/head") %>
+
+    <link rel="stylesheet" href="/assets/css/form.css">
+    <link rel="stylesheet" href="/assets/css/alert.css">
+
+    <script src="/assets/js/apply.js"> </script>
+
+    <title>Apply - The Illumindal Guild</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include("../../partials/header") %>
+        <main>
+            <% if (locals?.success) { %>
+            <div class="alert alert-success">
+                <strong><%= locals.success %></strong>
+                <br>
+                Expect to hear back within 24 hours. Thank you for your interest!
+            </div>
+            <% } %>
+            <% if (locals?.error) { %>
+            <div class="alert alert-error">
+                <strong>An error occurred!</strong>
+                <br>
+                <%= locals.error %>
+            </div>
+            <% } %>
+            <h2>Select Servers</h2>
+            <form action="/apply" method="get">
+                <input type="hidden" name="step" value="2">
+                <p>Select the servers you'd like to apply to, then click Next Page.</p>
+                <% applicableServers.forEach(s => { %>
+                <label class="form-group">
+                    <input type="checkbox" name="server" value="<%= s._id %>" id="server-<%= s._id %>">
+                    <%= s.name %><%= s.name !== s.game ? ` (${s.game})` : "" %>
+                </label>
+                <% }) %>
+                <input class="button" type="submit" value="Next Page">
+            </form>
+            <%- include("../../partials/socials") %>
+        </main>
+        <%- include("../../partials/footer") %>
+    </div>
+</body>
+</html>

@@ -49,10 +49,11 @@ class Utils {
 
     /**
      * Storage for frequently used channels
-     * @type {{locationRequest:TextChannel}}
+     * @type {{locationRequest:TextChannel,applications:TextChannel}}
      */
     channels = {
         locationRequest: null,
+        applications: null,
     };
 
     constructor() {

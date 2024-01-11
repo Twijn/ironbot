@@ -49,4 +49,10 @@ input, select, textarea, .button {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: .25s;
+}
+
+.button[disabled=disabled] {
+    background-color: var(--dark-theme-color);
+    cursor: not-allowed;
 }

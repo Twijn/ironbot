@@ -237,6 +237,44 @@ a[aria-label]:not(.notooltip):focus::after {
     top: -1.75rem;
 }
 
+ol.rules {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+ol li {
+    display: flex;
+    vertical-align: middle;
+    margin: .5em 0;
+}
+
+ol div.num {
+    position: relative;
+    background-color: var(--primary-theme-color);
+    font-family: 'Inknut Antiqua', serif;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    margin-right: .5rem;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+
+ol div.num span {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+ol div.rule {
+    background-color: var(--dark-theme-color);
+    flex-grow: 1;
+    padding: .5em;
+}
+
 code {
     background-color: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
