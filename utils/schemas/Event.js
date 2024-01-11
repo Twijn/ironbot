@@ -74,6 +74,7 @@ schema.methods.getMentions = function() {
             if (this.name.toLowerCase().includes(keyword.keywords[k].toLowerCase())
                 || this.description.toLowerCase().includes(keyword.keywords[k].toLowerCase())) {
                 mentions.push(keyword.role);
+                break;
             }
         }
     }
