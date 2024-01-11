@@ -54,7 +54,7 @@ const schema = new mongoose.Schema({
 });
 
 schema.methods.createEmbed = function(created = false) {
-    return new EmbedBuilder()
+    const embed = new EmbedBuilder()
         .setTitle(created ? "Server Created!" : this.name)
         .setColor(created ? 0x2dce3d : 0xf28227)
         .setThumbnail(this.imageUrl)
@@ -80,11 +80,43 @@ schema.methods.createEmbed = function(created = false) {
             inline: true,
         })
         .setFooter({text: `Server ID ${String(this._id)}`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+    
+    if (this.rules && this.rules.length > 0) {
+        embed.addFields({
+            name: "Rules",
+            value: this.rules.map((rule, i) => `${i + 1}. ${rule.replace("{{operator}}", `<@${this.operator._id}>`).replace("{{host}}", `<@${this.host._id}>`)}`).join("\n"),
+            inline: false,
+        });
+    }
+    return embed;
+}
+
+const memberCache = {};
+schema.methods.getMembers = async function(onlyAccepted = true) {
+    if (memberCache.hasOwnProperty(String(this._id))) {
+        console.log("member cache")
+        return memberCache[String(this._id)]
+            .filter(x => !onlyAccepted || x.accepted);
+    }
+    console.log("get members")
+
+    const members = await Application.find({server: this})
+        .populate(["server","identity","twitchUser","discordUser","steamUser"]);
+
+    memberCache[String(this._id)] = members;
+
+    return members
+        .filter(x => !onlyAccepted || x.accepted);
 }
 
 schema.methods.apply = async function(identity, data) {
     if (!this.form?._id) {
-        throw "This server does not have a form attach, and therefore you may not apply to it!";
+        throw "This server does not have a form attached, and therefore you may not apply to it!";
+    }
+
+    const serverMember = (await this.getMembers(false)).find(x => String(identity._id) === String(x.identity._id));
+    if (serverMember) {
+        throw `You have already applied to ${this.name}${serverMember.accepted ? " and have been accepted" : ""}!`;
     }
 
     const form = this.form;
@@ -152,6 +184,8 @@ schema.methods.apply = async function(identity, data) {
             throw String(err);
         }
     }
+
+    delete memberCache[String(this._id)];
 
     return application;
 }
