@@ -151,7 +151,7 @@ schema.methods.accept = async function() {
     if (this.server.joinPassword) {
         passwordNeedsSent = true;
         try {
-            await member.send(`The password to join the **${this.server.name}** server is \`${this.server.joinPassword}\`.\nPlease keep this password safe!`);
+            await member.send(`The password to join the **${this.server.name}** server is: ${codeBlock(cleanCodeBlockContent(this.server.joinPassword))}Please keep this password safe!`);
             passwordNeedsSent = false;
         } catch(err) {
             console.error(err);
@@ -202,7 +202,7 @@ schema.methods.deny = async function(reasonUser, reasonOperator) {
         reasonOperator = reasonUser;
     }
 
-
+    
 }
 
 module.exports = mongoose.model("Application", schema);
