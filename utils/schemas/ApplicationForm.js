@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const ApplicationFormInput = require("./ApplicationFormInput");
 
 const schema = new mongoose.Schema({
+    name: String,
     requireDiscord: {
         type: Boolean,
         default: false,

@@ -15,6 +15,7 @@ const Identity = require("./Identity");
 const Session = require("./Session");
 
 const Server = require("./Server");
+const ServerChannel = require("./ServerChannel");
 const SteamUser = require("./SteamUser");
 
 const TwitchToken = require("./TwitchToken");
@@ -43,6 +44,7 @@ class Schemas {
     Session = Session;
 
     Server = Server;
+    ServerChannel = ServerChannel;
     SteamUser = SteamUser;
 
     TwitchToken = TwitchToken;

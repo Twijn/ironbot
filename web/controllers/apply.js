@@ -207,12 +207,6 @@ router.post("/", async (req, res) => {
         const server = servers[i];
         try {
             const application = await server.apply(req.session.identity, req.body);
-            const message = await utils.channels.applications.send({content: server.mention ? server.mention : "", embeds: [await application.createEmbed()]});
-            utils.Schemas.DiscordMessage.create({
-                _id: message.id,
-                channel: message.channelId,
-                application,
-            });
             successes++
         } catch(err) {
             console.error(err);

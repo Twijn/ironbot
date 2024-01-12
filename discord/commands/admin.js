@@ -137,11 +137,44 @@ const command = {
                         .addNumberOption(opt => 
                             opt
                                 .setName("page")
-                                .setDescription("The page number (1-2: Main, 3: Reserved, 4+ Rules)")
+                                .setDescription("The page number (1-3: Main, 4+ Rules)")
                                 .setRequired(true)
                                 .setMinValue(1)
                                 .setMaxValue(10)
                         )
+                )
+                .addSubcommand(subcommand => 
+                    subcommand
+                        .setName("channeladd")
+                        .setDescription("Adds channel to the specified server")
+                        .addStringOption(opt => 
+                            opt
+                                .setName("server")
+                                .setDescription("The server to edit.")
+                                .setRequired(true)
+                                .setAutocomplete(true)
+                        )
+                        .addStringOption(opt => 
+                            opt
+                                .setName("type")
+                                .setDescription("The type of channel")
+                                .setChoices(
+                                    {
+                                        name: "General Chat",
+                                        value: "chat",
+                                    },
+                                    {
+                                        name: "Announcement",
+                                        value: "announcement",
+                                    }
+                                )
+                                .setRequired(true)
+                        )
+                    )
+                .addSubcommand(subcommand => 
+                    subcommand
+                        .setName("channelclear")
+                        .setDescription("Clears all servers from the current channel")
                 )
         )
         .setDMPermission(false)
@@ -254,13 +287,15 @@ const command = {
                 utils.servers.sort((a, b) => a.name - b.name);
 
                 interaction.reply({embeds: [server.createEmbed(true)], ephemeral: true});
-            } else if (subcommand === "edit") {
-                const server = utils.servers.find(x => String(x._id) === interaction.options.getString("server", true));
+            }
 
-                if (!server) {
-                    return interaction.error("Could not find server!");
-                }
+            const server = utils.servers.find(x => String(x._id) === interaction.options.getString("server", true));
 
+            if (!server) {
+                return interaction.error("Could not find server!");
+            }
+            
+            if (subcommand === "edit") {
                 const page = interaction.options.getNumber("page", true);
                 let modal = new ModalBuilder()
                     .setCustomId(`editserver-${String(server._id)}-${page}`)
@@ -303,8 +338,17 @@ const command = {
                                     .setValue(server.imageUrl)
                                     .setStyle(TextInputStyle.Short)
                                     .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("role")
+                                    .setLabel("Role ID")
+                                    .setValue(server.role ? server.role : "")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
                             )
-                        );      
+                    );      
                 } else if (page === 2) {
                     modal.setComponents(
                         new ActionRowBuilder()
@@ -343,9 +387,29 @@ const command = {
                                     .setStyle(TextInputStyle.Short)
                                     .setRequired(false)
                             )
-                        );
+                    );
                 } else if (page === 3) {
-                    return interaction.error("Page 3 does not exist!");
+                    modal.setComponents(
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("joinInstructionsUrl")
+                                    .setLabel("Join Instructions (URL)")
+                                    .setPlaceholder("URL to a forum post/message")
+                                    .setValue(server.joinInstructionsUrl ? server.joinInstructionsUrl : "")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(true)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("joinPassword")
+                                    .setLabel("Join Password")
+                                    .setValue(server.joinPassword ? server.joinPassword : "")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            )
+                    );
                 } else {
                     const ruleOffset = page - 4;
                     let rules = ["","","","",""];
@@ -376,7 +440,7 @@ const command = {
                     filter: interaction => interaction.customId === `editserver-${String(server._id)}-${page}`,
                 }).then(async modalInteraction => {
                     if (page < 4) {
-                        const opts = ["name","game","description","imageUrl","host","operator","mention","pterodactylId"];
+                        const opts = ["name","game","description","role","imageUrl","host","operator","mention","pterodactylId","joinInstructionsUrl","joinPassword"];
                         let updatedProps = [];
                         for (let i = 0; i < opts.length; i++) {
                             try {
@@ -404,6 +468,19 @@ const command = {
                         modalInteraction.reply("process rules...");
                     }
                 }).catch(console.error);
+            } else if (subcommand === "channeladd") {
+                const channelType = interaction.options.getString("type", true);
+
+                utils.Schemas.ServerChannel.create({
+                    server,
+                    channelType,
+                    channel: interaction.channelId,
+                }).then(() => {
+                    interaction.success(`Added ${interaction.channel.url} to ${server.name}`)
+                }, err => {
+                    console.error(err);
+                    interaction.error(String(err))
+                });
             }
         } else {
             interaction.error("Could not recognize subcommand group!");

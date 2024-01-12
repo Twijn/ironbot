@@ -1,4 +1,4 @@
-const { EmbedBuilder, cleanCodeBlockContent, codeBlock } = require("discord.js");
+const { EmbedBuilder, cleanCodeBlockContent, codeBlock, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const mongoose = require("mongoose");
 
 const Application = require("./Application");
@@ -20,6 +20,9 @@ const schema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
+    },
+    role: {
+        type: String,
     },
     host: {
         type: String,
@@ -43,6 +46,11 @@ const schema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    joinInstructionsUrl: {
+        type: String,
+        default: "",
+    },
+    joinPassword: String,
     pterodactylId: {
         type: String,
         default: null,
@@ -80,6 +88,14 @@ schema.methods.createEmbed = function(created = false) {
             inline: true,
         })
         .setFooter({text: `Server ID ${String(this._id)}`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+
+    if (this.role) {
+        embed.addFields({
+            name: "User Role",
+            value: `<@&${this.role}>`,
+            inline: true,
+        });
+    }
     
     if (this.rules && this.rules.length > 0) {
         embed.addFields({
@@ -94,11 +110,9 @@ schema.methods.createEmbed = function(created = false) {
 const memberCache = {};
 schema.methods.getMembers = async function(onlyAccepted = true) {
     if (memberCache.hasOwnProperty(String(this._id))) {
-        console.log("member cache")
         return memberCache[String(this._id)]
             .filter(x => !onlyAccepted || x.accepted);
     }
-    console.log("get members")
 
     const members = await Application.find({server: this})
         .populate(["server","identity","twitchUser","discordUser","steamUser"]);
@@ -187,6 +201,37 @@ schema.methods.apply = async function(identity, data) {
 
     delete memberCache[String(this._id)];
     global.utils.dumpMemberServers(identity);
+
+    try {
+        const accept = new ButtonBuilder()
+            .setCustomId(`acceptapp-${application._id}`)
+            .setLabel("Accept Application")
+            .setEmoji("☑️")
+            .setStyle(ButtonStyle.Success);
+
+        const deny = new ButtonBuilder()
+            .setCustomId(`denyapp-${application._id}`)
+            .setLabel("Deny Application")
+            .setEmoji("⚠️")
+            .setStyle(ButtonStyle.Danger);
+
+        const message = await global.utils.channels.applications.send({
+            content: this.mention ? this.mention : "",
+            embeds: [await application.createEmbed()],
+            components: [
+                new ActionRowBuilder()
+                    .setComponents(accept, deny),
+            ]
+        });
+        utils.Schemas.DiscordMessage.create({
+            _id: message.id,
+            channel: message.channelId,
+            application,
+        }).catch(console.error);
+    } catch(err) {
+        console.error(err);
+        throw `The application for ${this.name} went through, but we failed to inform the server operators of the application. Please notify the server operator directly, or contact a Head Master.`;
+    }
 
     return application;
 }
