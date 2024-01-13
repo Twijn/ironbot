@@ -50,6 +50,11 @@
                 <p>This server does not yet support applications! Please try again later!</p>
                 <% } %>
             </div>
+            <% } else if (server.form?._id) { %>
+            <div>
+                <h2>Apply</h2>
+                <p>To apply for this server, please <a href="/auth/discord">log in</a>!</p>
+            </div>
             <% } %>
             <%- include("../partials/socials") %>
         </main>
