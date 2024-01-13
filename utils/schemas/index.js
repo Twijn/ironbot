@@ -7,6 +7,8 @@ const ApplicationInput = require("./ApplicationInput");
 
 const EnvoyListener = require("./EnvoyListener");
 
+const Event = require("./Event");
+
 const DiscordMessage = require("./DiscordMessage");
 const DiscordToken = require("./DiscordToken");
 const DiscordUser = require("./DiscordUser");
@@ -35,6 +37,8 @@ class Schemas {
     ApplicationInput = ApplicationInput;
 
     EnvoyListener = EnvoyListener;
+
+    Event = Event;
 
     DiscordMessage = DiscordMessage;
     DiscordToken = DiscordToken;

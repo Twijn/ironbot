@@ -11,6 +11,10 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Application",
     },
+    event: {
+        type: String,
+        ref: "Event",
+    },
 });
 
 schema.methods.getMessage = function() {
