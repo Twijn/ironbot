@@ -7,6 +7,10 @@ const schema = new mongoose.Schema({
         type: String,
         ref: "TwitchStream",
     },
+    application: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+    },
     event: {
         type: String,
         ref: "Event",

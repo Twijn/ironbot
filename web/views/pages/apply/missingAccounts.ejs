@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<%- include("../../partials/head") %>
+
+    <link rel="stylesheet" href="/assets/css/form.css">
+    <link rel="stylesheet" href="/assets/css/alert.css">
+
+    <script src="/assets/js/apply.js"> </script>
+
+    <title>Missing Accounts - The Illumindal Guild</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include("../../partials/header", {discordUsers, active: "apply"}) %>
+        <main>
+            <h2>Missing Accounts</h2>
+            <% if (missingDiscord) { %>
+            <p>You are missing a linked Discord account, required by <code><%= servers.filter(x => x.form.requireDiscord).map(x => x.name).join(", ") %></code>!</p>
+            <a class="login login-discord" href="/auth/discord">
+                <div>
+                    <i class="fa-brands fa-discord"></i>
+                </div>
+                Link a Discord account
+            </a>
+            <% } %>
+            <% if (missingSteam) { %>
+            <p>You are missing a linked Steam account, required by <code><%= servers.filter(x => x.form.requireSteam).map(x => x.name).join(", ") %></code>!</p>
+            <a class="login login-steam" href="/auth/steam">
+                <div>
+                    <i class="fa-brands fa-steam"></i>
+                </div>
+                Link a Steam account
+            </a>
+            <% } %>
+            <% if (missingTwitch) { %>
+            <p>You are missing a linked Twitch account, required by <code><%= servers.filter(x => x.form.requireTwitch).map(x => x.name).join(", ") %></code>!</p>
+            <a class="login login-twitch" href="/auth/twitch">
+                <div>
+                    <i class="fa-brands fa-twitch"></i>
+                </div>
+                Link a Twitch account
+            </a>
+            <% } %>
+            <%- include("../../partials/socials") %>
+        </main>
+        <%- include("../../partials/footer") %>
+    </div>
+</body>
+</html>

@@ -45,15 +45,21 @@ class Utils {
      * Caches active Community Servers
      * @type {any[]}
      */
-    servers;
+    servers = [];
+
+    /**
+     * Cache for the servers a member is in
+     */
+    memberServers = {};
 
     /**
      * Storage for frequently used channels
-     * @type {{locationRequest:TextChannel,events:TextChannel}}
+     * @type {{locationRequest:TextChannel,events:TextChannel,applications:TextChannel}}
      */
     channels = {
         locationRequest: null,
         events: null,
+        applications: null,
     };
 
     constructor() {
@@ -73,7 +79,7 @@ class Utils {
                     }
                 }
 
-                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator"]);
+                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator","form"]);
 
                 console.log(`Loaded ${this.servers.length} community server(s): ${this.servers.map(x => x.name).join(", ")}`);
             }, console.error);
@@ -104,6 +110,32 @@ class Utils {
         }
 
         return str;
+    }
+
+    /**
+     * Retrieves a member's servers that they've applied to
+     * @param {any} identity
+     * @returns {Promise<any>}
+     */
+    async getMemberServers(identity) {
+        if (this.memberServers.hasOwnProperty(String(identity._id))) {
+            return this.memberServers[String(identity._id)];
+        }
+
+        const servers = await this.Schemas.Application.find({identity})
+            .populate(["server","identity","twitchUser","discordUser","steamUser"]);
+
+        this.memberServers[String(identity._id)] = servers;
+
+        return servers;
+    }
+
+    /**
+     * Dumps the cache for a member's servers
+     * @param {any} identity 
+     */
+    dumpMemberServers(identity) {
+        delete this.memberServers[String(identity._id)];
     }
     
 }

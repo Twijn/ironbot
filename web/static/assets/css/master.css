@@ -52,7 +52,6 @@ body {
     margin: 18em auto 1em auto;
     box-shadow: var(--shadow);
     border-radius: 2px;
-    overflow: hidden;
 }
 
 .wrapper.wrapper-small {
@@ -80,13 +79,16 @@ h2 {
 }
 
 header {
+    margin: -1rem -1rem 0 -1rem;
+    background-color: var(--dark-theme-color);
+    border-radius: 2px 2px 0 0;
+}
+
+header .heading {
     display: flex;
+    padding: 1rem 1rem;
     justify-content: center;
     align-items: center;
-    margin: -1rem -1rem 0 -1rem;
-    padding: 1rem 1rem;
-    background-color: var(--dark-theme-color);
-    border-bottom: 1px solid var(--primary-theme-color);
 }
 
 header h1 {
@@ -166,6 +168,53 @@ header img.icon {
     transform: translate(-50%, -50%);
 }
 
+header nav {
+    background-color: var(--primary-theme-color);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+header nav ul {
+    list-style-type: none;
+    margin: 0 .5em;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin: 0;
+}
+
+header nav a {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    color: var(--primary-text-color);
+    padding: .4rem .5rem;
+    text-wrap: nowrap;
+}
+
+header nav a::after {
+    background-color: var(--secondary-background-color);
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 0 0;
+    transition: .35s;
+}
+
+header nav a.active::after {
+    width: 80%;
+}
+
+header nav a:hover::after {
+    width: 100%;
+}
+
 footer {
     text-align: center;
     color: var(--secondary-text-color);
@@ -219,7 +268,7 @@ a[aria-label]:not(.notooltip)::after {
     position: absolute;
     top: -1.25rem;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(.8);
     box-shadow: var(--shadow);
     border-radius: 4px;
     text-wrap: nowrap;
@@ -235,6 +284,58 @@ a[aria-label]:not(.notooltip):focus::after {
     visibility: visible;
     opacity: 1;
     top: -1.75rem;
+    transform: translateX(-50%) scale(1);
+}
+
+ol.rules {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+ol li {
+    display: flex;
+    vertical-align: middle;
+    margin: .5em 0;
+}
+
+ol div.num {
+    position: relative;
+    background-color: var(--primary-theme-color);
+    font-family: 'Inknut Antiqua', serif;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    margin-right: .5rem;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+
+ol div.num span {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+ol div.rule {
+    background-color: var(--dark-theme-color);
+    flex-grow: 1;
+    padding: .5em;
+}
+
+code {
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    padding: .2em .4em;
+    text-wrap: nowrap;
+}
+
+code.full {
+    display: block;
+    margin: .5em 0;
 }
 
 @media only screen and (max-width: 600px) {

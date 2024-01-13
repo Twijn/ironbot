@@ -1,0 +1,12 @@
+<a class="object server col-6" href="/server/<%= server._id %>">
+    <img src="<%= server.imageUrl %>" alt="<%= server.game %> Game Art">
+    <div class="info">
+        <h3><%= server.name %></h3>
+        <div class="data">
+            <p>
+                <%= server.description %>
+            </p>
+            Hosted by <%- include("../discordMention", {user: server.host}) %>. Operated by <%- include("../discordMention", {user: server.operator}) %>
+        </div>
+    </div>
+</a>

@@ -2,21 +2,23 @@ form {
     padding: 1rem;
 }
 
-form h2 {
+#add-map form h2 {
     padding: 1rem;
     margin: -1rem -1rem 1rem -1rem;
 }
 
 .form-group {
     display: block;
-    margin: 1em 0;
+    margin: .5em 0;
+    padding: .5em;
 }
 
 .form-group small {
     color: var(--secondary-text-color);
 }
 
-input[type=text] {
+input[type=text],
+select {
     background-color: rgba(0,0,0,0.1);
     color: var(--primary-text-color);
     border: 1px solid rgba(0,0,0,0.2);
@@ -26,6 +28,14 @@ input[type=text] {
     width: calc(100% - 1.6em - 2px);
     padding: .6em .8em;
     margin: .4em 0;
+}
+
+select {
+    width: 100%;
+}
+
+select option {
+    background-color: var(--primary-background-color);
 }
 
 input, select, textarea, .button {
@@ -39,4 +49,10 @@ input, select, textarea, .button {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: .25s;
+}
+
+.button[disabled=disabled] {
+    background-color: var(--dark-theme-color);
+    cursor: not-allowed;
 }

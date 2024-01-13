@@ -68,3 +68,7 @@
 .col-12 {
     grid-column: span 12;
 }
+
+.col-margin {
+    margin: 0 .5em;
+}

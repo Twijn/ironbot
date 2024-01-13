@@ -1,4 +1,4 @@
-<div class="object user user-discord">
+<div class="object user user-discord" data-id="<%= user._id %>"<%- locals?.hide ? ` style="display:none;"` : "" %>>
     <img src="<%= user.avatarUrl() %>" alt="Avatar for <%= user.username %>">
     <div class="info">
         <h3><%= user.globalName ? user.globalName : user.username %></h3>

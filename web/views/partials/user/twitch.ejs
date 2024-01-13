@@ -1,4 +1,4 @@
-<div class="object user user-twitch">
+<div class="object user user-twitch" data-id="<%= user._id %>"<%- locals?.hide ? ` style="display:none;"` : "" %>>
     <img src="<%= user.profile_image_url %>" alt="Avatar for <%= user.display_name %>">
     <div class="info">
         <h3><%= user.display_name %></h3>

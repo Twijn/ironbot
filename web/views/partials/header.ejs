@@ -1,19 +1,28 @@
 <header>
     <img class="icon" src="/assets/images/icons/illumindal_500px.png" alt="Adventurers Guild Icon">
-    <h1>
-        The Illumindal Guild
-    </h1>
-    <% if (discordUsers.length === 0) { %>
-    <a class="login" href="/auth/discord">
-        <div>
-            <i class="fa-brands fa-discord"></i>
-        </div>
-        Log In with Discord
-    </a>
-    <% } else { %>
-    <a class="account logged-in-user" href="/account">
-        <img src="<%= discordUsers[0].avatarUrl() %>">
-        <%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %>
-    </a>
-    <% } %>
+    <div class="heading">
+        <h1>
+            The Illumindal Guild
+        </h1>
+        <% if (discordUsers.length === 0) { %>
+        <a class="login" href="/auth/discord">
+            <div>
+                <i class="fa-brands fa-discord"></i>
+            </div>
+            Log In with Discord
+        </a>
+        <% } else { %>
+        <a class="account logged-in-user" href="/account">
+            <img src="<%= discordUsers[0].avatarUrl() %>">
+            <%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %>
+        </a>
+        <% } %>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="/"<%- locals.active === "home" ? ` class="active"` : "" %>>Home</a></li>
+            <% if (discordUsers.length > 0) { %><li><a href="/apply"<%- locals.active === "apply" ? ` class="active"` : "" %>>Server Application</a></li><% } %>
+            <li><a href="/map">Adventurers Map</a></li>
+        </ul>
+    </nav>
 </header>

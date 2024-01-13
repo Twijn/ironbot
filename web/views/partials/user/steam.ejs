@@ -1,4 +1,4 @@
-<div class="object user user-steam">
+<div class="object user user-steam" data-id="<%= user._id %>"<%- locals?.hide ? ` style="display:none;"` : "" %>>
     <img src="<%= user.avatar.large %>" alt="Avatar for <%= user.username %>">
     <div class="info">
         <h3><%= user.username %></h3>

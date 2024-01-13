@@ -8,8 +8,10 @@ const { cleanCodeBlockContent, ButtonStyle } = require("discord.js");
 const MINIMUM_REQUEST_TIME = 10 * 60 * 1000;
 
 const auth = require("./authentication/");
+const server = require("./server");
 
 router.use("/auth", auth);
+router.use("/server", server);
 
 router.get("/", async (req, res) => {
     let envoys = [];
@@ -50,14 +52,16 @@ router.get("/map", (req, res) => {
 
 router.use((req, res, next) => {
     if (!req?.session?.identity?._id) {
-        res.cookie("return_uri", "/account");
+        res.cookie("return_uri", req.path);
         res.redirect("/auth/discord");
     } else
         next();
 });
 
 const account = require("./account/");
+const apply = require("./apply");
 router.use("/account", account);
+router.use("/apply", apply);
 
 router.use(express.urlencoded({extended: false}));
 

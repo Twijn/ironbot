@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const Application = require("./Application");
+const ApplicationForm = require("./ApplicationForm");
+const ApplicationFormInput = require("./ApplicationFormInput");
+const ApplicationInput = require("./ApplicationInput");
+
 const EnvoyListener = require("./EnvoyListener");
 
 const Event = require("./Event");
@@ -12,6 +17,7 @@ const Identity = require("./Identity");
 const Session = require("./Session");
 
 const Server = require("./Server");
+const ServerChannel = require("./ServerChannel");
 const SteamUser = require("./SteamUser");
 
 const TwitchToken = require("./TwitchToken");
@@ -25,6 +31,11 @@ const config = require("../../config.json");
 
 class Schemas {
 
+    Application = Application;
+    ApplicationForm = ApplicationForm;
+    ApplicationFormInput = ApplicationFormInput;
+    ApplicationInput = ApplicationInput;
+
     EnvoyListener = EnvoyListener;
 
     Event = Event;
@@ -37,6 +48,7 @@ class Schemas {
     Session = Session;
 
     Server = Server;
+    ServerChannel = ServerChannel;
     SteamUser = SteamUser;
 
     TwitchToken = TwitchToken;
