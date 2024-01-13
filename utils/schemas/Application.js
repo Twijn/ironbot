@@ -202,7 +202,39 @@ schema.methods.deny = async function(reasonUser, reasonOperator) {
         reasonOperator = reasonUser;
     }
 
-    
+    let member;
+    try {
+        member = await global.utils.guild.members.fetch(this.discordUser._id);
+    } catch(err) {}
+
+    if (!member) {
+        throw "Unable to deny application as the member is not in the Guild!";
+    }
+
+    this.denyReason.userFacing = reasonUser;
+    this.denyReason.operatorFacing = reasonOperator;
+    await this.save();
+
+    const discordMessages = await DiscordMessage.find({application: this});
+
+    const embed = await this.createEmbed();
+
+    // Update message embeds
+    for (let i = 0; i < discordMessages.length; i++) {
+        try {
+            const message = await discordMessages[i].getMessage();
+            message.edit({content: "", embeds: [embed], components: []})
+                .catch(console.error);
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    try {
+        await member.send(`Your application to join the \`${this.server.name}\` server was denied! Reason: ${codeBlock(cleanCodeBlockContent(reasonUser))}`);
+    } catch(err) {
+        throw `The application was successfully denied, however we were unable to message the member regarding the denial.\nPlease manually inform them of the reason for denial:${codeBlock(cleanCodeBlockContent(reasonUser))}`;
+    }
 }
 
 module.exports = mongoose.model("Application", schema);
