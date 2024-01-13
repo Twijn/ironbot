@@ -22,6 +22,12 @@ const rest = new REST({ version: '10' }).setToken(config.discord.token);
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
+		if (config.forceCommandDelete) {
+			rest.put(Routes.applicationCommands(config.discord.clientId), {body: []})
+				.then(() => console.log("Successfully deleted all commands!"))
+				.catch(console.error);
+		}
+
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
 			Routes.applicationCommands(config.discord.clientId),
