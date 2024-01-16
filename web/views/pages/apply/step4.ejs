@@ -4,6 +4,7 @@
 
 <%- include("../../partials/head") %>
 
+    <link rel="stylesheet" href="/assets/css/alert.css">
     <link rel="stylesheet" href="/assets/css/form.css">
 
     <script src="/assets/js/apply.js"> </script>
@@ -16,6 +17,13 @@
         <main>
             <h2>Short Answer</h2>
             <form action="/apply" method="POST">
+                <% if (!hasJoined) { %>
+                <div class="alert alert-info">
+                    <strong>You haven't joined our Discord guild yet!</strong>
+                    <br>
+                    Applicants must be in our Discord guild to apply. Submitting your application will add you to our Guild.
+                </div>
+                <% } %>
                 <% if (requireDiscord && locals.discordUser) { %><input type="hidden" name="discordUser" value="<%= discordUser._id %>"><% } %>
                 <% if (requireSteam && locals.steamUser) { %><input type="hidden" name="steamUser" value="<%= steamUser._id %>"><% } %>
                 <% if (requireTwitch && locals.twitchUser) { %><input type="hidden" name="twitchUser" value="<%= twitchUser._id %>"><% } %>

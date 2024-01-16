@@ -133,6 +133,8 @@ router.get("/", async (req, res) => {
         }
     }
 
+    let hasJoined = await discordUser.hasJoined();
+
     res.render("pages/apply/step4", {
         requireDiscord,
         requireSteam,
@@ -141,6 +143,7 @@ router.get("/", async (req, res) => {
         discordUser,
         steamUser,
         twitchUser,
+        hasJoined,
         inputs,
         discordUsers: req.discordUsers,
         steamUsers: req.steamUsers,
@@ -202,6 +205,17 @@ router.post("/", async (req, res) => {
 
     let successes = 0;
     let errors = [];
+
+    try {
+        let hasJoined = await discordUser.hasJoined();
+
+        if (!hasJoined) {
+            await discordUser.joinDiscord();
+        }
+    } catch(err) {
+        errors.push("Unable to invite user to Discord! Please join the server manually.");
+        console.error(err);
+    }
 
     for (let i = 0; i < servers.length; i++) {
         const server = servers[i];

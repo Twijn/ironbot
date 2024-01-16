@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const DiscordToken = require("./DiscordToken");
+
 const schema = new mongoose.Schema({
     _id: {
         type: String,
@@ -48,6 +50,32 @@ schema.methods.hasJoined = async function() {
     } catch(err) {
         return false;
     }
+}
+
+schema.methods.joinDiscord = function() {
+    return new Promise(async (resolve, reject) => {
+        const token = await DiscordToken.findOne({user: this});
+        if (token) {
+            try {
+                const newToken = await global.utils.Discord.Authentication.getAccessToken(token.tokenData.refresh_token);
+                token.tokenData.refresh_token = newToken.refresh_token;
+                token.tokenData.access_token = newToken.access_token;
+                await token.save();
+    
+                global.utils.guild.members.add(this._id, {accessToken: newToken.access_token}).then(member => {
+                    resolve();
+                }, err => {
+                    console.error(err);
+                    reject(`Failed to add user to the guild!`);
+                });
+            } catch(err) {
+                console.error(err);
+                reject(`Failed to refresh token for ${this.username}! Try logging in again.`);
+            }
+        } else {
+            reject(`Unable to find token for ${this.username}! Try logging in again.`);
+        }
+    })
 }
 
 module.exports = mongoose.model("DiscordUser", schema);
