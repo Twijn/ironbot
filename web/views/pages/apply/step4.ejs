@@ -47,7 +47,7 @@
                         <%- input.input?.number?.step ? `step="${input.input.number.step}"` : "" %>
                     >
                     <small>
-                        Required for <code><%= servers.filter(x => input.forms.find(y => String(y._id) === String(x.form._id))).map(x => x.name).join(", ") %></code>
+                        <%= input.input.required ? "Required" : "Desired" %> for <code><%= servers.filter(x => input.forms.find(y => String(y._id) === String(x.form._id))).map(x => x.name).join(", ") %></code>
                     </small>
                 </label>
                 <% }) %>
