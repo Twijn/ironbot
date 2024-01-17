@@ -18,6 +18,10 @@
                 <div class="col-6 col-margin">
                     <h2>Server Info</h2>
                     <%- include("../partials/objects/server", {server}) %>
+                    <% if (server.mods && server.mods.length > 0) { %>
+                    <h2>Server Mods</h2>
+                    <% server.mods.forEach(mod => { %> <code><%= mod %></code> <% }) %>
+                    <% } %>
                 </div>
                 <div class="col-6 col-margin">
                     <h2>Server Rules</h2>

@@ -553,6 +553,16 @@ const command = {
                                     .setValue(server.joinPassword ? server.joinPassword : "")
                                     .setStyle(TextInputStyle.Short)
                                     .setRequired(false)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("mods")
+                                    .setLabel("Mods")
+                                    .setValue(server.mods ? server.mods.join("\n") : "")
+                                    .setStyle(TextInputStyle.Paragraph)
+                                    .setMaxLength(950)
+                                    .setRequired(false)
                             )
                     );
                 } else {
@@ -585,7 +595,7 @@ const command = {
                     filter: interaction => interaction.customId === `editserver-${String(server._id)}-${page}`,
                 }).then(async modalInteraction => {
                     if (page < 4) {
-                        const opts = ["name","game","description","role","imageUrl","host","operator","mention","pterodactylId","joinInstructionsUrl","joinPassword"];
+                        const opts = ["name","game","description","role","imageUrl","host","operator","mention","pterodactylId","joinInstructionsUrl","joinPassword","mods"];
                         let updatedProps = [];
                         for (let i = 0; i < opts.length; i++) {
                             try {
@@ -594,6 +604,9 @@ const command = {
                                 if (value) {
                                     if (opt === "host" || opt === "operator") {
                                         value = await utils.Discord.getUserById(value, false, true);
+                                    }
+                                    if (opt === "mods") {
+                                        value = value.split("\n").map(x => x.trim());
                                     }
                                     server[opt] = value;
                                 }

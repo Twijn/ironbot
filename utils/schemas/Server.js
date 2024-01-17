@@ -1,4 +1,4 @@
-const { EmbedBuilder, cleanCodeBlockContent, codeBlock, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, cleanCodeBlockContent, codeBlock, ButtonBuilder, ButtonStyle, ActionRowBuilder, inlineCode } = require("discord.js");
 const mongoose = require("mongoose");
 
 const Application = require("./Application");
@@ -51,6 +51,10 @@ const schema = new mongoose.Schema({
         default: "",
     },
     joinPassword: String,
+    mods: {
+        type: [String],
+        default: null,
+    },
     pterodactylId: {
         type: String,
         default: null,
@@ -104,6 +108,15 @@ schema.methods.createEmbed = function(created = false) {
             inline: false,
         });
     }
+
+    if (this.mods && this.mods.length > 0) {
+        embed.addFields({
+            name: "Mods",
+            value: this.mods.map(x => inlineCode(x)).join(" "),
+            inline: false,
+        })
+    }
+
     return embed;
 }
 
