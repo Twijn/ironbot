@@ -36,7 +36,7 @@
             <div>
                 <h2>Apply</h2>
                 <% if (server.form?._id) { %>
-                <% if (memberServers.find(x => String(x.server._id) === String(server._id))) { %>
+                <% if (memberServers.find(x => String(x.server?._id) === String(server._id))) { %>
                 <p>You have already applied to this server!</p>
                 <% } else { %>
                 <form action="/apply" method="get">
