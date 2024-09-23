@@ -45,6 +45,8 @@ router.get("/", async (req, res) => {
 
             req.clearSessionCache();
 
+            console.log(`User ${user.username} (${user.id}) logged in`)
+
             utils.Schemas.DiscordToken.findOneAndUpdate({
                 user: user._id
             }, {
