@@ -31,7 +31,7 @@ schema.methods.createEmbed = function() {
         .setTitle("New Event Posted!")
         .setDescription(`<@&${config.discord.roles.events.news}>, a new event has been posted!`)
         .setAuthor({name: this.creator.globalName ? this.creator.globalName : this.creator.username, iconURL: this.creator.avatarUrl()})
-        .setFooter({text: "The Illumindal Guild", iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"})
+        .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"})
         .setTimestamp(this.startTime)
         .setFields(
             {

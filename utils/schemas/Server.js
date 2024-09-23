@@ -91,7 +91,7 @@ schema.methods.createEmbed = function(created = false) {
             value: `<@${this.operator._id}>`,
             inline: true,
         })
-        .setFooter({text: `Server ID ${String(this._id)}`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+        .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
     if (this.role) {
         embed.addFields({

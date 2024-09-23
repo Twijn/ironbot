@@ -69,7 +69,7 @@ schema.methods.createEmbed = async function() {
         .setThumbnail(this.server.imageUrl)
         .setTitle(`Application : ${this.server.name}`)
         .setTimestamp(this.submitted_at)
-        .setFooter({text: `${String(this._id)} | The Illumindal Guild`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+        .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
     if (this.discordUser) {
         embed.setAuthor({name: this.discordUser?.globalName ? this.discordUser.globalName : this.discordUser.username, iconURL: this.discordUser.avatarUrl()});
@@ -170,7 +170,7 @@ schema.methods.accept = async function() {
                     `Everyone, welcome <@${this.discordUser._id}> to the \`${this.server.name}\` server!` +
                     (passwordNeedsSent ? `\nWe were unable to DM you the server password! Please ask <@${this.server.operator}> for the password.` : "")
                 )
-                .setFooter({text: `The Illumindal Guild`, iconURL: "https://autumnsdawn.net/assets/images/icons/illumindal_120px.png"});
+                .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
             if (this.server.joinInstructionsUrl) {
                 embed.addFields({
