@@ -9,48 +9,53 @@
     <title>Account - The Illumindal Guild</title>
 </head>
 <body>
-    <div class="wrapper wrapper-small">
+    <div class="wrapper">
         <%- include("../../partials/header") %>
         <main>
-            <p class="return">
-                <a href="/">Return Home</a>
-            </p>
-            <h2>Discord Accounts</h2>
-            <% discordUsers.forEach(user => { %>
-                <%- include("../../partials/user/discord", {user}) %>
-            <% }) %>
-            <a class="login login-discord" href="/auth/discord">
-                <div>
-                    <i class="fa-brands fa-discord"></i>
-                </div>
-                Link another Discord account
-            </a>
-            <h2>Twitch Accounts</h2>
-            <% twitchUsers.forEach(user => { %>
-                <%- include("../../partials/user/twitch", {user}) %>
-            <% }) %>
-            <% if (twitchUsers.length === 0) { %>
-            <div class="no-users">No twitch users have been added!</div>
-            <% } %>
-            <a class="login login-twitch" href="/auth/twitch">
-                <div>
-                    <i class="fa-brands fa-twitch"></i>
-                </div>
-                Link<%= twitchUsers.length === 0 ? "" : " another" %> Twitch account
-            </a>
-            <h2>Steam Accounts</h2>
-            <% steamUsers.forEach(user => { %>
-                <%- include("../../partials/user/steam", {user}) %>
-            <% }) %>
-            <% if (steamUsers.length === 0) { %>
-            <div class="no-users">No steam users have been added!</div>
-            <% } %>
-            <a class="login login-steam" href="/auth/steam">
-                <div>
-                    <i class="fa-brands fa-steam"></i>
-                </div>
-                Link<%= steamUsers.length === 0 ? "" : " another" %> Steam account
-            </a>
+            <div class="container container-md">
+                <section class="col col-4">
+                    <h2>Discord Accounts</h2>
+                    <% discordUsers.forEach(user => { %>
+                        <%- include("../../partials/user/discord", {user}) %>
+                    <% }) %>
+                    <a class="login login-discord" href="/auth/discord">
+                        <div>
+                            <i class="fa-brands fa-discord"></i>
+                        </div>
+                        Link another Discord account
+                    </a>
+                </section>
+                <section class="col col-4">
+                    <h2>Twitch Accounts</h2>
+                    <% twitchUsers.forEach(user => { %>
+                        <%- include("../../partials/user/twitch", {user}) %>
+                    <% }) %>
+                    <% if (twitchUsers.length === 0) { %>
+                    <div class="no-users">No twitch users have been added!</div>
+                    <% } %>
+                    <a class="login login-twitch" href="/auth/twitch">
+                        <div>
+                            <i class="fa-brands fa-twitch"></i>
+                        </div>
+                        Link<%= twitchUsers.length === 0 ? "" : " another" %> Twitch account
+                    </a>
+                </section>
+                <section class="col col-4">
+                    <h2>Steam Accounts</h2>
+                    <% steamUsers.forEach(user => { %>
+                        <%- include("../../partials/user/steam", {user}) %>
+                    <% }) %>
+                    <% if (steamUsers.length === 0) { %>
+                    <div class="no-users">No steam users have been added!</div>
+                    <% } %>
+                    <a class="login login-steam" href="/auth/steam">
+                        <div>
+                            <i class="fa-brands fa-steam"></i>
+                        </div>
+                        Link<%= steamUsers.length === 0 ? "" : " another" %> Steam account
+                    </a>
+                </section>
+            </div>
             <%- include("../../partials/socials") %>
         </main>
         <%- include("../../partials/footer") %>
