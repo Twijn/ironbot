@@ -11,6 +11,23 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/card/:identityid", async (req, res) => {
+    try {
+        const identity = await utils.Schemas.Identity.findById(req.params.identityid);
+        const cardCanvas = await identity.generateCard();
+
+        res.writeHead(200, {
+            "Content-Type": "image/png",
+        });
+
+        res.end(cardCanvas.toBuffer("image/png"));
+    } catch(err) {
+        console.log(err);
+        res.status(404);
+        res.send("Unable to find identity!");
+    }
+});
+
 router.post("/join", async (req, res) => {
     if (req.discordUsers.length === 0) {
         return res.json({ok: false, error: "Not logged in!"});
