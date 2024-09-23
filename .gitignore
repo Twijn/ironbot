@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# IntelliJ Idea
+.idea/
+
 # Config File
 config.json
 
