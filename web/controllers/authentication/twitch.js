@@ -37,8 +37,10 @@ router.get("/", async (req, res) => {
                     httpOnly: true,
                     secure: true,
                 });
-                res.redirect(req.cookies.return_uri)
+                res.redirect(req.cookies.return_uri);
             } else res.redirect("/");
+
+            console.log(`${user.identity._id} added twitch account ${user.display_name} (${user._id})`);
 
             req.clearSessionCache();
             return;

@@ -50,6 +50,8 @@ router.get("/authenticate", async (req, res) => {
             res.redirect(req.cookies.return_uri);
         } else res.redirect("/");
 
+        console.log(`${req.session.identity._id} added steam account ${user.username} (${user.steamid})`)
+
         req.clearSessionCache();
     } catch(err) {
         console.error(err);
