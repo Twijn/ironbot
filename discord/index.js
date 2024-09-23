@@ -128,3 +128,5 @@ global.discord = client;
 client.login(config.discord.token);
 
 require("./postSlashCommands");
+
+module.exports = client;
