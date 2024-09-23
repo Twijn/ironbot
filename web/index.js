@@ -8,8 +8,6 @@ const config = require("../config.json");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
-app.use(express.static("web/static"));
-
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
@@ -64,26 +62,12 @@ app.use(async (req, res, next) => {
 const controllers = require("./controllers");
 app.use("/", controllers);
 
-app.get("/discord", (req, res) => {
-    res.redirect("https://discord.gg/UnuZeRj9An");
-});
+app.use(require("./controllers/cachePolicy"));
 
-app.get("/guilded", (req, res) => {
-    res.redirect("https://www.guilded.gg/i/kX11Wolp");
-});
+const shortcuts = require("./shortcuts");
+app.use("/", shortcuts);
 
-app.get("/twitch", (req, res) => {
-    res.redirect("https://twitch.tv/ivironenochxii");
-});
-
-app.get("/youtube", (req, res) => {
-    res.redirect("https://www.youtube.com/channel/UCm5e-c7pNc2rf5DRANKBe1Q");
-});
-
-app.get("/x", (req, res) => {
-    res.redirect("https://twitter.com/IllumindalGuild");
-});
-
+app.use(express.static("web/static"));
 
 app.listen(config.web.port, () => {
     console.log("Express has been opened on " + config.web.port);
