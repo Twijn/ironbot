@@ -50,24 +50,24 @@ router.get("/map", (req, res) => {
     });
 });
 
-router.use((req, res, next) => {
+const requireAuth = (req, res, next) => {
     if (!req?.session?.identity?._id) {
         res.cookie("return_uri", req.path);
         res.redirect("/auth/discord");
     } else
         next();
-});
+};
 
 const account = require("./account/");
 const apply = require("./apply");
-router.use("/account", account);
-router.use("/apply", apply);
+router.use("/account", requireAuth, account);
+router.use("/apply", requireAuth, apply);
 
 router.use(express.urlencoded({extended: false}));
 
 let previousRequests = [];
 
-router.post("/map", (req, res) => {
+router.post("/map", requireAuth, (req, res) => {
     const ip = req.headers.hasOwnProperty("cf-connecting-ip") ? req.headers["cf-connecting-ip"] : req.ip;
 
     if (!ip) {
