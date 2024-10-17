@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 
-const Application = require("./Application");
-const ApplicationForm = require("./ApplicationForm");
-const ApplicationFormInput = require("./ApplicationFormInput");
-const ApplicationInput = require("./ApplicationInput");
-
 const EnvoyListener = require("./EnvoyListener");
 
 const Event = require("./Event");
@@ -30,11 +25,6 @@ const TwitchStreamStatus = require("./TwitchStreamStatus");
 const config = require("../../config.json");
 
 class Schemas {
-
-    Application = Application;
-    ApplicationForm = ApplicationForm;
-    ApplicationFormInput = ApplicationFormInput;
-    ApplicationInput = ApplicationInput;
 
     EnvoyListener = EnvoyListener;
 

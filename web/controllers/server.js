@@ -18,7 +18,6 @@ router.get("/:id", async (req, res) => {
 
     res.render("pages/server", {
         server,
-        memberServers: req?.session?.identity ? await utils.getMemberServers(req.session.identity) : [],
         applicableServers,
         discordUsers: req.discordUsers,
         steamUsers: req.steamUsers,

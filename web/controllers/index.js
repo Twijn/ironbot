@@ -59,9 +59,7 @@ const requireAuth = (req, res, next) => {
 };
 
 const account = require("./account/");
-const apply = require("./apply");
 router.use("/account", requireAuth, account);
-router.use("/apply", requireAuth, apply);
 
 router.use(express.urlencoded({extended: false}));
 

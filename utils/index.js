@@ -79,7 +79,7 @@ class Utils {
                     }
                 }
 
-                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator","form"]);
+                this.servers = await this.Schemas.Server.find({}).sort({name: 1}).populate(["host","operator"]);
 
                 console.log(`Loaded ${this.servers.length} community server(s): ${this.servers.map(x => x.name).join(", ")}`);
             }, console.error);
@@ -113,26 +113,8 @@ class Utils {
     }
 
     /**
-     * Retrieves a member's servers that they've applied to
-     * @param {any} identity
-     * @returns {Promise<any>}
-     */
-    async getMemberServers(identity) {
-        if (this.memberServers.hasOwnProperty(String(identity._id))) {
-            return this.memberServers[String(identity._id)];
-        }
-
-        const servers = await this.Schemas.Application.find({identity})
-            .populate(["server","identity","twitchUser","discordUser","steamUser"]);
-
-        this.memberServers[String(identity._id)] = servers;
-
-        return servers;
-    }
-
-    /**
      * Dumps the cache for a member's servers
-     * @param {any} identity 
+     * @param {any} identity
      */
     dumpMemberServers(identity) {
         delete this.memberServers[String(identity._id)];

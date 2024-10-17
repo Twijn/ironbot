@@ -16,16 +16,6 @@ const listener = {
                 .filter(x => focused.value === "" || x.name.toLowerCase().includes(focused.value.toLowerCase()) || x.game.toLowerCase().includes(focused.value.toLowerCase()))
                 .map(x => {return {value: String(x._id), name: `${x.name} (${x.game})`}});
             interaction.respond(servers);
-        } else if (focused.name === "form") {
-            const forms = (await utils.Schemas.ApplicationForm.find({}))
-                .filter(x => focused.value === "" || x.name.toLowerCase().includes(focused.value.toLowerCase()))
-                .map(x => {return {value: String(x._id), name: x.name}});
-            interaction.respond(forms);
-        } else if (focused.name === "input") {
-            const inputs = (await utils.Schemas.ApplicationInput.find({}))
-                .filter(x => focused.value === "" || x.name.toLowerCase().includes(focused.value.toLowerCase()))
-                .map(x => {return {value: String(x._id), name: x.name}});
-            interaction.respond(inputs);
         }
     }
 }
