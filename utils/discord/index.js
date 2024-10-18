@@ -1,4 +1,4 @@
-const Cache = require("../cache/Cache");
+const {discord} = require("../cache/CacheManager");
 
 const Authentication = require("./Authentication");
 const DiscordUser = require("../schemas/DiscordUser");
@@ -12,12 +12,6 @@ class Discord {
      * @type {Authentication}
      */
     Authentication = new Authentication();
-
-    /**
-     * Discord user cache
-     * @type {Cache}
-     */
-    userCache = new Cache(1 * 60 * 60 * 1000);
 
     /**
      * The Illumindal Guild guild
@@ -60,7 +54,7 @@ class Discord {
      * @param {boolean} requestIfUnavailable 
      */
     getUserById(id, bypassCache = false, requestIfUnavailable = false) {
-        return this.userCache.get(id, async (resolve, reject) => {
+        return discord.get(id, async (resolve, reject) => {
             const user = await DiscordUser.findById(id)
                 .populate("identity");
 

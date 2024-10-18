@@ -11,52 +11,54 @@ app.set("views", path.join(__dirname, "/views"));
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
-const authCache = {};
 app.use(async (req, res, next) => {
     req.session = null;
     req.twitchUsers = [];
     req.discordUsers = [];
     req.steamUsers = [];
+
     if (req?.cookies?.isession) {
-        if (authCache.hasOwnProperty(req.cookies.isession)) {
-            req.session = authCache[req.cookies.isession].session;
-            req.twitchUsers = authCache[req.cookies.isession].twitchUsers;
-            req.discordUsers = authCache[req.cookies.isession].discordUsers;
-            req.steamUsers = authCache[req.cookies.isession].steamUsers;
-            if (req.session.expires_at < Date.now()) {
-                req.session = null;
-                delete authCache[req.cookies.isession];
-            }
-        } else {
+        utils.CacheManager.session.get(req.cookies.isession, async (resolve, reject) => {
             try {
-                req.session = await utils.Schemas.Session.findById(req.cookies.isession)
+                const session = await utils.Schemas.Session.findById(req.cookies.isession)
                     .populate("identity");
-    
-                if (req.session?.identity?._id) {
-                    req.twitchUsers = await req.session.identity.getTwitchUsers();
-                    req.discordUsers = await req.session.identity.getDiscordUsers();
-                    req.steamUsers = await req.session.identity.getSteamUsers();
-                    
-                    authCache[req.session._id] = {
-                        session: req.session,
-                        twitchUsers: req.twitchUsers,
-                        discordUsers: req.discordUsers,
-                        steamUsers: req.steamUsers,
-                    };
+
+                if (session?.identity?._id) {
+                    resolve({
+                        session,
+                        twitchUsers: await session.identity.getTwitchUsers(),
+                        discordUsers: await session.identity.getDiscordUsers(),
+                        steamUsers: await session.identity.getSteamUsers(),
+                    });
                 } else {
-                    req.session = null;
+                    reject("Session not found");
                 }
             } catch(err) {
-                console.error(err);
+                reject(err);
             }
-        }
+        }, false, false).then(session => {
+            req.session = session.session;
+            req.twitchUsers = session.twitchUsers;
+            req.discordUsers = session.discordUsers;
+            req.steamUsers = session.steamUsers;
+            if (req.session.expires_at < Date.now()) {
+                req.session = null;
+                utils.CacheManager.session.remove(req.cookies.isession);
+            }
+            next();
+        }, err => {
+            if (err !== "Session not found") {
+                console.error("Failed to retrieve session", err);
+            }
+            next();
+        });
     }
 
     req.clearSessionCache = function() {
-        delete authCache[req.cookies.isession];
-    }
+        if (!req?.cookies?.isession) return;
 
-    next();
+        utils.CacheManager.session.remove(req?.cookies?.isession);
+    }
 });
 
 const controllers = require("./controllers");

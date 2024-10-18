@@ -2,6 +2,8 @@ const {Guild, TextChannel} = require("discord.js");
 
 const config = require("../config.json");
 
+const CacheManager = require("./cache/CacheManager");
+
 const Schemas = require("./schemas/");
 
 const Discord = require("./discord/");
@@ -10,6 +12,12 @@ const Twitch = require("./twitch/");
 const EnvoyListenerManager = require("./EnvoyListenerManager");
 
 class Utils {
+
+    /**
+     * Stores all cached information for IronBot
+     * @type {CacheManager}
+     */
+    CacheManager = CacheManager;
 
     /**
      * Stores all mongoose schemas

@@ -47,8 +47,7 @@ class Cache {
     async get(key, retrieve, overrideCache = false, attemptInt = true) {
         if (attemptInt && typeof(key) !== "number") {
             try {
-                let pikey = parseInt(key);
-                key = pikey;
+                key = parseInt(key);
             } catch(e) {}
         }
         if (!overrideCache && this.objectStore.hasOwnProperty(key)) {

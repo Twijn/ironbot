@@ -4,7 +4,7 @@ const {EventSubWsListener} = require("@twurple/eventsub-ws");
 
 const config = require("../../config.json");
 
-const Cache = require("../cache/Cache");
+const {twitch} = require("../cache/CacheManager");
 
 const TwitchUser = require("../schemas/TwitchUser");
 const TwitchToken = require("../schemas/TwitchToken");
@@ -66,7 +66,7 @@ class Twitch {
      * Cache for Twitch users
      * @type {Cache}
      */
-    userCache = new Cache(1 * 60 * 60 * 1000); // 1 hour cache
+    userCache = twitch;
 
     /**
      * Simple cache of username-ID pairs for quickly retrieving user names
