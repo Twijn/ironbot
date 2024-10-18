@@ -241,7 +241,7 @@ nav.socials ul li a {
 
 nav.socials ul li a:focus,
 nav.socials ul li a:hover {
-    color: var(--primary-theme-color);
+    color: var(--secondary-theme-color);
 }
 
 p.welcome {
@@ -261,7 +261,7 @@ a[aria-label]:not(.notooltip)::after {
     font-size: .9rem;
     content: attr(aria-label);
     text-decoration: none;
-    background-color: var(--primary-theme-color);
+    background-color: var(--secondary-theme-color);
     border: rgba(0,0,0,0.2);
     color: var(--primary-text-color);
     padding: .3rem .5rem;
