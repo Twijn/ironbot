@@ -52,6 +52,8 @@ app.use(async (req, res, next) => {
             }
             next();
         });
+    } else {
+        next();
     }
 
     req.clearSessionCache = function() {
@@ -70,6 +72,13 @@ const shortcuts = require("./shortcuts");
 app.use("/", shortcuts);
 
 app.use(express.static("web/static"));
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).render("pages/errors/404", {
+        discordUsers: req.discordUsers,
+    })
+});
 
 app.listen(config.web.port, () => {
     console.log("Express has been opened on " + config.web.port);

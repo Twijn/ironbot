@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <%- include("../../partials/head") %>
+
+    <title>Not Found - The Illumindal Guild</title>
+</head>
+<body>
+<div class="wrapper">
+    <%- include("../../partials/header", {discordUsers, active: "home"}) %>
+    <main>
+        <%- include("../../partials/socials") %>
+        <h2>404 - Page Not Found</h2>
+        <p>
+            We couldn't find the page you were looking for!
+            It may have been removed or misspelled.
+        </p>
+        <p>
+            <a href="/">Return to the homepage.</a>
+        </p>
+        <%- include("../../partials/socials") %>
+    </main>
+    <%- include("../../partials/footer") %>
+</div>
+</body>
+</html>
