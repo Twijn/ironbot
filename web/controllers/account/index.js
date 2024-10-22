@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
         discordUsers: req.discordUsers,
         steamUsers: req.steamUsers,
         twitchUsers: req.twitchUsers,
+        identity: req.session.identity,
     });
 });
 

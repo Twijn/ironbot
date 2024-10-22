@@ -5,7 +5,8 @@
     margin: 1em;
 }
 
-.alert-clickable {
+.alert-clickable,
+.alert[onclick]{
     cursor: pointer;
 }
 
@@ -31,17 +32,17 @@
     color: #a4cc90;
 }
 
-.alert-error {
+.alert-danger {
     background-color: #291212;
     border-color: #854c4c;
     color: #e3c4c4;
 }
 
-.alert-error a {
+.alert-danger a {
     color: #e3c4c4;
 }
 
-.alert-error strong {
+.alert-danger strong {
     color: #d39292;
 }
 

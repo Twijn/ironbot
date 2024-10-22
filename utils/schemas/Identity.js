@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { createCanvas, registerFont, loadImage, Image } = require("canvas");
 
+const CacheManager = require("../cache/CacheManager");
+
 const config = require("../../config.json");
 
 registerFont("canvas/fonts/InknutAntiqua-Regular.ttf", {family: "Inknut Antiqua"});
@@ -20,6 +22,23 @@ const schema = new mongoose.Schema({
         maxLength: 100,
         default: null,
     },
+    map: {
+        name: {
+            type: String,
+            maxlength: 128,
+        },
+        country: String,
+        countryCode: String,
+        latlng: [Number],
+    },
+    merits: {
+        type: Number,
+        default: 0,
+    },
+    xp: {
+        type: Number,
+        default: 0,
+    },
     friendCodes: {
         steam: {
             type: String,
@@ -33,6 +52,14 @@ const schema = new mongoose.Schema({
         },
     }
 });
+
+async function flushIdentity() {
+    console.log(this);
+    CacheManager.removeIdentity(this._id);
+}
+
+schema.pre("findOneAndUpdate", {document: true, query: false}, flushIdentity);
+schema.pre("save", flushIdentity);
 
 /**
  * @type {{discord:Image,steam:Image,switch:Image,twitch:Image}}

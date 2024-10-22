@@ -244,6 +244,29 @@ nav.socials ul li a:hover {
     color: var(--secondary-theme-color);
 }
 
+.pill-container {
+    position: fixed;
+    top: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 250ms;
+}
+
+.pill-container.out {
+    transform: translateX(-50%) scale(.8);
+    opacity: 0;
+}
+
+.leaflet-popup-tip {
+    background: var(--secondary-background-color) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    font-family: 'Roboto Slab', serif !important;
+    background: var(--primary-background-color) !important;
+    color: var(--primary-text-color) !important;
+}
+
 p.welcome {
     text-align: center;
     text-transform: uppercase;

@@ -3,3 +3,7 @@
     text-align: center;
     margin: .8em 0;
 }
+
+#map {
+    height: 300px;
+}

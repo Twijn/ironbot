@@ -20,6 +20,16 @@ const schema = new mongoose.Schema({
     bot: Boolean,
 });
 
+schema.methods.public = function() {
+    return {
+        id: this._id,
+        username: this.username,
+        identity: this?.identity?._id ? String(this.identity._id) : this.identity,
+        discriminator: this.discriminator,
+        avatarUrl: this.avatarUrl(),
+    };
+}
+
 schema.methods.avatarUrl = function() {
     if (this.avatar) {
         return `https://cdn.discordapp.com/avatars/${this._id}/${this.avatar}.png`;

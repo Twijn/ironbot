@@ -3,13 +3,13 @@ const {Guild, TextChannel} = require("discord.js");
 const config = require("../config.json");
 
 const CacheManager = require("./cache/CacheManager");
+const EnvoyListenerManager = require("./EnvoyListenerManager");
+const MapManager = require("./MapManager");
 
 const Schemas = require("./schemas/");
 
 const Discord = require("./discord/");
 const Twitch = require("./twitch/");
-
-const EnvoyListenerManager = require("./EnvoyListenerManager");
 
 class Utils {
 
@@ -20,10 +20,22 @@ class Utils {
     CacheManager = CacheManager;
 
     /**
+     * Manager for envoy listeners
+     * @type {EnvoyListenerManager}
+     */
+    EnvoyListenerManager = EnvoyListenerManager;
+
+    /**
      * Stores all mongoose schemas
      * @type {Schemas}
      */
     Schemas = Schemas;
+
+    /**
+     * Manager for the map cache
+     * @type {MapManager}
+     */
+    MapManager = new MapManager(this);
 
     /**
      * Contains Discord-related methods
@@ -36,12 +48,6 @@ class Utils {
      * @type {Twitch}
      */
     Twitch = Twitch;
-
-    /**
-     * Manager for envoy listeners
-     * @type {EnvoyListenerManager}
-     */
-    EnvoyListenerManager = EnvoyListenerManager;
 
     /**
      * The Illumindal Guild

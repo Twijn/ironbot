@@ -25,13 +25,16 @@
     "@twurple/auth": "^7.0.6",
     "@twurple/chat": "^7.0.6",
     "@twurple/eventsub-ws": "^7.0.6",
+    "body-parser": "^1.20.3",
     "canvas": "^2.11.2",
     "cookie-parser": "^1.4.6",
     "discord.js": "^14.14.1",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
+    "geolib": "^3.3.4",
     "mongoose": "^8.0.3",
     "mysql": "^2.18.1",
+    "node-geocoder": "^4.4.0",
     "node-steam-openid": "^1.2.1",
     "tmi.js": "^1.8.5"
   }

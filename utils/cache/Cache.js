@@ -17,7 +17,7 @@ class Cache {
     /**
      * Object store. Stores the objects in the cache
      * 
-     * @type {Cachable[]}
+     * @type {*}
      */
     objectStore = {};
 

@@ -2,58 +2,43 @@
 <html lang="en">
 <head>
 
-<%- include("../partials/head") %>
+    <%- include("../partials/head") %>
 
     <link rel="stylesheet" href="/assets/css/form.css">
-    <link rel="stylesheet" href="/assets/css/map.css">
-    <link rel="stylesheet" href="/assets/css/alert.css">
+    <link rel="stylesheet" href="/assets/css/map.css?v=2">
 
-    <script src="/assets/js/map.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script src="/assets/js/server.js"> </script>
+    <script src="/assets/js/map.js?v=2"> </script>
 
     <title>Map - The Illumindal Guild</title>
 </head>
 <body>
-    <h1>The map is loading. Please wait!</h1>
-    <iframe src="https://www.google.com/maps/d/embed?mid=1r8Q-om37Y9xGsiC47xWCNup8fPF13ws&ehbc=2E312F" width="100%" height="100%"></iframe>
-    <% if (discordUsers.length > 0) { %><div id="add-map" style="display: none;">
-        <form method="POST" action="/map">
-            <h2>Add Location</h2>
+<div class="wrapper">
+    <%- include("../partials/header", {discordUsers, active: "/map"}) %>
+    <main>
+        <p>
+            The Adventurers Map is a visual representation of where the Illumindal guild members are located.
+        </p>
+        <p>
+            <%-
+            discordUsers.length > 0 ?
+                    "<a href=\"/account/#location\">Click here to add your location.</a>" :
+                    "To add your location, <a href=\"/account/login\">log in to The Illumindal Guild</a>" %>
+        </p>
 
-            Submitting request as <%- include("../partials/discordMention", {user: discordUsers[0]}) %>
+        <div id="map"></div>
 
-            <label class="form-group">
-                Location
-                <input type="text" name="location" id="location" required="required" minlength="2" maxlength="100" placeholder="Charleston, SC, USA">
-                <small>Please be non-specific! Only include (at most) the closest larger city. Just a state/province/etc. will suffice as well!</small>
-            </label>
-
-            <input type="submit" class="button" value="Request Addition">
-        </form>
-    </div><% } else { %>
-    <div class="alert alert-info alert-fixed alert-clickable">
-        <strong>Log in to add your point on the map!</strong>
-        <br>
-        To add your location, <a href="/auth/discord">log in</a>
-    </div>
-    <% } %>
-    <nav class="map">
-        <ul>
-            <li><a href="/" class="back notooltip" aria-label="Return Home"><i class="fa-solid fa-house"></i></a></li>
-            <% if (discordUsers.length > 0) { %><li><a href="#" class="add notooltip" aria-label="Add Location"><i class="fa-solid fa-plus"></i></a></li><% } %>
-        </ul>
-    </nav>
-    <% if (success) { %>
-    <div class="alert alert-success alert-fixed alert-clickable">
-        <strong>Success!</strong>
-        <br>
-        The location request was successfully sent! Please wait a couple days and check back for your location on the map!
-    </div>
-    <% } if (error) { %>
-    <div class="alert alert-error alert-fixed alert-clickable">
-        <strong>An error occurred!</strong>
-        <br>
-        <%= error %>
-    </div>
-    <% } %>
+        <%- include("../partials/socials") %>
+    </main>
+    <%- include("../partials/footer") %>
+</div>
 </body>
 </html>

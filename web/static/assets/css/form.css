@@ -1,23 +1,27 @@
 form {
-    padding: 1rem;
-}
-
-#add-map form h2 {
-    padding: 1rem;
-    margin: -1rem -1rem 1rem -1rem;
+    margin: .5em .25em;
 }
 
 .form-group {
     display: block;
     margin: .5em 0;
-    padding: .5em;
 }
 
-.form-group small {
+.container > .form-group {
+    margin-right: 1em;
+}
+
+.container > .form-group:last-child {
+    margin-right: 0;
+}
+
+form .small {
     color: var(--secondary-text-color);
+    font-size: .8em;
 }
 
 input[type=text],
+input[type=number],
 select {
     background-color: rgba(0,0,0,0.1);
     color: var(--primary-text-color);
@@ -26,8 +30,17 @@ select {
     border-radius: 3px;
     display: block;
     width: calc(100% - 1.6em - 2px);
+    outline-color: var(--primary-theme-color);
     padding: .6em .8em;
     margin: .4em 0;
+    transition: 250ms;
+}
+
+input[type=text][disabled],
+input[type=number][disabled],
+select[disabled] {
+    border-bottom-color: black;
+    cursor: not-allowed;
 }
 
 select {
@@ -46,6 +59,7 @@ input, select, textarea, .button {
     background-color: var(--primary-theme-color);
     color: var(--primary-text-color);
     padding: .6em .8em;
+    margin: 0 .2em;
     border: none;
     border-radius: 3px;
     cursor: pointer;
@@ -53,6 +67,31 @@ input, select, textarea, .button {
 }
 
 .button[disabled=disabled] {
+    color: var(--secondary-text-color);
     background-color: var(--dark-theme-color);
     cursor: not-allowed;
+}
+
+.button.button-success {
+    background-color: #54833c;
+}
+
+.button.button-danger {
+    background-color: #cc4949;
+}
+
+.button.button-info {
+    background-color: #4c6b85;
+}
+
+.button.button-success[disabled=disabled] {
+    background-color: #184700;
+}
+
+.button.button-danger[disabled=disabled] {
+    background-color: #531010;
+}
+
+.button.button-info[disabled=disabled] {
+    background-color: #102f49;
 }
