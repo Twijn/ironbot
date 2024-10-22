@@ -84,7 +84,7 @@ schema.methods.createEmbed = function(created = false) {
             value: `<@${this.operator._id}>`,
             inline: true,
         })
-        .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
+        .setFooter({iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
     if (this.role) {
         embed.addFields({

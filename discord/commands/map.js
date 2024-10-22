@@ -38,9 +38,9 @@ const command = {
         if (command === "view") {
             const embed = new EmbedBuilder()
                 .setTitle("View the Adventurer's Map")
-                .setDescription("[Click here to view the Adventurer's Map!](https://illumindal.com/map)")
+                .setDescription("[Click here to view the Adventurer's Map!](https://www.illumindal.com/map)")
                 .setFooter({
-                    iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png",
+                    iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png",
                     text: "The Illumindal Guild"
                 });
 

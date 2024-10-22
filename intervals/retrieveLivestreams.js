@@ -42,7 +42,7 @@ const formatEmbed = function(hStream, stream, listener) {
             value: codeBlock(`${hStream.viewers} viewer${hStream.viewers === 1 ? "" : "s"}`),
             inline: true,
         })
-        .setFooter({iconURL: "https://illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
+        .setFooter({iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
     if (hStream.gameId) {
         builder.setThumbnail(gameCache.find(x => x._id === hStream.gameId)?.boxArtUrl);

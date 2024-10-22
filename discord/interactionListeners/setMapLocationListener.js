@@ -27,7 +27,7 @@ const listener = {
 \`\`\`Location: ${data.name}
 Latitude: ${data.latitude.toFixed(7)}
 Longitude: ${data.longitude.toFixed(7)}\`\`\`
-[View the Adventurer's Map here.](https://illumindal.com/map)`
+[View the Adventurer's Map here.](https://www.illumindal.com/map)`
             );
         }, err => {
             interaction.error(err);
