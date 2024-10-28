@@ -39,7 +39,7 @@ $(function() {
 
     $("#save-location").on("click", function() {
         pill("Saving location...");
-        $.ajax("map/save", {
+        $.ajax("/map/save", {
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
@@ -56,12 +56,16 @@ $(function() {
                 } else {
                     pill("Error: " + result.error, "danger", 5000);
                 }
-            }
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                pill("Error: " + xhr.responseText, "danger", 5000);
+            },
         });
     });
 
     $("#delete-location").on("click", function () {
-        $.ajax("map/delete", {
+        $.ajax("/map/delete", {
             type: "DELETE",
             dataType: "json",
             success: function(result) {
@@ -74,7 +78,11 @@ $(function() {
                 } else {
                     pill("Error: " + result.error, "danger", 5000);
                 }
-            }
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                pill("Error: " + xhr.responseText, "danger", 5000);
+            },
         })
     });
 
