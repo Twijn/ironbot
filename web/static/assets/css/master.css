@@ -369,4 +369,20 @@ section {
     header h1 {
         font-size: 1.5em;
     }
+
+    .logged-in-user {
+        padding: 0;
+        background: transparent;
+    }
+
+    .logged-in-user img {
+        margin: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+    }
+
+    .logged-in-user .username {
+        display: none;
+    }
 }

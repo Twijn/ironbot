@@ -14,7 +14,7 @@
         <% } else { %>
         <a class="account logged-in-user" href="/account">
             <img src="<%= discordUsers[0].avatarUrl() %>">
-            <%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %>
+            <span class="username"><%= discordUsers[0].globalName ? discordUsers[0].globalName : discordUsers[0].username %></span>
         </a>
         <% } %>
     </div>

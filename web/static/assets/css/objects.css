@@ -40,6 +40,12 @@
     border-radius: 2.5em;
 }
 
+@media only screen and (max-width: 500px) {
+    .object h3 {
+        font-size: 1.5em;
+    }
+}
+
 .user-discord {
     border-color: var(--primary-discord-color);
 }
@@ -110,4 +116,10 @@
 
 .discord-mention::before {
     content: "@";
+}
+
+@media only screen and (max-width: 500px) {
+    .discord-mention div {
+        display: none;
+    }
 }
