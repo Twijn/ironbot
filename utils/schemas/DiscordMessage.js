@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
     _id: String,
     channel: String,
+    identity: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Identity",
+        index: true,
+    },
     stream: {
         type: String,
         ref: "TwitchStream",
@@ -11,6 +16,8 @@ const schema = new mongoose.Schema({
         type: String,
         ref: "Event",
     },
+    contentLength: Number,
+    hasAttachments: Boolean,
 });
 
 schema.methods.getMessage = function() {
