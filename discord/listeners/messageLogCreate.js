@@ -11,12 +11,12 @@ const listener = {
      * @param {Message} message
      */
     execute: async message => {
-        if (!message.inGuild() || message.author.id === config.discord.clientId) {
+        if (!message.inGuild() || message.author.bot) {
             return;
         }
 
         try {
-            const discordUser = await utils.Discord.getUserById(message.author.id);
+            const discordUser = await utils.Discord.getUserById(message.author.id, false, true);
             const identity = await discordUser.createIdentity();
 
             await utils.Schemas.DiscordMessage.findByIdAndUpdate(message.id, {
