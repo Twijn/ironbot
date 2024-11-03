@@ -5,8 +5,6 @@ const config = require("../config.json");
 const CacheManager = require("./cache/CacheManager");
 const EnvoyListenerManager = require("./EnvoyListenerManager");
 const MapManager = require("./MapManager");
-const MemberManager = require("./MemberManager");
-const QuestManager = require("./quest/QuestManager");
 
 const Schemas = require("./schemas/");
 
