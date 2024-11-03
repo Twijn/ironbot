@@ -5,11 +5,19 @@ const config = require("../config.json");
 const CacheManager = require("./cache/CacheManager");
 const EnvoyListenerManager = require("./EnvoyListenerManager");
 const MapManager = require("./MapManager");
+const MemberManager = require("./MemberManager");
+const QuestManager = require("./quest/QuestManager");
 
 const Schemas = require("./schemas/");
 
 const Discord = require("./discord/");
 const Twitch = require("./twitch/");
+
+const ONE_SECOND = 1;
+const ONE_MINUTE = ONE_SECOND * 60;
+const ONE_HOUR = ONE_MINUTE * 60;
+const ONE_DAY = ONE_HOUR * 24;
+const ONE_WEEK = ONE_DAY * 7;
 
 class Utils {
 
@@ -31,11 +39,11 @@ class Utils {
      */
     Schemas = Schemas;
 
-    /**
-     * Manager for the map cache
-     * @type {MapManager}
-     */
     MapManager = new MapManager(this);
+
+    MemberManager = new MemberManager(this);
+
+    QuestManager = QuestManager;
 
     /**
      * Contains Discord-related methods
@@ -124,6 +132,43 @@ class Utils {
         }
 
         return str;
+    }
+
+    /**
+     * Returns a relative time string from a second value.
+     * @param seconds
+     * @param iterations How many iterations? For example 2 = 'x hours y minutes'
+     * @returns {string}
+     */
+    relativeTime(seconds, iterations = 2) {
+        let result = "";
+        if (seconds >= ONE_WEEK) {
+            const num = Math.floor(seconds / ONE_WEEK);
+            result += `${num} week${num === 1 ? "" : "s"}`;
+            seconds -= num * ONE_WEEK;
+        } else if (seconds >= ONE_DAY) {
+            const num = Math.floor(seconds / ONE_DAY);
+            result += `${num} day${num === 1 ? "" : "s"}`;
+            seconds -= num * ONE_DAY;
+        } else if (seconds >= ONE_HOUR) {
+            const num = Math.floor(seconds / ONE_HOUR);
+            result += `${num} hour${num === 1 ? "" : "s"}`;
+            seconds -= num * ONE_HOUR;
+        } else if (seconds >= ONE_MINUTE) {
+            const num = Math.floor(seconds / ONE_MINUTE);
+            result += `${num} minute${num === 1 ? "" : "s"}`;
+            seconds -= num * ONE_MINUTE;
+        } else if (seconds >= ONE_SECOND) {
+            const num = Math.floor(seconds / ONE_SECOND);
+            result += `${num} second${num === 1 ? "" : "s"}`;
+            seconds = 0;
+        }
+
+        if (seconds > 0 && iterations > 1) {
+            result += " " + this.relativeTime(seconds, iterations - 1);
+        }
+
+        return result.trim();
     }
 
     /**

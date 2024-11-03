@@ -537,40 +537,33 @@ const command = {
         } else if (group === "stats") {
             if (subcommand === "lookup") {
                 const user = interaction.options.getUser("user", true);
-                let fromTime;
 
+                let fromTime = null;
                 const time = interaction.options.getInteger("time", false);
                 if (time) {
                     fromTime = Date.now() - (time * DAYS_TO_MILLISECONDS);
                 } else {
-                    fromTime = Date.now() - (30 * DAYS_TO_MILLISECONDS);
+                    fromTime = new Date();
+                    fromTime.setDate(1);
+                    fromTime.setHours(0,0,0,0);
                 }
 
                 const discordUser = await utils.Discord.getUserById(user.id, false, true);
                 const identity = await discordUser.createIdentity();
-                const messages = await utils.Schemas.DiscordMessage.find({
-                    identity,
-                    timestamp: {
-                        $gt: fromTime,
-                    },
-                });
-                const voiceLogs = await utils.Schemas.DiscordVoiceLog.find({
-                    identity,
-                    startTime: {
-                        $gt: fromTime,
-                    },
-                });
 
-                let vcTime = 0;
-                voiceLogs.forEach(log => {
-                    vcTime += log.endTime.getTime() - log.startTime.getTime();
-                });
-                vcTime = Math.floor(vcTime / 1000);
+                const vcTime = await identity.getVCTime(fromTime);
+                const messageCount = await identity.getMessageCount(fromTime);
 
-                interaction.success(`Logs since <t:${Math.floor(fromTime / 1000)}:D>` + codeBlock(cleanCodeBlockContent(
-                    `Discord voice channel time: ${vcTime} seconds\n` +
-                    `Discord messages: ${messages.length}`
-                )))
+                const embed = new EmbedBuilder()
+                    .setTitle("User Statistics")
+                    .setColor(0xf28227)
+                    .setAuthor({name: user.displayName, iconURL: user.displayAvatarURL({size: 64})})
+                    .setDescription(`Logs since <t:${Math.floor(fromTime / 1000)}:D>` + codeBlock(cleanCodeBlockContent(
+                        `Discord voice channel time: ${utils.relativeTime(vcTime)} (${vcTime} seconds)\n` +
+                        `Discord messages: ${utils.comma(messageCount)} message${messageCount === 1 ? "" : "s"}`
+                    )));
+
+                interaction.reply({embeds: [embed], ephemeral: true}).catch(console.error);
             } else {
                 interaction.error("Could not recognize subcommand!");
             }

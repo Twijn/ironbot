@@ -12,6 +12,9 @@ const DiscordUser = require("./DiscordUser");
 const SteamUser = require("./SteamUser");
 const TwitchUser = require("./TwitchUser");
 
+const DiscordVoiceLog = require("./DiscordVoiceLog");
+const DiscordMessage = require("./DiscordMessage");
+
 const schema = new mongoose.Schema({
     created_at: {
         type: Date,
@@ -79,6 +82,53 @@ let icons = {
         twitch: await loadImage("./canvas/icons/twitch.png"),
     };
 })();
+
+const getStartOfMonth = function() {
+    const date = new Date();
+    date.setDate(1);
+    date.setHours(0,0,0,0);
+    return date;
+}
+
+schema.methods.getMessageCount = async function(fromTime = null) {
+    if (!fromTime) {
+        fromTime = getStartOfMonth();
+    }
+
+    const messages = await DiscordMessage.find({
+        identity: this,
+        timestamp: {
+            $gt: fromTime,
+        },
+        $or: [
+            {hasAttachments: true},
+            {contentLength: {$gt: 15}},
+        ],
+    });
+
+    return messages.length;
+}
+
+schema.methods.getVCTime = async function(fromTime = null) {
+    if (!fromTime) {
+        fromTime = getStartOfMonth();
+    }
+
+    const voiceLogs = await DiscordVoiceLog.find({
+        identity: this,
+        startTime: {
+            $gt: fromTime,
+        },
+    });
+
+    let vcTime = 0;
+    voiceLogs.forEach(log => {
+        vcTime += log.endTime.getTime() - log.startTime.getTime();
+    });
+    vcTime = Math.floor(vcTime / 1000);
+
+    return vcTime;
+}
 
 /**
  * Returns a month name from the number
