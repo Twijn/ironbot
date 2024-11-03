@@ -41,10 +41,6 @@ class Utils {
 
     MapManager = new MapManager(this);
 
-    MemberManager = new MemberManager(this);
-
-    QuestManager = QuestManager;
-
     /**
      * Contains Discord-related methods
      * @type {Discord}
