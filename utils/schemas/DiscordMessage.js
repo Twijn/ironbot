@@ -18,6 +18,10 @@ const schema = new mongoose.Schema({
     },
     contentLength: Number,
     hasAttachments: Boolean,
+    timestamp: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 schema.methods.getMessage = function() {
