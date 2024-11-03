@@ -21,7 +21,10 @@ const listener = {
             .setColor(0xf28227);
         
         member.guild.channels.cache.get(config.join.channel)
-            .send({embeds: [embed]})
+            .send({
+                content: "https://youtu.be/R--PmgRfw08",
+                embeds: [embed],
+            })
             .catch(console.error);
     }
 }
