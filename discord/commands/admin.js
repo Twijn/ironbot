@@ -1,6 +1,11 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle,
+    codeBlock,
+    cleanCodeBlockContent
+} = require("discord.js");
 
 const utils = require("../../utils/");
+
+const DAYS_TO_MILLISECONDS = 24 * 60 * 60 * 1000;
 
 const command = {
     data: new SlashCommandBuilder()
@@ -177,6 +182,30 @@ const command = {
                         .setDescription("Clears all servers from the current channel")
                 )
         )
+        .addSubcommandGroup(group =>
+            group
+                .setName("stats")
+                .setDescription("Stats management")
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName("lookup")
+                        .setDescription("Look up user stats")
+                        .addUserOption(opt =>
+                            opt
+                                .setName("user")
+                                .setDescription("The user to lookup")
+                                .setRequired(true)
+                        )
+                        .addIntegerOption(opt =>
+                            opt
+                                .setName("time")
+                                .setDescription("Number of days to look back for logs")
+                                .setMinValue(1)
+                                .setMaxValue(365)
+                                .setRequired(false)
+                        )
+                )
+        )
         .setDMPermission(false)
         .setDefaultMemberPermissions(0),
     /**
@@ -281,7 +310,7 @@ const command = {
                     pterodactylId,
                 });
 
-                await server.populate(["host","operator"])
+                await server.populate(["host", "operator"])
 
                 utils.servers.push(server);
                 utils.servers.sort((a, b) => a.name - b.name);
@@ -294,7 +323,7 @@ const command = {
             if (!server) {
                 return interaction.error("Could not find server!");
             }
-            
+
             if (subcommand === "edit") {
                 const page = interaction.options.getNumber("page", true);
                 let modal = new ModalBuilder()
@@ -348,7 +377,7 @@ const command = {
                                     .setStyle(TextInputStyle.Short)
                                     .setRequired(true)
                             )
-                    );      
+                    );
                 } else if (page === 2) {
                     modal.setComponents(
                         new ActionRowBuilder()
@@ -422,13 +451,13 @@ const command = {
                     );
                 } else {
                     const ruleOffset = page - 4;
-                    let rules = ["","","","",""];
+                    let rules = ["", "", "", "", ""];
                     for (let i = ruleOffset * 5; i < (ruleOffset + 1) * 5; i++) {
                         if (server.rules[i]) {
                             rules[i - (ruleOffset * 5)] = server.rules[i];
                         }
                     }
-                    rules.forEach((rule,i) => {
+                    rules.forEach((rule, i) => {
                         modal.addComponents(
                             new ActionRowBuilder()
                                 .setComponents(
@@ -450,7 +479,7 @@ const command = {
                     filter: interaction => interaction.customId === `editserver-${String(server._id)}-${page}`,
                 }).then(async modalInteraction => {
                     if (page < 4) {
-                        const opts = ["name","game","description","role","imageUrl","host","operator","mention","pterodactylId","joinInstructionsUrl","joinPassword","mods"];
+                        const opts = ["name", "game", "description", "role", "imageUrl", "host", "operator", "mention", "pterodactylId", "joinInstructionsUrl", "joinPassword", "mods"];
                         let updatedProps = [];
                         for (let i = 0; i < opts.length; i++) {
                             try {
@@ -466,7 +495,7 @@ const command = {
                                     server[opt] = value;
                                 }
                                 updatedProps.push(opt);
-                            } catch(err) {
+                            } catch (err) {
                             }
                         }
 
@@ -504,6 +533,46 @@ const command = {
                     console.error(err);
                     interaction.error(String(err))
                 });
+            }
+        } else if (group === "stats") {
+            if (subcommand === "lookup") {
+                const user = interaction.options.getUser("user", true);
+                let fromTime;
+
+                const time = interaction.options.getInteger("time", false);
+                if (time) {
+                    fromTime = Date.now() - (time * DAYS_TO_MILLISECONDS);
+                } else {
+                    fromTime = Date.now() - (30 * DAYS_TO_MILLISECONDS);
+                }
+
+                const discordUser = await utils.Discord.getUserById(user.id, false, true);
+                const identity = await discordUser.createIdentity();
+                const messages = await utils.Schemas.DiscordMessage.find({
+                    identity,
+                    timestamp: {
+                        $gt: fromTime,
+                    },
+                });
+                const voiceLogs = await utils.Schemas.DiscordVoiceLog.find({
+                    identity,
+                    startTime: {
+                        $gt: fromTime,
+                    },
+                });
+
+                let vcTime = 0;
+                voiceLogs.forEach(log => {
+                    vcTime += log.endTime.getTime() - log.startTime.getTime();
+                });
+                vcTime = Math.floor(vcTime / 1000);
+
+                interaction.success(`Logs since <t:${Math.floor(fromTime / 1000)}:D>` + codeBlock(cleanCodeBlockContent(
+                    `Discord voice channel time: ${vcTime} seconds\n` +
+                    `Discord messages: ${messages.length}`
+                )))
+            } else {
+                interaction.error("Could not recognize subcommand!");
             }
         } else {
             interaction.error("Could not recognize subcommand group!");
