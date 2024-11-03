@@ -152,7 +152,7 @@ class Utils {
             const num = Math.floor(seconds / ONE_MINUTE);
             result += `${num} minute${num === 1 ? "" : "s"}`;
             seconds -= num * ONE_MINUTE;
-        } else if (seconds >= ONE_SECOND) {
+        } else {
             const num = Math.floor(seconds / ONE_SECOND);
             result += `${num} second${num === 1 ? "" : "s"}`;
             seconds = 0;
