@@ -7,6 +7,7 @@ const Event = require("./Event");
 const DiscordMessage = require("./DiscordMessage");
 const DiscordToken = require("./DiscordToken");
 const DiscordUser = require("./DiscordUser");
+const DiscordVoiceLog = require("./DiscordVoiceLog");
 
 const Identity = require("./Identity");
 const Session = require("./Session");
@@ -33,6 +34,7 @@ class Schemas {
     DiscordMessage = DiscordMessage;
     DiscordToken = DiscordToken;
     DiscordUser = DiscordUser;
+    DiscordVoiceLog = DiscordVoiceLog;
 
     Identity = Identity;
     Session = Session;
