@@ -22,6 +22,35 @@
     padding: 0;
 }
 
+.object h3[title] {
+    position: relative;
+    font-size: 1.4em;
+    padding-bottom: .4em;
+    cursor: pointer;
+}
+
+.object h3[title]::after {
+    content: attr(title);
+    background-color: var(--dark-theme-color);
+    font-size: 1.4rem;
+    position: absolute;
+    padding: .2em .2em .6em .2em;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden;
+    opacity: 0;
+    transition: 250ms;
+    border-radius: .1em;
+}
+
+.object h3[title]:hover::after,
+.object h3[title].full-name::after {
+    font-size: 1.8rem;
+    visibility: visible;
+    opacity: 1;
+}
+
 .object .info .data {
     color: var(--secondary-text-color);
 }

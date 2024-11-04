@@ -23,4 +23,8 @@ $(function() {
         });
         return false;
     })
+
+    $(".object h3[title]").click(function() {
+        $(this).toggleClass("full-name");
+    });
 });

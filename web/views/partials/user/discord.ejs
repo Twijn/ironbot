@@ -1,7 +1,11 @@
-<div class="object user user-discord" data-id="<%= user._id %>"<%- locals?.hide ? ` style="display:none;"` : "" %>>
+<% const name = user.globalName ? user.globalName : user.username; %><div class="object user user-discord" data-id="<%= user._id %>"<%- locals?.hide ? ` style="display:none;"` : "" %>>
     <img src="<%= user.avatarUrl() %>" alt="Avatar for <%= user.username %>">
     <div class="info">
-        <h3><%= user.globalName ? user.globalName : user.username %></h3>
+        <% if (name.length > 15) { %>
+        <h3 title="<%= name %>"><%= name.substring(0, 15) %>&#x2026;</h3>
+        <% } else { %>
+        <h3><%= name %></h3>
+        <% } %>
         <div class="data">
             <%= user._id %>
         </div>
