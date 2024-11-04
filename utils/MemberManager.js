@@ -48,13 +48,18 @@ class MemberManager {
             }
         }
 
+        this.roles.sort((a, b) => b.position - a.position);
+
         return role;
     }
 
     async deleteRole(id) {
         await Role.findByIdAndDelete(id);
-
         this.roles = this.roles.filter(role => role._id !== id);
+    }
+
+    getRole(id) {
+        return this.roles.find(x => x._id === id);
     }
 
     async updateRoles() {
@@ -71,8 +76,19 @@ class MemberManager {
         console.log(`[MemberManager] Loaded ${this.members.size} members`);
     }
 
-    getMembersByRole(roleId) {
+    getMembersWithRole(roleId) {
         return this.members.filter(member => member.roles.cache.has(roleId));
+    }
+
+    getMembersByRole() {
+        let members = this.members.clone();
+        let result = [];
+        this.roles.forEach(role => {
+            const roleMembers = members.filter(member => member.roles.cache.has(role._id));
+            members = members.filter(member => !member.roles.cache.has(role._id));
+            result.push({role, members: roleMembers});
+        });
+        return result;
     }
 
 }
