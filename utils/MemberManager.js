@@ -2,6 +2,8 @@ const {Snowflake, GuildMember} = require("discord.js");
 
 const Role = require("./schemas/Role");
 
+const UPDATE_MEMBER_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class MemberManager {
@@ -21,6 +23,10 @@ class MemberManager {
 
         this.updateRoles().catch(console.error);
         this.updateMembers().catch(console.error);
+
+        setInterval(() => {
+            this.updateMembers().catch(console.error);
+        }, UPDATE_MEMBER_INTERVAL);
     }
 
     async createRole(id, display, position, name) {
@@ -73,21 +79,56 @@ class MemberManager {
             await sleep(50);
         }
         this.members = await this.utils.Discord.guild.members.fetch();
+        this.members = this.members.filter(x => !x.user.bot);
+
+        let seeded = 0;
+        for (const [id, member] of this.members) {
+            // We seed to cache to reduce latency when viewing things such as /members
+            try {
+                const user = await utils.Discord.getUserById(String(id), false, true);
+                if (user.avatar !== member.user.avatar ||
+                    (member.user.globalName && user.globalName !== member.user.globalName)) {
+                    console.log(`[MemberManager] Updating user information for ${member.user.username}`);
+                    await utils.Schemas.DiscordUser.findByIdAndUpdate(String(id), {
+                        globalName: member.user.globalName,
+                        avatar: member.user.avatar,
+                    });
+                    // Retrieve the user again with bypassCache to update the cached user.
+                    await utils.Discord.getUserById(String(id), true);
+                }
+                seeded++;
+            } catch(err) {
+                console.error("[MemberManager] Error while seeding cache:");
+                console.error(err);
+            }
+        }
+        console.log(`[MemberManager] Seeded ${seeded} members`);
         console.log(`[MemberManager] Loaded ${this.members.size} members`);
     }
 
     getMembersWithRole(roleId) {
+        if (!this.members) return [];
         return this.members.filter(member => member.roles.cache.has(roleId));
     }
 
-    getMembersByRole() {
-        let members = this.members.clone();
+    async getMembersByRole(asDbUser = false) {
         let result = [];
-        this.roles.forEach(role => {
-            const roleMembers = members.filter(member => member.roles.cache.has(role._id));
-            members = members.filter(member => !member.roles.cache.has(role._id));
-            result.push({role, members: roleMembers});
-        });
+        let existingIds = [];
+        for (let r = 0; r < this.roles.length; r++) {
+            const role = this.roles[r];
+            let finalMembers = [];
+            let membersWithRole = this.getMembersWithRole(role.id);
+            for (const [id, member] of membersWithRole) {
+                if (existingIds.includes(id)) continue;
+                if (asDbUser) {
+                    finalMembers.push(await utils.Discord.getUserById(id, false, true));
+                } else {
+                    finalMembers.push(member);
+                }
+                existingIds.push(id);
+            }
+            result.push({role, members: finalMembers});
+        }
         return result;
     }
 
