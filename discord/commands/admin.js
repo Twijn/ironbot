@@ -206,6 +206,58 @@ const command = {
                         )
                 )
         )
+        .addSubcommandGroup(group =>
+            group
+                .setName("role")
+                .setDescription("Role management")
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName("create")
+                        .setDescription("Create a role")
+                        .addRoleOption(opt =>
+                            opt
+                                .setName("role")
+                                .setDescription("The role to add")
+                                .setRequired(true)
+                        )
+                        .addBooleanOption(opt =>
+                            opt
+                                .setName("display")
+                                .setDescription("Whether the role should be displayed")
+                                .setRequired(true)
+                        )
+                        .addIntegerOption(opt =>
+                            opt
+                                .setName("position")
+                                .setDescription("Role position, used for ranking up")
+                                .setMinValue(0)
+                                .setMaxValue(10)
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName("edit")
+                        .setDescription("Edits a role")
+                        .addRoleOption(opt =>
+                            opt
+                                .setName("role")
+                                .setDescription("The role to edit")
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName("delete")
+                        .setDescription("Deletes a role")
+                        .addRoleOption(opt =>
+                            opt
+                                .setName("delete")
+                                .setDescription("The role to delete")
+                                .setRequired(true)
+                        )
+                )
+        )
         .setDMPermission(false)
         .setDefaultMemberPermissions(0),
     /**
@@ -545,7 +597,7 @@ const command = {
                 } else {
                     fromTime = new Date();
                     fromTime.setDate(1);
-                    fromTime.setHours(0,0,0,0);
+                    fromTime.setHours(0, 0, 0, 0);
                 }
 
                 const discordUser = await utils.Discord.getUserById(user.id, false, true);
@@ -564,6 +616,120 @@ const command = {
                     )));
 
                 interaction.reply({embeds: [embed], ephemeral: true}).catch(console.error);
+            } else {
+                interaction.error("Could not recognize subcommand!");
+            }
+        } else if (group === "role") {
+            const role = interaction.options.getRole("role", true);
+            if (subcommand === "create") {
+                const display = interaction.options.getBoolean("display", true);
+                const position = interaction.options.getInteger("position", true);
+
+                utils.MemberManager.createRole(role.id, display, position, role.name).then(role => {
+                    interaction.success(`Role ${role.name} successfully created!`);
+                }, err => {
+                    interaction.error(String(err));
+                });
+            } else if (subcommand === "edit") {
+                const dbRole = utils.MemberManager.getRole(role.id);
+
+                if (!dbRole) {
+                    return interaction.error("Role not found!");
+                }
+
+                const modal = new ModalBuilder()
+                    .setCustomId("roleedit-" + dbRole._id)
+                    .setTitle("Edit Role " + dbRole.name)
+                    .setComponents([
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("name")
+                                    .setLabel("Name")
+                                    .setRequired(true)
+                                    .setMinLength(3)
+                                    .setMaxLength(128)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setValue(dbRole.name)
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("description")
+                                    .setLabel("Description")
+                                    .setRequired(false)
+                                    .setMaxLength(1024)
+                                    .setStyle(TextInputStyle.Paragraph)
+                                    .setValue(dbRole.description ? dbRole.description : "")
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("position")
+                                    .setLabel("Position")
+                                    .setPlaceholder("Number 0-10")
+                                    .setRequired(true)
+                                    .setMinLength(1)
+                                    .setMaxLength(2)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setValue(String(dbRole.position))
+                            ),
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId("display")
+                                    .setLabel("Display on Website")
+                                    .setRequired(true)
+                                    .setMinLength(4)
+                                    .setMaxLength(5)
+                                    .setStyle(TextInputStyle.Short)
+                                    .setValue(dbRole.display ? "true" : "false")
+                            ),
+                    ]);
+
+                interaction.showModal(modal).then(() => {
+                    interaction.awaitModalSubmit({time: 120_000}).then(modalInteraction => {
+                        const name = modalInteraction.fields.getTextInputValue("name");
+                        const description = modalInteraction.fields.getTextInputValue("description");
+                        let position = modalInteraction.fields.getTextInputValue("position");
+                        let display = modalInteraction.fields.getTextInputValue("display");
+
+                        const reply = content => {
+                            modalInteraction.reply({content, ephemeral: true}).catch(console.error);
+                        }
+
+                        position = Number(position);
+
+                        if (isNaN(position) || position < 0 || position > 10) {
+                            return reply("Position must be a number between 0 and 10!");
+                        }
+
+                        if (display.toLowerCase() === "true") {
+                            display = true;
+                        } else if (display.toLowerCase() === "false") {
+                            display = false;
+                        } else {
+                            return reply("Display must be true or false!");
+                        }
+
+                        utils.MemberManager.editRole(role.id, display, position, name, description).then(newRole => {
+                            reply(`${newRole.name} successfully updated!`)
+                        }, err => {
+                            reply(String(err));
+                        });
+                    }, () => {
+                        interaction.followUp({
+                            content: "Modal submit timed out. Please run command again",
+                            ephemeral: true,
+                        }).catch(console.error);
+                    });
+                }, console.error);
+            } else if (subcommand === "delete") {
+                utils.MemberManager.deleteRole(role.id).then(role => {
+                    interaction.success(`Role successfully deleted!`);
+                }, err => {
+                    interaction.error(String(err));
+                });
             } else {
                 interaction.error("Could not recognize subcommand!");
             }
