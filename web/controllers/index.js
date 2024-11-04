@@ -40,6 +40,9 @@ router.get("/", async (req, res) => {
 const map = require("./map");
 router.use("/map", map);
 
+const members = require("./members");
+router.use("/members", members);
+
 const requireAuth = (req, res, next) => {
     if (!req?.session?.identity?._id) {
         res.cookie("return_uri", req.path);

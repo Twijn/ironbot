@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <%- include("../partials/head") %>
+
+    <link rel="stylesheet" href="/assets/css/objects.css?v=3">
+    <link rel="stylesheet" href="/assets/css/alert.css?v=3">
+    <link rel="stylesheet" href="/assets/css/members.css?v=3">
+
+    <title>Home - The Illumindal Guild</title>
+</head>
+<body>
+<div class="wrapper">
+    <%- include("../partials/header", {discordUsers, active: "/members"}) %>
+    <main>
+        <%- include("../partials/socials") %>
+        <% members.forEach(group => { if (!group.role.display) return; %>
+        <h2><%= group.role.name %></h2>
+        <% if (group.role.description && group.role.description.length > 0) { %>
+        <pre class="description"><%= group.role.description %></pre>
+        <% } %>
+        <% if (group.members.length === 0) { %><div class="alert alert-danger">No members currently have this rank!</div><% } else { %>
+        <div class="user-grid">
+            <% group.members.forEach(user => { %>
+            <%- include("../partials/user/discord", {user}) %>
+            <% }) %>
+        </div>
+        <% }}) %>
+        <%- include("../partials/socials") %>
+    </main>
+    <%- include("../partials/footer") %>
+</div>
+</body>
+</html>

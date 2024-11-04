@@ -1,0 +1,10 @@
+.user-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+pre.description {
+    font-family: "Roboto Slab", serif;
+    border-left: 3px solid var(--secondary-theme-color);
+    padding: .4em .8em;
+}
