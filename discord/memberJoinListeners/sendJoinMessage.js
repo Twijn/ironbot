@@ -18,7 +18,8 @@ const listener = {
                 iconURL: member.displayAvatarURL(),
             })
             .setThumbnail(member.guild.iconURL({size: 128}))
-            .setColor(0xf28227);
+            .setColor(0xf28227)
+            .setFooter({iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
         
         member.guild.channels.cache.get(config.join.channel)
             .send({
