@@ -57,7 +57,6 @@ const schema = new mongoose.Schema({
 });
 
 async function flushIdentity() {
-    console.log(this);
     CacheManager.removeIdentity(this._id);
 }
 
