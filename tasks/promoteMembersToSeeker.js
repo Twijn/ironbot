@@ -1,6 +1,7 @@
-const utils = require("../utils");
-
+const {EmbedBuilder} = require('discord.js');
 const io = require("@pm2/io");
+
+const utils = require("../utils");
 
 const REQUIRED_PROMOTION_TIME = 7 * 24 * 60 * 60 * 1000; // 7 days (1 week)
 
@@ -49,23 +50,51 @@ const run = async cb => {
         const identity = await member.createIdentity();
 
         const messageCount = await identity.getMessageCount();
+        const vcTime = await identity.getVCTime();
+
         if (messageCount >= REQUIRED_MESSAGES_ONLY) {
             log(`Promoting member ${member.globalName}: has ${messageCount}/${REQUIRED_MESSAGES_ONLY} messages and time in guild`);
-            promotions.push(member);
+            promotions.push({member, messageCount, vcTime});
             continue;
         }
 
-        const vcTime = await identity.getVCTime();
         if (messageCount >= REQUIRED_MESSAGES && vcTime >= REQUIRED_VC_TIME) {
             log(`Promoting member ${member.globalName}: has ${messageCount}/${REQUIRED_MESSAGES} messages, ${vcTime}/${REQUIRED_VC_TIME} VC time and time in guild`);
-            promotions.push(member);
+            promotions.push({member, messageCount, vcTime});
             continue;
         }
 
         log(`Not promoting member ${member.globalName}: only has ${messageCount} messages and ${vcTime} VC time`);
     }
 
-    console.log(promotions);
+    let messages = [];
+    for (let i = 0; i < promotions.length; i++) {
+        const {member, messageCount, vcTime} = promotions[i];
+        try {
+            const discordMember = await utils.MemberManager.getMember(member.id);
+            await discordMember.roles.add(promotionRole.role.id);
+
+            messages.push(`<@${discordMember.id}> joined <t:${Math.floor(discordMember.joinedTimestamp / 1000)}:R> with \`${utils.comma(messageCount)} message${messageCount === 1 ? "" : "s"}\` sent and \`${utils.relativeTime(vcTime)}\` spent in voice channels!`);
+        } catch(err) {
+            console.error(`Error while promoting ${member.globalName}:`);
+            console.error(err);
+        }
+    }
+
+    const embed = new EmbedBuilder()
+        .setColor(0xf28227)
+        .setTitle("Guild Promotion!")
+        .setDescription(
+            `**The following members have been promoted to <@&${promotionRole.role.id}>!**\n` +
+            messages.join("\n") +
+            `\n***🎉 Congratulations! 🎉***\n`
+        )
+        .setFooter({iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
+
+    utils.channels.promotions.send({
+        content: promotions.map(x => `<@${x.member.id}>`).join(" "),
+        embeds: [embed],
+    }).catch(console.error);
 
     cb({ok: true});
 }
