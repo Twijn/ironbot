@@ -94,9 +94,13 @@ const run = async cb => {
     utils.channels.promotions.send({
         content: promotions.map(x => `<@${x.member.id}>`).join(" "),
         embeds: [embed],
-    }).catch(console.error);
-
-    cb({ok: true});
+    }).then(message => {
+        message.react("🎉").catch(console.error);
+        cb({ok: true});
+    }, err => {
+        console.error(err);
+        cb({ok: false});
+    });
 }
 
 io.action("reputation/promoteMembersToSeekers", run);
