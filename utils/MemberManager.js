@@ -87,11 +87,13 @@ class MemberManager {
             try {
                 const user = await utils.Discord.getUserById(String(id), false, true);
                 if (user.avatar !== member.user.avatar ||
-                    (member.user.globalName && user.globalName !== member.user.globalName)) {
+                    (member.user.globalName && user.globalName !== member.user.globalName) ||
+                    (!user.joinedTimestamp || member.joinedTimestamp !== user.joinedTimestamp.getTime())) {
                     console.log(`[MemberManager] Updating user information for ${member.user.username}`);
                     await utils.Schemas.DiscordUser.findByIdAndUpdate(String(id), {
                         globalName: member.user.globalName,
                         avatar: member.user.avatar,
+                        joinedTimestamp: member.joinedTimestamp,
                     });
                     // Retrieve the user again with bypassCache to update the cached user.
                     await utils.Discord.getUserById(String(id), true);
@@ -106,28 +108,40 @@ class MemberManager {
         console.log(`[MemberManager] Loaded ${this.members.size} members`);
     }
 
-    getMembersWithRole(roleId) {
+    /**
+     * Returns members with a role
+     * @param roleId {string|Snowflake}
+     * @param asDbUser {boolean}
+     * @returns {Promise<*[]>}
+     */
+    async getMembersWithRole(roleId, asDbUser = false) {
         if (!this.members) return [];
-        return this.members.filter(member => member.roles.cache.has(roleId));
+        const members = this.members.filter(member => member.roles.cache.has(roleId));
+        let result = [];
+        for (const [id, member] of members) {
+            if (asDbUser) {
+                result.push(await utils.Discord.getUserById(id, false, true));
+            } else {
+                result.push(member);
+            }
+        }
+        return result;
     }
 
+    /**
+     * Returns all members by their role
+     * @param asDbUser
+     * @returns {Promise<{role:object,members:object[]}[]>}
+     */
     async getMembersByRole(asDbUser = false) {
         let result = [];
         let existingIds = [];
         for (let r = 0; r < this.roles.length; r++) {
             const role = this.roles[r];
-            let finalMembers = [];
-            let membersWithRole = this.getMembersWithRole(role.id);
-            for (const [id, member] of membersWithRole) {
-                if (existingIds.includes(id)) continue;
-                if (asDbUser) {
-                    finalMembers.push(await utils.Discord.getUserById(id, false, true));
-                } else {
-                    finalMembers.push(member);
-                }
-                existingIds.push(id);
-            }
-            result.push({role, members: finalMembers});
+            let members = await this.getMembersWithRole(role.id, asDbUser);
+            members = members.filter(x => !existingIds.includes(x.id));
+            members.forEach(x => existingIds.push(x.id));
+            result.push({role, members});
         }
         return result;
     }
