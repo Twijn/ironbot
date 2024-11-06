@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
     accentColor: String,
     avatar: String,
     bot: Boolean,
+    joinedTimestamp: Date,
 });
 
 schema.methods.public = function() {
