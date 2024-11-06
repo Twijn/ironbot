@@ -74,7 +74,7 @@ const run = async cb => {
             const discordMember = await utils.MemberManager.getMember(member.id);
             await discordMember.roles.add(promotionRole.role.id);
 
-            messages.push(`<@${discordMember.id}> joined <t:${Math.floor(discordMember.joinedTimestamp / 1000)}:R> with \`${utils.comma(messageCount)} message${messageCount === 1 ? "" : "s"}\` sent and \`${utils.relativeTime(vcTime)}\` spent in voice channels!`);
+            messages.push(`- <@${discordMember.id}> joined <t:${Math.floor(discordMember.joinedTimestamp / 1000)}:R> with \`${utils.comma(messageCount)} message${messageCount === 1 ? "" : "s"}\` sent and \`${utils.relativeTime(vcTime)}\` spent in voice channels!`);
         } catch(err) {
             console.error(`Error while promoting ${member.globalName}:`);
             console.error(err);
@@ -85,9 +85,9 @@ const run = async cb => {
         .setColor(0xf28227)
         .setTitle("Guild Promotion!")
         .setDescription(
-            `**The following members have been promoted to <@&${promotionRole.role.id}>!**\n` +
+            `**The following members have been promoted to <@&${promotionRole.role.id}>!**\n\n` +
             messages.join("\n") +
-            `\n***🎉 Congratulations! 🎉***\n`
+            `\n\n***🎉 Congratulations! 🎉***`
         )
         .setFooter({iconURL: "https://www.illumindal.com/assets/images/icons/illumindal_120px.png", text: "The Illumindal Guild"});
 
