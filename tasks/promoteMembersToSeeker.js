@@ -67,6 +67,10 @@ const run = async cb => {
         log(`Not promoting member ${member.globalName}: only has ${messageCount} messages and ${vcTime} VC time`);
     }
 
+    if (promotions.length === 0) {
+        return cb({ok:true});
+    }
+
     let messages = [];
     for (let i = 0; i < promotions.length; i++) {
         const {member, messageCount, vcTime} = promotions[i];
