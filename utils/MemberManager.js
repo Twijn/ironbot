@@ -109,6 +109,19 @@ class MemberManager {
     }
 
     /**
+     * Returns a Discord member from an ID
+     * @param id {string|Snowflake}
+     * @returns {Promise<GuildMember>}
+     */
+    async getMember(id) {
+        let member = this.members.get(id);
+        if (!member) {
+            member = await this.utils.Discord.guild.members.fetch(id);
+        }
+        return member;
+    }
+
+    /**
      * Returns members with a role
      * @param roleId {string|Snowflake}
      * @param asDbUser {boolean}
