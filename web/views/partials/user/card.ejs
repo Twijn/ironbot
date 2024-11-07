@@ -43,13 +43,13 @@
         <% } %>
         <div class="users">
             <% profile.discordUsers.forEach(user => { %>
-            <span class="user discord"><%= user.globalName.length > MAX_USERNAME_LENGTH ? user.globalName.substring(0, MAX_USERNAME_LENGTH) + "…" : user.globalName %></span>
+            <span class="user discord"><span class="name" title="<%= user.globalName %>"><%= user.globalName %></span></span>
             <% }) %>
             <% profile.twitchUsers.forEach(user => { %>
-            <a class="user twitch" href="https://twitch.tv/<%= user.login %>" target="_blank"><%= user.display_name.length > MAX_USERNAME_LENGTH ? user.display_name.substring(0, MAX_USERNAME_LENGTH) + "…" : user.display_name %></a>
+            <a class="user twitch" href="https://twitch.tv/<%= user.login %>" target="_blank"><span class="name" title="<%= user.display_name %>"><%= user.display_name %></span></a>
             <% }) %>
             <% profile.steamUsers.forEach(user => { %>
-            <a class="user steam" href="<%= user.profile %>" target="_blank"><%= user.username.length > MAX_USERNAME_LENGTH ? user.username.substring(0, MAX_USERNAME_LENGTH) + "…" : user.username %></a>
+            <a class="user steam" href="<%= user.profile %>" target="_blank"><span class="name" title="<%= user.username %>"><%= user.username %></span></a>
             <% }) %>
         </div>
     </div>

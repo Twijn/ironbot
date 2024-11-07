@@ -65,8 +65,8 @@
 }
 
 .card .users {
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .card .users .user {
@@ -75,10 +75,19 @@
     text-decoration: none;
     padding: .4em;
     margin: .2em;
-    text-align: right;
+    text-align: left;
     border-radius: .3em;
     box-shadow: var(--shadow);
     text-shadow: var(--shadow);
+}
+
+.card .users .user .name {
+    display: block;
+    width: calc(100% - 2em);
+    margin-left: 2em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .card .users .user.discord {
