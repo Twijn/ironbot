@@ -175,9 +175,11 @@ const formatDate = date => {
 }
 
 schema.methods.getProfile = async function(overrideCache = false) {
+    const discordUsers = await this.getDiscordUsers(overrideCache);
     return {
         identity: this,
-        discordUsers: await this.getDiscordUsers(overrideCache),
+        role: discordUsers.length > 0 ? await global.utils.MemberManager.getMemberRole(discordUsers[0].id) : null,
+        discordUsers,
         steamUsers: await this.getSteamUsers(overrideCache),
         twitchUsers: await this.getTwitchUsers(overrideCache),
     };
@@ -185,7 +187,6 @@ schema.methods.getProfile = async function(overrideCache = false) {
 
 schema.methods.getDiscordUsers = function(overrideCache = false) {
     return CacheManager.identityDiscordUsers.get(String(this._id), (resolve, reject) => {
-        console.trace("GET " + this._id);
         DiscordUser.find({identity: this}).populate("identity").then(resolve, reject);
     }, overrideCache, false);
 }
