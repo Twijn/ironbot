@@ -75,6 +75,9 @@ class MemberManager {
             const role = this.roles[i];
             if (!role.color) {
                 console.log("Updating color of " + role.name);
+                while (!this.utils.Discord?.guild?.roles) {
+                    await sleep(50);
+                }
                 const discordRole = await this.utils.Discord.guild.roles.fetch(role._id);
                 this.roles[i] = await Role.findByIdAndUpdate(role._id, {
                     color: discordRole.hexColor,
