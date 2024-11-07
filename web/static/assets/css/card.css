@@ -1,0 +1,117 @@
+.card {
+    position: relative;
+    background-color: var(--dark-theme-color);
+    border-top: .3em solid var(--primary-theme-color);
+    margin: 4.6em .6em .6em .6em;
+    box-shadow: var(--shadow);
+}
+
+.card img {
+    position: absolute;
+    top: -4em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    background-color: var(--dark-theme-color);
+    border: .2em solid var(--primary-theme-color);
+}
+
+.card .content {
+    padding: 1.6em .6em .6em .6em;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 1.5em;
+}
+
+.card .role {
+    display: inline-block;
+    padding: .2em .4em;
+    margin: .2em;
+    border-radius: .3em;
+}
+
+.card .line-item {
+    display: flex;
+    margin: .4em 0;
+}
+
+.card .line-item .line-item-icon {
+    position: relative;
+    width: 1.1em;
+    height: 1.1em;
+    padding: .4em;
+    border-radius: 50%;
+    background-color: var(--primary-theme-color);
+}
+
+.card .line-item .line-item-icon i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card .line-item .line-item-content {
+    flex-grow: 1;
+    background-color: var(--primary-background-color);
+    text-align: left;
+    padding: .4em;
+    margin-left: .5em;
+    border-radius: .3em;
+}
+
+.card .users {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.card .users .user {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    padding: .4em;
+    margin: .2em;
+    text-align: right;
+    border-radius: .3em;
+    box-shadow: var(--shadow);
+    text-shadow: var(--shadow);
+}
+
+.card .users .user.discord {
+    background-color: var(--primary-discord-color);
+}
+
+.card .users .user.steam {
+    background-color: var(--primary-steam-color);
+}
+
+.card .users .user.twitch {
+    background-color: var(--primary-twitch-color);
+}
+
+.card .users .user::before {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: .4em;
+    transform: translateY(-50%);
+    font-family: 'Font Awesome 6 Brands';
+    font-size: 1.2em;
+}
+
+.card .users .user.discord::before {
+    content: '\f392';
+    color: var(--dark-discord-color);
+}
+.card .users .user.steam::before {
+    content: '\f1b6';
+    color: var(--dark-steam-color);
+}
+.card .users .user.twitch::before {
+    content: '\f1e8';
+    color: var(--dark-twitch-color);
+}

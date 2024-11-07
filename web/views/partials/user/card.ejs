@@ -1,0 +1,56 @@
+<%
+    const MAX_USERNAME_LENGTH = 12;
+
+    let avatarUrl = null;
+    let globalName = null;
+
+    function getContrast50(hexcolor){
+        return (parseInt(hexcolor.replace("#", ""), 16) > 0xffffff/2) ? 'black':'white';
+    }
+
+    if (profile.discordUsers.length > 0) {
+        avatarUrl = profile.discordUsers[0].avatarUrl();
+        globalName = profile.discordUsers[0].globalName ? profile.discordUsers[0].globalName : profile.discordUsers[0].username;
+    } else if (profile.twitchUsers.length > 0) {
+        avatarUrl = profile.twitchUsers[0].profile_image_url;
+        globalName = profile.twitchUsers[0].display_name;
+    } else if (profile.steamUsers.length > 0) {
+        avatarUrl = profile.steamUsers[0].avatar.medium;
+        globalName = profile.steamUsers[0].name;
+    }
+%><div class="card">
+    <% if (avatarUrl) { %>
+    <img src="<%= avatarUrl %>" alt="Profile image for <%= globalName %>">
+    <% } %>
+    <div class="content">
+        <h3><%= globalName %></h3>
+        <% if (profile.role) { %>
+        <div class="role" style="background-color: <%= profile.role.color %>;color: <%= getContrast50(profile.role.color) %>;">
+            <%= profile.role.name %>
+        </div>
+        <% } %>
+        <% if (profile.identity.biography) { %>
+        <div class="line-item">
+            <div class="line-item-icon"><i class="fa-solid fa-quotes"></i></div>
+            <div class="line-item-content biography"><%= profile.identity.biography %></div>
+        </div>
+        <% } %>
+        <% if (profile.identity.map?.name) { %>
+        <div class="line-item">
+            <div class="line-item-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="line-item-content biography"><%= profile.identity.map.name %></div>
+        </div>
+        <% } %>
+        <div class="users">
+            <% profile.discordUsers.forEach(user => { %>
+            <span class="user discord"><%= user.globalName.length > MAX_USERNAME_LENGTH ? user.globalName.substring(0, MAX_USERNAME_LENGTH) + "…" : user.globalName %></span>
+            <% }) %>
+            <% profile.twitchUsers.forEach(user => { %>
+            <a class="user twitch" href="https://twitch.tv/<%= user.login %>" target="_blank"><%= user.display_name.length > MAX_USERNAME_LENGTH ? user.display_name.substring(0, MAX_USERNAME_LENGTH) + "…" : user.display_name %></a>
+            <% }) %>
+            <% profile.steamUsers.forEach(user => { %>
+            <a class="user steam" href="<%= user.profile %>" target="_blank"><%= user.name.length > MAX_USERNAME_LENGTH ? user.name.substring(0, MAX_USERNAME_LENGTH) + "…" : user.name %></a>
+            <% }) %>
+        </div>
+    </div>
+</div>

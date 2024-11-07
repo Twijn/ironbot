@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/assets/css/objects.css?v=4">
     <link rel="stylesheet" href="/assets/css/alert.css?v=4">
     <link rel="stylesheet" href="/assets/css/members.css?v=5">
+    <link rel="stylesheet" href="/assets/css/card.css?v=1">
 
     <title>Members - The Illumindal Guild</title>
 </head>
@@ -22,8 +23,8 @@
         <% } %>
         <% if (group.members.length === 0) { %><div class="alert alert-danger">No members currently have this rank!</div><% } else { %>
         <div class="user-grid">
-            <% group.members.forEach(user => { %>
-            <%- include("../partials/user/discord", {user}) %>
+            <% group.members.forEach(profile => { %>
+            <%- include("../partials/user/card", {profile}) %>
             <% }) %>
         </div>
         <% }}) %>
