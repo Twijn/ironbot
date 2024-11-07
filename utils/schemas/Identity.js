@@ -174,16 +174,32 @@ const formatDate = date => {
     return `${getMonth(date.getMonth())} ${date.getDay()}, ${date.getFullYear()}`;
 }
 
-schema.methods.getDiscordUsers = function() {
-    return DiscordUser.find({identity: this}).populate("identity");
+schema.methods.getProfile = async function(overrideCache = false) {
+    return {
+        identity: this,
+        discordUsers: await this.getDiscordUsers(overrideCache),
+        steamUsers: await this.getSteamUsers(overrideCache),
+        twitchUsers: await this.getTwitchUsers(overrideCache),
+    };
 }
 
-schema.methods.getSteamUsers = function() {
-    return SteamUser.find({identity: this}).populate("identity");
+schema.methods.getDiscordUsers = function(overrideCache = false) {
+    return CacheManager.identityDiscordUsers.get(String(this._id), (resolve, reject) => {
+        console.trace("GET " + this._id);
+        DiscordUser.find({identity: this}).populate("identity").then(resolve, reject);
+    }, overrideCache, false);
 }
 
-schema.methods.getTwitchUsers = function() {
-    return TwitchUser.find({identity: this}).populate("identity");
+schema.methods.getSteamUsers = function(overrideCache = false) {
+    return CacheManager.identitySteamUsers.get(String(this._id), (resolve, reject) => {
+        SteamUser.find({identity: this}).populate("identity").then(resolve, reject);
+    }, overrideCache, false);
+}
+
+schema.methods.getTwitchUsers = function(overrideCache = false) {
+    return CacheManager.identityTwitchUsers.get(String(this._id), (resolve, reject) => {
+        TwitchUser.find({identity: this}).populate("identity").then(resolve, reject);
+    }, overrideCache, false);
 }
 
 schema.methods.generateCard = async function() {

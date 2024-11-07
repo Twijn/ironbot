@@ -12,6 +12,12 @@ class CacheManager {
 
     session = new Cache(8 * ONE_HOUR);
 
+    identityDiscordUsers = new Cache(8 * ONE_HOUR);
+
+    identitySteamUsers = new Cache(8 * ONE_HOUR);
+
+    identityTwitchUsers = new Cache(8 * ONE_HOUR);
+
     /**
      * Removes an identity from all caches
      * @param identity {string|mongoose.Types.ObjectId}
@@ -36,6 +42,9 @@ class CacheManager {
                 console.log("[CacheManager] Removed session " + id.substring(0, 10));
             }
         }
+        this.identityDiscordUsers.remove(identity);
+        this.identitySteamUsers.remove(identity);
+        this.identityTwitchUsers.remove(identity);
         console.log(`[CacheManager] Removed all identities for identity ${identity}`);
     }
 
