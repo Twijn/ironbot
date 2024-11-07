@@ -71,6 +71,16 @@ class MemberManager {
     async updateRoles() {
         this.roles = await Role.find({});
         this.roles.sort((a, b) => b.position - a.position);
+        for (let i = 0; i < this.roles.length; i++) {
+            const role = this.roles[i];
+            if (!role.color) {
+                console.log("Updating color of " + role.name);
+                const discordRole = await this.utils.Discord.guild.roles.fetch(role._id);
+                this.roles[i] = await Role.findByIdAndUpdate(role._id, {
+                    color: discordRole.hexColor,
+                }, {new: true});
+            }
+        }
         console.log(`[MemberManager] Loaded ${this.roles.length} roles`);
     }
 
@@ -85,7 +95,12 @@ class MemberManager {
         for (const [id, member] of this.members) {
             // We seed to cache to reduce latency when viewing things such as /members
             try {
-                const user = await utils.Discord.getUserById(String(id), false, true);
+                let user = await utils.Discord.getUserById(String(id), false, true);
+                let update = false;
+                if (!user.identity) {
+                    await user.createIdentity();
+                    update = true;
+                }
                 if (user.avatar !== member.user.avatar ||
                     (member.user.globalName && user.globalName !== member.user.globalName) ||
                     (!user.joinedTimestamp || member.joinedTimestamp !== user.joinedTimestamp.getTime())) {
@@ -96,8 +111,12 @@ class MemberManager {
                         joinedTimestamp: member.joinedTimestamp,
                     });
                     // Retrieve the user again with bypassCache to update the cached user.
-                    await utils.Discord.getUserById(String(id), true);
+                    update = true;
                 }
+                if (update) {
+                    user = await utils.Discord.getUserById(String(id), true);
+                }
+                await user.identity.getProfile();
                 seeded++;
             } catch(err) {
                 console.error("[MemberManager] Error while seeding cache:");
@@ -139,6 +158,22 @@ class MemberManager {
             }
         }
         return result;
+    }
+
+    /**
+     * Gets a member's role from an ID
+     * @param id
+     * @returns {Promise<*>}
+     */
+    async getMemberRole(id) {
+        const member = await this.getMember(id);
+        for (let r = 0; r < this.roles.length; r++) {
+            const role = this.roles[r];
+            if (member.roles.cache.has(role.id)) {
+                return role;
+            }
+        }
+        return null;
     }
 
     /**

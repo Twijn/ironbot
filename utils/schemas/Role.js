@@ -13,6 +13,7 @@ const schema = new mongoose.Schema({
     },
     name: String,
     description: String,
+    color: String,
 });
 
 module.exports = mongoose.model("Role", schema);
