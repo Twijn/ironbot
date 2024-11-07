@@ -50,6 +50,8 @@ router.get("/authenticate", async (req, res) => {
             res.redirect(req.cookies.return_uri);
         } else res.redirect("/");
 
+        utils.CacheManager.removeIdentity(req?.session?.identity._id);
+
         console.log(`${req.session.identity._id} added steam account ${user.username} (${user.steamid})`)
 
         req.clearSessionCache();

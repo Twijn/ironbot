@@ -44,6 +44,7 @@ router.get("/", async (req, res) => {
             } else res.redirect("/");
 
             req.clearSessionCache();
+            utils.CacheManager.removeIdentity(identity._id);
 
             console.log(`User ${user.username} (${user.id}) logged in`)
 

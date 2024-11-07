@@ -40,6 +40,8 @@ router.get("/", async (req, res) => {
                 res.redirect(req.cookies.return_uri);
             } else res.redirect("/");
 
+            utils.CacheManager.removeIdentity(req?.session?.identity._id);
+
             console.log(`${user.identity._id} added twitch account ${user.display_name} (${user._id})`);
 
             req.clearSessionCache();
