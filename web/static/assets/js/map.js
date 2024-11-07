@@ -31,7 +31,7 @@ $(function () {
             const marker = L.marker(loc.location.latlng).addTo(map);
             let html = `<h3 style="text-align:center;">${loc.location.name}</h3>`;
             loc.discordUsers.forEach(user => {
-                html += getUserHtml(user.id, user.username, user.avatarUrl, loc.location.name);
+                html += getUserHtml(user.id, user.globalName ? user.globalName : user.username, user.avatarUrl, loc.location.name);
             });
             marker.bindPopup(html);
         });

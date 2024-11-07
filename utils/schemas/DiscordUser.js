@@ -25,6 +25,7 @@ schema.methods.public = function() {
     return {
         id: this._id,
         username: this.username,
+        globalName: this.globalName,
         identity: this?.identity?._id ? String(this.identity._id) : this.identity,
         discriminator: this.discriminator,
         avatarUrl: this.avatarUrl(),
