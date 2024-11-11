@@ -23,7 +23,6 @@ const listener = {
         
         member.guild.channels.cache.get(config.join.channel)
             .send({
-                content: "https://youtu.be/R--PmgRfw08",
                 embeds: [embed],
             })
             .catch(console.error);
